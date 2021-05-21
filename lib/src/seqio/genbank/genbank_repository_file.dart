@@ -75,151 +75,146 @@ class GenbankRepositoryFile {
         releaseDate: locusData[8],
       );
 
+  // ignore: long-method
   LocusDetails getLocusDetails(List<String> locusDetailsGenbank) {
-    String? currentDetail;
-    String? lastDetail;
-    final definitionDescription = <String>[];
-    String? accessionDescription;
-    int? versionDescription;
-    final keywordsDescription = <String>[];
-    final sourceDescription = <String>[];
-    final organismDescription = <String>[];
-    final referenceDescription = <String>[];
-    final authorDescription = <String>[];
-    final titleDescription = <String>[];
-    final journalDescription = <String>[];
-    final pubmedDescription = <String>[];
     final referencesData = <Reference>[];
+    String? currentLabel;
+    String? lastLabel;
+    final definitionValue = <String>[];
+    String? accessionValue;
+    int? versionValue;
+    final keywordsValue = <String>[];
+    final sourceValue = <String>[];
+    final organismValue = <String>[];
+    final referenceValue = <String>[];
+    final authorValue = <String>[];
+    final titleValue = <String>[];
+    final journalValue = <String>[];
+    int pubmedId = 0;
 
-    locusDetailsGenbank.forEach(
-      (locusDetail) {
-        locusDetail = locusDetail.replaceFirst(RegExp(r'^\s{2,3}'), "");
-        const regex = r'^([A-Z]+)\s+(.+)$';
-        final regexp = RegExp(regex);
-        final match = regexp.allMatches(locusDetail);
-        String locusDetailData;
-        if (match.isNotEmpty) {
-          currentDetail = match.elementAt(0).group(1);
-          lastDetail = currentDetail;
-          locusDetailData = match.elementAt(0).group(2)!;
-        } else {
-          currentDetail = lastDetail;
-          locusDetailData = locusDetail.replaceAll(RegExp(r'^\s+'), "");
-        }
-        switch (currentDetail) {
-          case 'DEFINITION':
-            {
-              definitionDescription.add(locusDetailData);
+    locusDetailsGenbank.forEach((locusDetail) {
+      final regexLabelAndValue = RegExp(r'^\s*([A-Z]+)\s+(.+)$');
+      final matchLabelAndValue = regexLabelAndValue.allMatches(locusDetail);
+      String value;
+      if (matchLabelAndValue.isNotEmpty) {
+        currentLabel = matchLabelAndValue.elementAt(0).group(1);
+        lastLabel = currentLabel;
+        value = matchLabelAndValue.elementAt(0).group(2)!;
+      } else {
+        currentLabel = lastLabel;
+        value = locusDetail.replaceAll(RegExp(r'^\s+'), "");
+      }
+      switch (currentLabel) {
+        case 'DEFINITION':
+          {
+            definitionValue.add(value);
+          }
+          break;
+        case 'ACCESSION':
+          {
+            accessionValue = value;
+          }
+          break;
+        case 'VERSION':
+          {
+            final versionOnlyNumberString = value.split('.')[1];
+            versionValue = int.tryParse(versionOnlyNumberString);
+          }
+          break;
+        case 'KEYWORDS':
+          {
+            keywordsValue.add(value);
+          }
+          break;
+        case 'SOURCE':
+          {
+            sourceValue.add(value);
+          }
+          break;
+        case 'ORGANISM':
+          {
+            organismValue.add(value);
+          }
+          break;
+        case 'REFERENCE':
+          {
+            if (referenceValue.isNotEmpty) {
+              final referenceData = _getReferenceData(
+                referenceValue: referenceValue,
+                authorValue: authorValue,
+                titleValue: titleValue,
+                journalValue: journalValue,
+                pubmedId: pubmedId,
+              );
+              referencesData.add(referenceData);
+              referenceValue.clear();
+              authorValue.clear();
+              titleValue.clear();
+              journalValue.clear();
+              pubmedId = 0;
             }
-            break;
-          case 'ACCESSION':
-            {
-              accessionDescription = locusDetailData;
-            }
-            break;
-          case 'VERSION':
-            {
-              final originalVersion = locusDetailData;
-              final versionOnlyNumberString = originalVersion.split('.')[1];
-              versionDescription = int.tryParse(versionOnlyNumberString);
-            }
-            break;
-          case 'KEYWORDS':
-            {
-              keywordsDescription.add(locusDetailData);
-            }
-            break;
-          case 'SOURCE':
-            {
-              sourceDescription.add(locusDetailData);
-            }
-            break;
-          case 'ORGANISM':
-            {
-              organismDescription.add(locusDetailData);
-            }
-            break;
-          case 'REFERENCE':
-            {
-              if (referenceDescription.isNotEmpty) {
-                final referenceData = _getReferenceData(
-                  referenceDescription: referenceDescription,
-                  authorDescription: authorDescription,
-                  titleDescription: titleDescription,
-                  journalDescription: journalDescription,
-                  pubmedDescription: pubmedDescription,
-                );
-                referencesData.add(referenceData);
-                referenceDescription.clear();
-                authorDescription.clear();
-                titleDescription.clear();
-                journalDescription.clear();
-                pubmedDescription.clear();
-              }
-              referenceDescription.add(locusDetailData);
-            }
-            break;
-          case 'AUTHORS':
-            {
-              authorDescription.add(locusDetailData);
-            }
-            break;
-          case 'TITLE':
-            {
-              titleDescription.add(locusDetailData);
-            }
-            break;
-          case 'JOURNAL':
-            {
-              journalDescription.add(locusDetailData);
-            }
-            break;
-          case 'PUBMED':
-            {
-              pubmedDescription.add(locusDetailData);
-            }
-            break;
-        }
-      },
-    );
-    if (referenceDescription.isNotEmpty) {
+            referenceValue.add(value);
+          }
+          break;
+        case 'AUTHORS':
+          {
+            authorValue.add(value);
+          }
+          break;
+        case 'TITLE':
+          {
+            titleValue.add(value);
+          }
+          break;
+        case 'JOURNAL':
+          {
+            journalValue.add(value);
+          }
+          break;
+        case 'PUBMED':
+          {
+            pubmedId = int.tryParse(value)!;
+          }
+          break;
+      }
+    });
+    if (referenceValue.isNotEmpty) {
       final referenceData = _getReferenceData(
-        referenceDescription: referenceDescription,
-        authorDescription: authorDescription,
-        titleDescription: titleDescription,
-        journalDescription: journalDescription,
-        pubmedDescription: pubmedDescription,
+        referenceValue: referenceValue,
+        authorValue: authorValue,
+        titleValue: titleValue,
+        journalValue: journalValue,
+        pubmedId: pubmedId,
       );
       referencesData.add(referenceData);
     }
-
     final LocusDetails locusDetails = LocusDetails(
-      definition: definitionDescription.join(' '),
-      accession: accessionDescription,
-      version: versionDescription,
-      keywords: keywordsDescription.join(' '),
-      source: sourceDescription.join(' '),
-      organism: organismDescription.join('; ').replaceAll(';;', ';'),
+      definition: definitionValue.join(' '),
+      accession: accessionValue,
+      version: versionValue,
+      keywords: keywordsValue.join(' '),
+      source: sourceValue.join(' '),
+      organism: organismValue.join('; ').replaceAll(';;', ';'),
       references: referencesData.toImmutableList(),
     );
 
     return locusDetails;
   }
 
+  // ignore: long-parameter-list
   Reference _getReferenceData({
-    required List<String>? referenceDescription,
-    required List<String>? authorDescription,
-    required List<String>? titleDescription,
-    required List<String>? journalDescription,
-    required List<String>? pubmedDescription,
+    required List<String> referenceValue,
+    required List<String> authorValue,
+    required List<String> titleValue,
+    required List<String> journalValue,
+    required int pubmedId,
   }) =>
       Reference(
-        description: referenceDescription!.join(' '),
-        authors: authorDescription!.join(' '),
-        title: titleDescription!.join(' '),
-        journal: journalDescription!.join(' '),
-        pubmed:
-            pubmedDescription!.isNotEmpty ? pubmedDescription.join(' ') : null,
+        description: referenceValue.join(' '),
+        authors: authorValue.join(' '),
+        title: titleValue.join(' '),
+        journal: journalValue.join(' '),
+        pubmed: pubmedId > 0 ? pubmedId : null,
       );
 
   String formatLocusSequence(String locusSequence) => locusSequence

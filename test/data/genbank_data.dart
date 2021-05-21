@@ -79,7 +79,7 @@ LocusDetails getLocusDetails() => LocusDetails(
           title:
               'Selection of axial growth sites in yeast requires Axl2p, a novel plasma membrane glycoprotein',
           journal: 'Genes Dev. 10 (7), 777-793 (1996)',
-          pubmed: '8846915',
+          pubmed: 8846915,
         ),
         const Reference(
           description: '2  (bases 1 to 5028)',

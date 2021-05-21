@@ -73,8 +73,9 @@ void main() {
           expect(locusSequenceFormatted, equals(locusSequenceFormattedMocked));
         },
       );
+
       test(
-        'Should get locus details',
+        'Should get locus details (LocusDetails entity)',
         () {
           final locusDetailsGenbank = getGenbankLocusDetails();
           final locusDetailsMocked = getLocusDetails();

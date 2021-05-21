@@ -11,6 +11,6 @@ class Reference with _$Reference {
     required String authors,
     required String title,
     required String journal,
-    String? pubmed,
+    int? pubmed,
   }) = _Reference;
 }

@@ -21,7 +21,7 @@ class _$ReferenceTearOff {
       required String authors,
       required String title,
       required String journal,
-      String? pubmed}) {
+      int? pubmed}) {
     return _Reference(
       description: description,
       authors: authors,
@@ -41,7 +41,7 @@ mixin _$Reference {
   String get authors => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get journal => throw _privateConstructorUsedError;
-  String? get pubmed => throw _privateConstructorUsedError;
+  int? get pubmed => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ReferenceCopyWith<Reference> get copyWith =>
@@ -57,7 +57,7 @@ abstract class $ReferenceCopyWith<$Res> {
       String authors,
       String title,
       String journal,
-      String? pubmed});
+      int? pubmed});
 }
 
 /// @nodoc
@@ -96,7 +96,7 @@ class _$ReferenceCopyWithImpl<$Res> implements $ReferenceCopyWith<$Res> {
       pubmed: pubmed == freezed
           ? _value.pubmed
           : pubmed // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ));
   }
 }
@@ -112,7 +112,7 @@ abstract class _$ReferenceCopyWith<$Res> implements $ReferenceCopyWith<$Res> {
       String authors,
       String title,
       String journal,
-      String? pubmed});
+      int? pubmed});
 }
 
 /// @nodoc
@@ -152,7 +152,7 @@ class __$ReferenceCopyWithImpl<$Res> extends _$ReferenceCopyWithImpl<$Res>
       pubmed: pubmed == freezed
           ? _value.pubmed
           : pubmed // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ));
   }
 }
@@ -177,7 +177,7 @@ class _$_Reference extends _Reference {
   @override
   final String journal;
   @override
-  final String? pubmed;
+  final int? pubmed;
 
   @override
   String toString() {
@@ -224,7 +224,7 @@ abstract class _Reference extends Reference {
       required String authors,
       required String title,
       required String journal,
-      String? pubmed}) = _$_Reference;
+      int? pubmed}) = _$_Reference;
   const _Reference._() : super._();
 
   @override
@@ -236,7 +236,7 @@ abstract class _Reference extends Reference {
   @override
   String get journal => throw _privateConstructorUsedError;
   @override
-  String? get pubmed => throw _privateConstructorUsedError;
+  int? get pubmed => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ReferenceCopyWith<_Reference> get copyWith =>
