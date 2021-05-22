@@ -68,20 +68,39 @@ void main() {
         () {
           final genbankLocusSequenceMocked = getGenbankLocusSequence().join();
           final locusSequenceFormattedMocked = getLocusSequenceFormatted();
-          final locusSequenceFormatted = genbankRepositoryFile!
-              .formatLocusSequence(genbankLocusSequenceMocked);
+          final locusSequenceFormatted =
+              genbankRepositoryFile!.formatLocusSequence(genbankLocusSequenceMocked);
           expect(locusSequenceFormatted, equals(locusSequenceFormattedMocked));
         },
       );
 
+      test('Should get locus data (Locus entity)', () {
+        final locusGenbank = getGenbankLocus();
+        final locusMocked = getLocus();
+        final locus = genbankRepositoryFile!.getLocus(
+          locusData: locusGenbank,
+          locusSequence: getGenbankLocusSequence(),
+        );
+        expect(locus, equals(locusMocked));
+      });
+
       test(
-        'Should get locus details (LocusDetails entity)',
+        'Should get locus details data (LocusDetails entity)',
         () {
           final locusDetailsGenbank = getGenbankLocusDetails();
           final locusDetailsMocked = getLocusDetails();
-          final locusDetails =
-              genbankRepositoryFile!.getLocusDetails(locusDetailsGenbank);
+          final locusDetails = genbankRepositoryFile!.getLocusDetails(locusDetailsGenbank);
           expect(locusDetails, equals(locusDetailsMocked));
+        },
+      );
+
+      test(
+        'Should get features data (Feature entity)',
+        () {
+          final locusFeaturesGenbank = getGenbankLocusFeatures();
+          final locusFeaturesMocked = getLocusFeatures();
+          final locusFeatures = genbankRepositoryFile!.getFeatures(locusFeaturesGenbank);
+          expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
         },
       );
     },

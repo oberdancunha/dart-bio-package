@@ -7,60 +7,20 @@ import 'package:kt_dart/collection.dart';
 
 KtList<Genbank> getGenbankDataEntity() => KtList.of(
       Genbank(
-        locus: Locus(
-          name: 'SCU49845',
-          length: 5028,
-          type: 'DNA',
-          shape: 'linear',
-          taxonomicDivision: 'PLN',
-          releaseDate: '29-OCT-2018',
-          sequence: getLocusSequenceFormatted(),
-        ),
+        locus: getLocus(),
         locusDetails: getLocusDetails(),
-        features: KtList.of(
-          Feature(
-            start: 1,
-            end: 206,
-            type: 'CDS',
-            strand: 0,
-            product: 'TCP1-beta',
-            aminoacids: 'SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA',
-            features: KtList.of(
-              {'codon_start': 3},
-              {'protein_id': 'AAA98665.1'},
-            ),
-          ),
-          Feature(
-            start: 687,
-            end: 3158,
-            type: 'CDS',
-            strand: 0,
-            product: 'Axl2p',
-            aminoacids:
-                'MTQLQISLLLTATISLLHLVVATPYEAYPIGKQYPPVARVNESFTFQISNDTYKSSVDKTAQITYNCFDLPSWLSFDSSSRTFSGEPSSDLLSDANTTLYFNVILEGTDSADSTSLNNTYQFVVTNRPSISLSSDFNLLALLKNYGYTNGKNALKLDPNEVFNVTFDRSMFTNEESIVSYYGRSQLYNAPLPNWLFFDSGELKFTGTAPVINSAIAPETSYSFVIIATDIEGFSAVEVEFELVIGAHQLTTSIQNSLIINVTDTGNVSYDLPLNYVYLDDDPISSDKLGSINLLDAPDWVALDNATISGSVPDELLGKNSNPANFSVSIYDTYGDVIYFNFEVVSTTDLFAISSLPNINATRGEWFSYYFLPSQFTDYVNTNVSLEFTNSSQDHDWVKFQSSNLTLAGEVPKNFDKLSLGLKANQGSQSQELYFNIIGMDSKITHSNHSANATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPAANKTSSHNKKAVAIACGVAIPLGVILVALICFLIFWRRRRENPDDENLPHAISGPDLNNPANKPNQENATPLNNPFDDDASSYDDTSIARRLAALNTLKLDNHSATESDISSVDEKRDSLSGMNTYNDQFQSQSKEELLAKPPVQPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGNLSPVSDIVRDSYGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTKHRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRLVDFSNKSNVNVGQVKDIHGRIPEML',
-            features: KtList.of(
-              {'gene': 'AXL2'},
-              {'note': 'plasma membrane glycoprotein'},
-              {'codon_start': 1},
-              {'protein_id': 'AAA98666.1'},
-            ),
-          ),
-          Feature(
-            start: 3300,
-            end: 4037,
-            type: 'CDS',
-            strand: 1,
-            product: 'Rev7p',
-            aminoacids:
-                'MNRWVEKWLRVYLKCYINLILFYRNVYPPQSFDYTTYQSFNLPQFVPINRHPALIDYIEELILDVLSKLTHVYRFSICIINKKNDLCIEKYVLDFSELQHVDKDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNRRVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEKLISGDDKILNGVYSQYEEGESIFGSLF',
-            features: KtList.of(
-              {'gene': 'REV7'},
-              {'codon_start': 1},
-              {'protein_id': 'AAA98667.1'},
-            ),
-          ),
-        ),
+        features: getLocusFeatures(),
       ),
+    );
+
+Locus getLocus() => Locus(
+      name: 'SCU49845',
+      length: 5028,
+      type: 'DNA',
+      shape: 'linear',
+      taxonomicDivision: 'PLN',
+      releaseDate: '29-OCT-2018',
+      sequence: getLocusSequenceFormatted(),
     );
 
 LocusDetails getLocusDetails() => LocusDetails(
@@ -85,8 +45,100 @@ LocusDetails getLocusDetails() => LocusDetails(
           description: '2  (bases 1 to 5028)',
           authors: 'Roemer,T.',
           title: 'Direct Submission',
-          journal:
-              'Submitted (22-FEB-1996) Biology, Yale University, New Haven, CT 06520, USA',
+          journal: 'Submitted (22-FEB-1996) Biology, Yale University, New Haven, CT 06520, USA',
+        ),
+      ),
+    );
+
+KtList<Feature> getLocusFeatures() => KtList.of(
+      Feature(
+        start: 1,
+        end: 5028,
+        type: 'source',
+        strand: 0,
+        features: KtList.of(
+          {'organism': 'Saccharomyces cerevisiae'},
+          {'mol_type': 'genomic DNA'},
+          {'db_xref': 'taxon:4932'},
+          {'chromosome': 'IX'},
+        ),
+      ),
+      const Feature(
+        start: 1,
+        end: 206,
+        type: 'mRNA',
+        strand: 0,
+        product: 'TCP1-beta',
+      ),
+      Feature(
+        start: 1,
+        end: 206,
+        type: 'CDS',
+        strand: 0,
+        product: 'TCP1-beta',
+        aminoacids: 'SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM',
+        features: KtList.of(
+          {'codon_start': 3},
+          {'protein_id': 'AAA98665.1'},
+        ),
+      ),
+      Feature(
+        start: 687,
+        end: 3158,
+        type: 'gene',
+        strand: 0,
+        features: KtList.of({'gene': 'AXL2'}),
+      ),
+      Feature(
+        start: 687,
+        end: 3158,
+        type: 'mRNA',
+        strand: 0,
+        product: 'Axl2p',
+        features: KtList.of({'gene': 'AXL2'}),
+      ),
+      Feature(
+        start: 687,
+        end: 3158,
+        type: 'CDS',
+        strand: 0,
+        product: 'Axl2p',
+        aminoacids:
+            'MTQLQISLLLTATISLLHLVVATPYEAYPIGKQYPPVARVNESFTFQISNDTYKSSVDKTAQITYNCFDLPSWLSFDSSSRTFSGEPSSDLLSDANTTLYFNVILEGTDSADSTSLNNTYQFVVTNRPSISLSSDFNLLALLKNYGYTNGKNALKLDPNEVFNVTFDRSMFTNEESIVSYYGRSQLYNAPLPNWLFFDSGELKFTGTAPVINSAIAPETSYSFVIIATDIEGFSAVEVEFELVIGAHQLTTSIQNSLIINVTDTGNVSYDLPLNYVYLDDDPISSDKLGSINLLDAPDWVALDNATISGSVPDELLGKNSNPANFSVSIYDTYGDVIYFNFEVVSTTDLFAISSLPNINATRGEWFSYYFLPSQFTDYVNTNVSLEFTNSSQDHDWVKFQSSNLTLAGEVPKNFDKLSLGLKANQGSQSQELYFNIIGMDSKITHSNHSANATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPAANKTSSHNKKAVAIACGVAIPLGVILVALICFLIFWRRRRENPDDENLPHAISGPDLNNPANKPNQENATPLNNPFDDDASSYDDTSIARRLAALNTLKLDNHSATESDISSVDEKRDSLSGMNTYNDQFQSQSKEELLAKPPVQPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGNLSPVSDIVRDSYGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTKHRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRLVDFSNKSNVNVGQVKDIHGRIPEML',
+        features: KtList.of(
+          {'gene': 'AXL2'},
+          {'note': 'plasma membrane glycoprotein'},
+          {'codon_start': 1},
+          {'protein_id': 'AAA98666.1'},
+        ),
+      ),
+      Feature(
+        start: 3300,
+        end: 4037,
+        type: 'gene',
+        strand: 1,
+        features: KtList.of({'gene': 'REV7'}),
+      ),
+      Feature(
+        start: 3300,
+        end: 4037,
+        type: 'mRNA',
+        strand: 1,
+        product: 'Rev7p',
+        features: KtList.of({'gene': 'REV7'}),
+      ),
+      Feature(
+        start: 3300,
+        end: 4037,
+        type: 'CDS',
+        strand: 1,
+        product: 'Rev7p',
+        aminoacids:
+            'MNRWVEKWLRVYLKCYINLILFYRNVYPPQSFDYTTYQSFNLPQFVPINRHPALIDYIEELILDVLSKLTHVYRFSICIINKKNDLCIEKYVLDFSELQHVDKDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNRRVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEKLISGDDKILNGVYSQYEEGESIFGSLF',
+        features: KtList.of(
+          {'gene': 'REV7'},
+          {'codon_start': 1},
+          {'protein_id': 'AAA98667.1'},
         ),
       ),
     );
