@@ -4,11 +4,13 @@ import '../../core/i_repository_file.dart';
 import '../../domain/genbank/feature.dart';
 import '../../domain/genbank/genbank.dart';
 import '../../domain/genbank/i_genbank_repository_file.dart';
-import '../../domain/genbank/locus.dart';
 import '../../domain/genbank/locus_details.dart';
 import '../../domain/genbank/reference.dart';
+import 'locus_dto.dart';
 
 class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositoryFile {
+  final locusDto = LocusDto();
+
   @override
   Future<KtList<Genbank>> parser(Stream<String> lines) async {
     try {
@@ -64,7 +66,7 @@ class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositor
       });
       genbankData.add(
         Genbank(
-          locus: getLocus(
+          locus: locusDto.fromGenbankFile(
             locusData: locusData!,
             locusSequence: locusSequence,
           ),
@@ -77,23 +79,6 @@ class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositor
     } on Exception {
       throw Error();
     }
-  }
-
-  Locus getLocus({
-    required String locusData,
-    required List<String> locusSequence,
-  }) {
-    final locusDataSplitted = locusData.split(RegExp(r'\s+'));
-
-    return Locus(
-      name: locusDataSplitted[1],
-      length: int.tryParse(locusDataSplitted[2].toString())!,
-      type: locusDataSplitted[4],
-      shape: locusDataSplitted[5],
-      taxonomicDivision: locusDataSplitted[6],
-      releaseDate: locusDataSplitted[7],
-      sequence: locusSequence.isNotEmpty ? formatLocusSequence(locusSequence.join()) : null,
-    );
   }
 
   // ignore: long-method
@@ -237,11 +222,6 @@ class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositor
         journal: journalValue.join(' '),
         pubmed: pubmedId > 0 ? pubmedId : null,
       );
-
-  String formatLocusSequence(String locusSequence) => locusSequence
-      .replaceAll(RegExp(r'\s'), '')
-      .replaceAll(RegExp('[0-9]'), '')
-      .replaceAll(RegExp(r'\n'), '');
 
   KtList<Feature> getFeatures(List<String> features) {
     final featuresData = <Feature>[];

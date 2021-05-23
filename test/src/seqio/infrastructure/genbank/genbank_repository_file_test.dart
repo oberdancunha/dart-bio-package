@@ -9,8 +9,8 @@ import 'package:matcher/matcher.dart';
 import 'package:path/path.dart' as path;
 import "package:path/path.dart" show dirname;
 
-import '../../../data/genbank_data.dart';
-import '../../../data/genbank_original_format_data.dart';
+import '../../../../data/genbank_data.dart';
+import '../../../../data/genbank_original_format_data.dart';
 
 void main() {
   GenbankRepositoryFile? genbankRepositoryFile;
@@ -62,27 +62,6 @@ void main() {
           expect(genbankData.toString(), equals(genbankDataMocked.toString()));
         },
       );
-
-      test(
-        'Should format the genbank locus sequence by removing numbers, blanks and line breaks',
-        () {
-          final genbankLocusSequenceMocked = getGenbankLocusSequence().join();
-          final locusSequenceFormattedMocked = getLocusSequenceFormatted();
-          final locusSequenceFormatted =
-              genbankRepositoryFile!.formatLocusSequence(genbankLocusSequenceMocked);
-          expect(locusSequenceFormatted, equals(locusSequenceFormattedMocked));
-        },
-      );
-
-      test('Should get locus data (Locus entity)', () {
-        final locusGenbank = getGenbankLocus();
-        final locusMocked = getLocus();
-        final locus = genbankRepositoryFile!.getLocus(
-          locusData: locusGenbank,
-          locusSequence: getGenbankLocusSequence(),
-        );
-        expect(locus, equals(locusMocked));
-      });
 
       test(
         'Should get locus details data (LocusDetails entity)',
