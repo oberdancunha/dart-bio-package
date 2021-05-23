@@ -10,7 +10,6 @@ import 'package:path/path.dart' as path;
 import "package:path/path.dart" show dirname;
 
 import '../../../../data/genbank_data.dart';
-import '../../../../data/genbank_original_format_data.dart';
 
 void main() {
   GenbankRepositoryFile? genbankRepositoryFile;
@@ -60,16 +59,6 @@ void main() {
           final lines = genbankRepositoryFile!.open(genbankFile!);
           final genbankData = await genbankRepositoryFile!.parser(lines);
           expect(genbankData.toString(), equals(genbankDataMocked.toString()));
-        },
-      );
-
-      test(
-        'Should get features data (Feature entity)',
-        () {
-          final locusFeaturesGenbank = getGenbankLocusFeatures();
-          final locusFeaturesMocked = getLocusFeatures();
-          final locusFeatures = genbankRepositoryFile!.getFeatures(locusFeaturesGenbank);
-          expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
         },
       );
     },
