@@ -4,12 +4,12 @@ import '../../core/i_repository_file.dart';
 import '../../domain/genbank/feature.dart';
 import '../../domain/genbank/genbank.dart';
 import '../../domain/genbank/i_genbank_repository_file.dart';
-import '../../domain/genbank/locus_details.dart';
-import '../../domain/genbank/reference.dart';
+import 'locus_details_dto.dart';
 import 'locus_dto.dart';
 
 class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositoryFile {
   final locusDto = LocusDto();
+  final locusDetailsDto = LocusDetailsDto();
 
   @override
   Future<KtList<Genbank>> parser(Stream<String> lines) async {
@@ -70,7 +70,7 @@ class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositor
             locusData: locusData!,
             locusSequence: locusSequence,
           ),
-          locusDetails: getLocusDetails(locusDetailsData),
+          locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
           features: getFeatures(featuresValues),
         ),
       );
@@ -80,148 +80,6 @@ class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositor
       throw Error();
     }
   }
-
-  // ignore: long-method
-  LocusDetails getLocusDetails(List<String> locusDetailsGenbank) {
-    final referencesData = <Reference>[];
-    String? currentLabel;
-    String? lastLabel;
-    String value;
-    final definitionValue = <String>[];
-    String? accessionValue;
-    int? versionValue;
-    final keywordsValue = <String>[];
-    final sourceValue = <String>[];
-    final organismValue = <String>[];
-    final referenceValue = <String>[];
-    final authorValue = <String>[];
-    final titleValue = <String>[];
-    final journalValue = <String>[];
-    int pubmedId = 0;
-    final regexLabelAndValue = RegExp(r'^\s*([A-Z]+)\s+(.+)$');
-
-    locusDetailsGenbank.forEach((locusDetail) {
-      final matchLabelAndValue = regexLabelAndValue.allMatches(locusDetail);
-      if (matchLabelAndValue.isNotEmpty) {
-        currentLabel = matchLabelAndValue.elementAt(0).group(1);
-        lastLabel = currentLabel;
-        value = matchLabelAndValue.elementAt(0).group(2)!;
-      } else {
-        currentLabel = lastLabel;
-        value = locusDetail.replaceAll(RegExp(r'^\s+'), "");
-      }
-      switch (currentLabel) {
-        case 'DEFINITION':
-          {
-            definitionValue.add(value);
-          }
-          break;
-        case 'ACCESSION':
-          {
-            accessionValue = value;
-          }
-          break;
-        case 'VERSION':
-          {
-            final versionOnlyNumberString = value.split('.')[1];
-            versionValue = int.tryParse(versionOnlyNumberString);
-          }
-          break;
-        case 'KEYWORDS':
-          {
-            keywordsValue.add(value);
-          }
-          break;
-        case 'SOURCE':
-          {
-            sourceValue.add(value);
-          }
-          break;
-        case 'ORGANISM':
-          {
-            organismValue.add(value);
-          }
-          break;
-        case 'REFERENCE':
-          {
-            if (referenceValue.isNotEmpty) {
-              final referenceData = _getReferenceData(
-                referenceValue: referenceValue,
-                authorValue: authorValue,
-                titleValue: titleValue,
-                journalValue: journalValue,
-                pubmedId: pubmedId,
-              );
-              referencesData.add(referenceData);
-              referenceValue.clear();
-              authorValue.clear();
-              titleValue.clear();
-              journalValue.clear();
-              pubmedId = 0;
-            }
-            referenceValue.add(value);
-          }
-          break;
-        case 'AUTHORS':
-          {
-            authorValue.add(value);
-          }
-          break;
-        case 'TITLE':
-          {
-            titleValue.add(value);
-          }
-          break;
-        case 'JOURNAL':
-          {
-            journalValue.add(value);
-          }
-          break;
-        case 'PUBMED':
-          {
-            pubmedId = int.tryParse(value)!;
-          }
-          break;
-      }
-    });
-    if (referenceValue.isNotEmpty) {
-      final referenceData = _getReferenceData(
-        referenceValue: referenceValue,
-        authorValue: authorValue,
-        titleValue: titleValue,
-        journalValue: journalValue,
-        pubmedId: pubmedId,
-      );
-      referencesData.add(referenceData);
-    }
-    final LocusDetails locusDetails = LocusDetails(
-      definition: definitionValue.join(' '),
-      accession: accessionValue,
-      version: versionValue,
-      keywords: keywordsValue.join(' '),
-      source: sourceValue.join(' '),
-      organism: organismValue.join('; ').replaceAll(';;', ';'),
-      references: referencesData.toImmutableList(),
-    );
-
-    return locusDetails;
-  }
-
-  // ignore: long-parameter-list
-  Reference _getReferenceData({
-    required List<String> referenceValue,
-    required List<String> authorValue,
-    required List<String> titleValue,
-    required List<String> journalValue,
-    required int pubmedId,
-  }) =>
-      Reference(
-        description: referenceValue.join(' '),
-        authors: authorValue.join(' '),
-        title: titleValue.join(' '),
-        journal: journalValue.join(' '),
-        pubmed: pubmedId > 0 ? pubmedId : null,
-      );
 
   KtList<Feature> getFeatures(List<String> features) {
     final featuresData = <Feature>[];

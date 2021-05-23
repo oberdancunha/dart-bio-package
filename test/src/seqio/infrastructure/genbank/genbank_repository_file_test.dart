@@ -64,16 +64,6 @@ void main() {
       );
 
       test(
-        'Should get locus details data (LocusDetails entity)',
-        () {
-          final locusDetailsGenbank = getGenbankLocusDetails();
-          final locusDetailsMocked = getLocusDetails();
-          final locusDetails = genbankRepositoryFile!.getLocusDetails(locusDetailsGenbank);
-          expect(locusDetails, equals(locusDetailsMocked));
-        },
-      );
-
-      test(
         'Should get features data (Feature entity)',
         () {
           final locusFeaturesGenbank = getGenbankLocusFeatures();

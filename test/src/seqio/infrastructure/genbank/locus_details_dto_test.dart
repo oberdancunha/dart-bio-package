@@ -1,0 +1,23 @@
+import 'package:bio/src/seqio/infrastructure/genbank/locus_details_dto.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../../../data/genbank_data.dart';
+import '../../../../data/genbank_original_format_data.dart';
+
+void main() {
+  LocusDetailsDto? locusDetailsDto;
+
+  setUpAll(() {
+    locusDetailsDto = LocusDetailsDto();
+  });
+
+  test(
+    'Should get locus details data (LocusDetails entity)',
+    () {
+      final locusDetailsGenbank = getGenbankLocusDetails();
+      final locusDetailsMocked = getLocusDetails();
+      final locusDetails = locusDetailsDto!.fromGenbankFile(locusDetailsGenbank);
+      expect(locusDetails, equals(locusDetailsMocked));
+    },
+  );
+}
