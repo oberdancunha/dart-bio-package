@@ -1,27 +1,15 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:kt_dart/collection.dart';
 
-import '../../core/exceptions.dart';
-import '../genbank/feature.dart';
-import '../genbank/genbank.dart';
-import '../genbank/locus.dart';
-import '../genbank/locus_details.dart';
-import '../genbank/reference.dart';
+import '../../core/i_repository_file.dart';
+import '../../domain/genbank/feature.dart';
+import '../../domain/genbank/genbank.dart';
+import '../../domain/genbank/i_genbank_repository_file.dart';
+import '../../domain/genbank/locus.dart';
+import '../../domain/genbank/locus_details.dart';
+import '../../domain/genbank/reference.dart';
 
-class GenbankRepositoryFile {
-  Stream<String> open(String fileName) {
-    final file = File(fileName);
-    if (file.existsSync()) {
-      final lines = file.openRead().transform(utf8.decoder).transform(const LineSplitter());
-
-      return lines;
-    } else {
-      throw FileNotFoundException();
-    }
-  }
-
+class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositoryFile {
+  @override
   Future<KtList<Genbank>> parser(Stream<String> lines) async {
     try {
       final genbankData = <Genbank>[];
@@ -32,43 +20,37 @@ class GenbankRepositoryFile {
       final locusDetailsData = <String>[];
       final featuresValues = <String>[];
       final locusSequence = <String>[];
-      final regexLabelAndValue = RegExp(r'^\s*([A-Z]+)\s*(.*)$');
+      final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
+      final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
 
       (await lines.toList()).forEach((line) {
         final matchLabelAndValue = regexLabelAndValue.allMatches(line);
         if (matchLabelAndValue.isNotEmpty) {
           currentLabel = matchLabelAndValue.elementAt(0).group(1);
-          lastLabel = currentLabel;
+          if (mainLabels.contains(currentLabel)) {
+            lastLabel = currentLabel;
+          } else {
+            currentLabel = lastLabel;
+          }
           value = matchLabelAndValue.elementAt(0).group(2);
         } else {
           currentLabel = lastLabel;
+          value = line;
         }
         switch (currentLabel) {
           case 'LOCUS':
             {
-              if (locusData!.isNotEmpty) {
-                genbankData.add(
-                  Genbank(
-                    locus: getLocus(
-                      locusData: locusData!,
-                      locusSequence: locusSequence,
-                    ),
-                    locusDetails: getLocusDetails(locusDetailsData),
-                    features: const KtList.empty(),
-                  ),
-                );
-              }
               locusData = line;
             }
             break;
           case 'DEFINITION':
             {
-              locusDetailsData.add(value!);
+              locusDetailsData.add(line);
             }
             break;
           case 'FEATURES':
             {
-              featuresValues.add(value!);
+              featuresValues.add(line);
             }
             break;
           case 'ORIGIN':
@@ -87,7 +69,7 @@ class GenbankRepositoryFile {
             locusSequence: locusSequence,
           ),
           locusDetails: getLocusDetails(locusDetailsData),
-          features: const KtList.empty(),
+          features: getFeatures(featuresValues),
         ),
       );
 
@@ -110,7 +92,7 @@ class GenbankRepositoryFile {
       shape: locusDataSplitted[5],
       taxonomicDivision: locusDataSplitted[6],
       releaseDate: locusDataSplitted[7],
-      sequence: formatLocusSequence(locusSequence.join()),
+      sequence: locusSequence.isNotEmpty ? formatLocusSequence(locusSequence.join()) : null,
     );
   }
 

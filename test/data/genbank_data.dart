@@ -1,8 +1,8 @@
-import 'package:bio/src/seqio/genbank/feature.dart';
-import 'package:bio/src/seqio/genbank/genbank.dart';
-import 'package:bio/src/seqio/genbank/locus.dart';
-import 'package:bio/src/seqio/genbank/locus_details.dart';
-import 'package:bio/src/seqio/genbank/reference.dart';
+import 'package:bio/src/seqio/domain/genbank/feature.dart';
+import 'package:bio/src/seqio/domain/genbank/genbank.dart';
+import 'package:bio/src/seqio/domain/genbank/locus.dart';
+import 'package:bio/src/seqio/domain/genbank/locus_details.dart';
+import 'package:bio/src/seqio/domain/genbank/reference.dart';
 import 'package:kt_dart/collection.dart';
 
 KtList<Genbank> getGenbankDataEntity() => KtList.of(

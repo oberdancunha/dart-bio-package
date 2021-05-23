@@ -1,8 +1,8 @@
 import 'dart:io' show Platform;
 
 import 'package:bio/src/core/exceptions.dart';
-import 'package:bio/src/seqio/genbank/genbank.dart';
-import 'package:bio/src/seqio/genbank/genbank_repository_file.dart';
+import 'package:bio/src/seqio/domain/genbank/genbank.dart';
+import 'package:bio/src/seqio/infrastructure/genbank/genbank_repository_file.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:matcher/matcher.dart';
@@ -59,7 +59,7 @@ void main() {
         () async {
           final lines = genbankRepositoryFile!.open(genbankFile!);
           final genbankData = await genbankRepositoryFile!.parser(lines);
-          expect(genbankData, equals(genbankDataMocked));
+          expect(genbankData.toString(), equals(genbankDataMocked.toString()));
         },
       );
 
