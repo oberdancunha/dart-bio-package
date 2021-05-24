@@ -4,6 +4,7 @@ import '../../domain/genbank/locus_details.dart';
 import '../../domain/genbank/reference.dart';
 
 class LocusDetailsDto {
+  // ignore: long-method
   LocusDetails fromGenbankFile(List<String> locusDetailsGenbank) {
     final referencesData = <Reference>[];
     String? currentLabel;
@@ -129,6 +130,7 @@ class LocusDetailsDto {
     return locusDetails;
   }
 
+  // ignore: long-parameter-list
   Reference _getReferenceData({
     required List<String> referenceValue,
     required List<String> authorValue,
