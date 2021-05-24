@@ -1,11 +1,11 @@
 import 'dart:io' show Platform;
 
-import 'package:bio/src/core/exceptions.dart';
+import 'package:bio/src/core/failures.dart';
 import 'package:bio/src/seqio/domain/genbank/genbank.dart';
 import 'package:bio/src/seqio/infrastructure/genbank/genbank_repository_file.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kt_dart/kt.dart';
-import 'package:matcher/matcher.dart';
 import 'package:path/path.dart' as path;
 import "package:path/path.dart" show dirname;
 
@@ -30,22 +30,22 @@ void main() {
     test(
       'Should open genbank file',
       () async {
-        final lines = genbankRepositoryFile!.open(genbankFile!);
-        final firstLine = (await lines.first).split(RegExp(r'\s+'));
-        expect(firstLine[1], equals('SCU49845'));
+        final fileOpened = genbankRepositoryFile!.open(genbankFile!);
+        final firstLine = await fileOpened.fold(
+          (l) => null,
+          (lines) async => (await lines.first).split(RegExp(r'\s+')),
+        );
+        expect(firstLine![1], equals('SCU49845'));
         expect(firstLine[2], equals('5028'));
         expect(firstLine[4], equals('DNA'));
       },
     );
 
     test(
-      'Should throw a FileNotFoundException when not finding the file',
+      'Should return a Failure.fileNotFound when not finding the file',
       () {
-        final callOpenFile = genbankRepositoryFile!.open;
-        expect(
-          () => callOpenFile(genbankFileNotFound!),
-          throwsA(const TypeMatcher<FileNotFoundException>()),
-        );
+        final fileOpened = genbankRepositoryFile!.open(genbankFileNotFound!);
+        expect(fileOpened, left(Failure.fileNotFound(genbankFileNotFound!)));
       },
     );
   });
@@ -53,14 +53,48 @@ void main() {
   group(
     'Parser file',
     () {
-      test(
-        'Should return a Genbank entity',
-        () async {
-          final lines = genbankRepositoryFile!.open(genbankFile!);
-          final genbankData = await genbankRepositoryFile!.parser(lines);
-          expect(genbankData.toString(), equals(genbankDataMocked.toString()));
-        },
-      );
+      group('Success', () {
+        test(
+          'Should return a Genbank entity',
+          () async {
+            final fileOpened = genbankRepositoryFile!
+                .open(genbankFile!)
+                .fold((l) => null, (fileOpened) => fileOpened);
+            final genbankData = (await genbankRepositoryFile!.parser(fileOpened!)).fold(
+              (l) => null,
+              (genbankData) => genbankData,
+            );
+            expect(genbankData.toString(), equals(genbankDataMocked.toString()));
+          },
+        );
+      });
+
+      group('Failure', () {
+        test(
+          'Should return a Failure.fileIsEmpty when file is empty',
+          () async {
+            final genbankData = await genbankRepositoryFile!.parser(const Stream.empty());
+            expect(genbankData, equals(left(const Failure.fileIsEmpty())));
+          },
+        );
+
+        test(
+          'Should return a Failure.fileFormatIncorrect when file is not a gbk',
+          () async {
+            final genbankData =
+                await genbankRepositoryFile!.parser(Stream.value('Value Not Format'));
+            expect(genbankData, equals(left(const Failure.fileFormatIncorrect())));
+          },
+        );
+
+        test(
+          'Should return a Failure.fileParserError when there is an exception',
+          () async {
+            final genbankData = await genbankRepositoryFile!.parser(Stream.error('Oi'));
+            expect(genbankData, equals(left(const Failure.fileParserError())));
+          },
+        );
+      });
     },
   );
 }

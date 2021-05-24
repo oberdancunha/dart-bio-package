@@ -1,32 +1,38 @@
+import 'package:dartz/dartz.dart';
 import 'package:kt_dart/collection.dart';
 
-import '../../core/i_repository_file.dart';
+import '../../../core/failures.dart';
+import '../../../core/repository_file.dart';
 import '../../domain/genbank/genbank.dart';
 import '../../domain/genbank/i_genbank_repository_file.dart';
 import 'features_dto.dart';
 import 'locus_details_dto.dart';
 import 'locus_dto.dart';
 
-class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositoryFile {
+class GenbankRepositoryFile extends RepositoryFile implements IGenbankRepositoryFile {
   final locusDto = LocusDto();
   final locusDetailsDto = LocusDetailsDto();
   final featuresDto = FeaturesDto();
 
   @override
-  Future<KtList<Genbank>> parser(Stream<String> lines) async {
-    try {
-      final genbankData = <Genbank>[];
-      String? currentLabel;
-      String? lastLabel;
-      String? value;
-      String? locusData;
-      final locusDetailsData = <String>[];
-      final featuresValues = <String>[];
-      final locusSequence = <String>[];
-      final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
-      final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
+  Future<Either<Failure, KtList<Genbank>>> parser(Stream<String> fileOpened) async {
+    final genbankData = <Genbank>[];
+    String? currentLabel;
+    String? lastLabel;
+    String? value;
+    String? locusData;
+    final locusDetailsData = <String>[];
+    final featuresValues = <String>[];
+    final locusSequence = <String>[];
+    final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
+    final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
 
-      (await lines.toList()).forEach((line) {
+    try {
+      final lines = await fileOpened.toList();
+      if (lines.isEmpty) {
+        return left(const Failure.fileIsEmpty());
+      }
+      lines.toList().forEach((line) {
         final matchLabelAndValue = regexLabelAndValue.allMatches(line);
         if (matchLabelAndValue.isNotEmpty) {
           currentLabel = matchLabelAndValue.elementAt(0).group(1);
@@ -65,20 +71,24 @@ class GenbankRepositoryFile extends IRepositoryFile implements IGenbankRepositor
             break;
         }
       });
-      genbankData.add(
-        Genbank(
-          locus: locusDto.fromGenbankFile(
-            locusData: locusData!,
-            locusSequence: locusSequence,
+      if (locusData != null) {
+        genbankData.add(
+          Genbank(
+            locus: locusDto.fromGenbankFile(
+              locusData: locusData!,
+              locusSequence: locusSequence,
+            ),
+            locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
+            features: featuresDto.fromGenbankFile(featuresValues),
           ),
-          locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-          features: featuresDto.fromGenbankFile(featuresValues),
-        ),
-      );
+        );
+      } else {
+        return left(const Failure.fileFormatIncorrect());
+      }
 
-      return genbankData.toImmutableList();
-    } on Exception {
-      throw Error();
+      return right(genbankData.toImmutableList());
+    } catch (_) {
+      return left(const Failure.fileParserError());
     }
   }
 }

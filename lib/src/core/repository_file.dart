@@ -1,17 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../../core/exceptions.dart';
+import 'package:dartz/dartz.dart';
 
-class IRepositoryFile {
-  Stream<String> open(String fileName) {
+import 'failures.dart';
+
+class RepositoryFile {
+  Either<Failure, Stream<String>> open(String fileName) {
     final file = File(fileName);
     if (file.existsSync()) {
       final lines = file.openRead().transform(utf8.decoder).transform(const LineSplitter());
 
-      return lines;
+      return right(lines);
     } else {
-      throw FileNotFoundException();
+      return left(Failure.fileNotFound(fileName));
     }
   }
 }
