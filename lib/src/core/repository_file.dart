@@ -13,7 +13,7 @@ class RepositoryFile {
 
       return right(lines);
     } else {
-      return left(Failure.fileNotFound(fileName));
+      return left(const Failure.fileNotFound());
     }
   }
 }

@@ -4,17 +4,15 @@ import 'package:kt_dart/collection.dart';
 import '../../../core/failures.dart';
 import '../../../core/repository_file.dart';
 import '../../domain/genbank/genbank.dart';
-import '../../domain/genbank/i_genbank_repository_file.dart';
 import 'features_dto.dart';
 import 'locus_details_dto.dart';
 import 'locus_dto.dart';
 
-class GenbankRepositoryFile extends RepositoryFile implements IGenbankRepositoryFile {
+class GenbankRepositoryFile extends RepositoryFile {
   final locusDto = LocusDto();
   final locusDetailsDto = LocusDetailsDto();
   final featuresDto = FeaturesDto();
 
-  @override
   Future<Either<Failure, KtList<Genbank>>> parser(Stream<String> fileOpened) async {
     final genbankData = <Genbank>[];
     final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
@@ -87,8 +85,8 @@ class GenbankRepositoryFile extends RepositoryFile implements IGenbankRepository
       }
 
       return right(genbankData.toImmutableList());
-    } catch (_) {
-      return left(const Failure.fileParserError());
+    } catch (error) {
+      return left(Failure.fileParserError(error: error));
     }
   }
 }

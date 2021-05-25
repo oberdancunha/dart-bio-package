@@ -45,7 +45,7 @@ void main() {
       'Should return a Failure.fileNotFound when not finding the file',
       () {
         final fileOpened = genbankRepositoryFile!.open(genbankFileNotFound!);
-        expect(fileOpened, left(Failure.fileNotFound(genbankFileNotFound!)));
+        expect(fileOpened, left(const Failure.fileNotFound()));
       },
     );
   });
@@ -90,8 +90,8 @@ void main() {
         test(
           'Should return a Failure.fileParserError when there is an exception',
           () async {
-            final genbankData = await genbankRepositoryFile!.parser(Stream.error('Oi'));
-            expect(genbankData, equals(left(const Failure.fileParserError())));
+            final genbankData = await genbankRepositoryFile!.parser(Stream.error('parserError'));
+            expect(genbankData, equals(left(const Failure.fileParserError(error: 'parserError'))));
           },
         );
       });
