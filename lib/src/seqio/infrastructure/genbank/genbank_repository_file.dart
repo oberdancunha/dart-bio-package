@@ -17,6 +17,8 @@ class GenbankRepositoryFile extends RepositoryFile implements IGenbankRepository
   @override
   Future<Either<Failure, KtList<Genbank>>> parser(Stream<String> fileOpened) async {
     final genbankData = <Genbank>[];
+    final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
+    final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
     String? currentLabel;
     String? lastLabel;
     String? value;
@@ -24,8 +26,6 @@ class GenbankRepositoryFile extends RepositoryFile implements IGenbankRepository
     final locusDetailsData = <String>[];
     final featuresValues = <String>[];
     final locusSequence = <String>[];
-    final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
-    final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
 
     try {
       final lines = await fileOpened.toList();

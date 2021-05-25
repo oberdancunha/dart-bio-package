@@ -7,6 +7,7 @@ class LocusDetailsDto {
   // ignore: long-method
   LocusDetails fromGenbankFile(List<String> locusDetailsGenbank) {
     final referencesData = <Reference>[];
+    final regexLabelAndValue = RegExp(r'^\s*([A-Z]+)\s+(.+)$');
     String? currentLabel;
     String? lastLabel;
     String value;
@@ -21,7 +22,6 @@ class LocusDetailsDto {
     final titleValue = <String>[];
     final journalValue = <String>[];
     int pubmedId = 0;
-    final regexLabelAndValue = RegExp(r'^\s*([A-Z]+)\s+(.+)$');
 
     locusDetailsGenbank.forEach((locusDetail) {
       final matchLabelAndValue = regexLabelAndValue.allMatches(locusDetail);
