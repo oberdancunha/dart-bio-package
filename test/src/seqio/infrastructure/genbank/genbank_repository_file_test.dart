@@ -60,7 +60,7 @@ void main() {
             final fileOpened = genbankRepositoryFile!
                 .open(genbankFile!)
                 .fold((l) => null, (fileOpened) => fileOpened);
-            final genbankData = (await genbankRepositoryFile!.parser(fileOpened!)).fold(
+            final genbankData = (await genbankRepositoryFile!.parse(fileOpened!)).fold(
               (l) => null,
               (genbankData) => genbankData,
             );
@@ -73,7 +73,7 @@ void main() {
         test(
           'Should return a Failure.fileIsEmpty when file is empty',
           () async {
-            final genbankData = await genbankRepositoryFile!.parser(const Stream.empty());
+            final genbankData = await genbankRepositoryFile!.parse(const Stream.empty());
             expect(genbankData, equals(left(const Failure.fileIsEmpty())));
           },
         );
@@ -82,7 +82,7 @@ void main() {
           'Should return a Failure.fileFormatIncorrect when file is not a gbk',
           () async {
             final genbankData =
-                await genbankRepositoryFile!.parser(Stream.value('Value Not Format'));
+                await genbankRepositoryFile!.parse(Stream.value('Value Not Format'));
             expect(genbankData, equals(left(const Failure.fileFormatIncorrect())));
           },
         );
@@ -90,7 +90,7 @@ void main() {
         test(
           'Should return a Failure.fileParserError when there is an exception',
           () async {
-            final genbankData = await genbankRepositoryFile!.parser(Stream.error('parserError'));
+            final genbankData = await genbankRepositoryFile!.parse(Stream.error('parserError'));
             expect(genbankData, equals(left(const Failure.fileParserError(error: 'parserError'))));
           },
         );

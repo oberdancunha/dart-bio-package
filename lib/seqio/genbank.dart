@@ -14,7 +14,7 @@ class Genbank {
     final result = await fileOpened.fold(
       (failure) => Future.value(BioResult<Failure, KtList<src.Genbank>>.failure(failure)),
       (fileOpenedData) async {
-        final genbankResult = await genbankRepositoryFile.parser(fileOpenedData);
+        final genbankResult = await genbankRepositoryFile.parse(fileOpenedData);
 
         return genbankResult.fold(
           (failure) => BioResult<Failure, KtList<src.Genbank>>.failure(failure),

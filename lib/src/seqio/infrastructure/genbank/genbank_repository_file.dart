@@ -13,7 +13,7 @@ class GenbankRepositoryFile extends RepositoryFile {
   final locusDetailsDto = LocusDetailsDto();
   final featuresDto = FeaturesDto();
 
-  Future<Either<Failure, KtList<Genbank>>> parser(Stream<String> fileOpened) async {
+  Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {
     final genbankData = <Genbank>[];
     final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
     final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
