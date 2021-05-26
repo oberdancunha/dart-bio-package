@@ -12,13 +12,15 @@ class FeaturesDto {
     String? currentFeatureType;
     String? lastFeatureType;
     String featureValue;
+    String? complementFeatureLabel;
+    dynamic? complementFeatureValue;
     int start = 0;
     int end = 0;
     int? strand;
-    String? complementFeatureLabel;
-    dynamic? complementFeatureValue;
+    String? nameValue;
     final productValue = <String>[];
     final translationValue = <String>[];
+    final noteValue = <String>[];
     final complementFeaturesData = <Map<String, dynamic>>[];
 
     features.forEach((feature) {
@@ -32,14 +34,18 @@ class FeaturesDto {
             type: currentFeatureType!,
             product: productValue.isNotEmpty ? productValue.join(' ') : null,
             aminoacids: translationValue.isNotEmpty ? translationValue.join() : null,
+            name: nameValue,
+            note: noteValue.isNotEmpty ? noteValue.join(' ') : null,
             features:
                 complementFeaturesData.isNotEmpty ? complementFeaturesData.toImmutableList() : null,
           ));
           start = 0;
           end = 0;
           strand = null;
+          nameValue = null;
           productValue.clear();
           translationValue.clear();
+          noteValue.clear();
           complementFeaturesData.clear();
           complementFeatureLabel = null;
         }
@@ -78,6 +84,16 @@ class FeaturesDto {
                 translationValue.add(complementFeatureValue.toString());
               }
               break;
+            case 'gene':
+              {
+                nameValue = complementFeatureValue.toString();
+              }
+              break;
+            case 'note':
+              {
+                noteValue.add(complementFeatureValue.toString());
+              }
+              break;
             default:
               {
                 complementFeatureValue = complementFeatureValue is String
@@ -98,6 +114,8 @@ class FeaturesDto {
         type: currentFeatureType!,
         product: productValue.join(),
         aminoacids: translationValue.join(),
+        name: nameValue,
+        note: noteValue.isNotEmpty ? noteValue.join(' ') : null,
         features: complementFeaturesData.toImmutableList(),
       ));
     }

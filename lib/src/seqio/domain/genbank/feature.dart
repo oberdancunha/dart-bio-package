@@ -12,6 +12,8 @@ class Feature with _$Feature {
     required int end,
     required String type,
     required int strand,
+    String? name,
+    String? note,
     String? aminoacids,
     String? product,
     KtList<Map<String, dynamic>>? features,

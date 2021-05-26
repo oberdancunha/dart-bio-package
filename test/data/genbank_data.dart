@@ -82,20 +82,20 @@ KtList<Feature> getLocusFeatures() => KtList.of(
           {'protein_id': 'AAA98665.1'},
         ),
       ),
-      Feature(
+      const Feature(
         start: 687,
         end: 3158,
         type: 'gene',
         strand: 0,
-        features: KtList.of({'gene': 'AXL2'}),
+        name: 'AXL2',
       ),
-      Feature(
+      const Feature(
         start: 687,
         end: 3158,
         type: 'mRNA',
         strand: 0,
         product: 'Axl2p',
-        features: KtList.of({'gene': 'AXL2'}),
+        name: 'AXL2',
       ),
       Feature(
         start: 687,
@@ -103,29 +103,29 @@ KtList<Feature> getLocusFeatures() => KtList.of(
         type: 'CDS',
         strand: 0,
         product: 'Axl2p',
+        name: 'AXL2',
+        note: 'plasma membrane glycoprotein',
         aminoacids:
             'MTQLQISLLLTATISLLHLVVATPYEAYPIGKQYPPVARVNESFTFQISNDTYKSSVDKTAQITYNCFDLPSWLSFDSSSRTFSGEPSSDLLSDANTTLYFNVILEGTDSADSTSLNNTYQFVVTNRPSISLSSDFNLLALLKNYGYTNGKNALKLDPNEVFNVTFDRSMFTNEESIVSYYGRSQLYNAPLPNWLFFDSGELKFTGTAPVINSAIAPETSYSFVIIATDIEGFSAVEVEFELVIGAHQLTTSIQNSLIINVTDTGNVSYDLPLNYVYLDDDPISSDKLGSINLLDAPDWVALDNATISGSVPDELLGKNSNPANFSVSIYDTYGDVIYFNFEVVSTTDLFAISSLPNINATRGEWFSYYFLPSQFTDYVNTNVSLEFTNSSQDHDWVKFQSSNLTLAGEVPKNFDKLSLGLKANQGSQSQELYFNIIGMDSKITHSNHSANATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPAANKTSSHNKKAVAIACGVAIPLGVILVALICFLIFWRRRRENPDDENLPHAISGPDLNNPANKPNQENATPLNNPFDDDASSYDDTSIARRLAALNTLKLDNHSATESDISSVDEKRDSLSGMNTYNDQFQSQSKEELLAKPPVQPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGNLSPVSDIVRDSYGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTKHRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRLVDFSNKSNVNVGQVKDIHGRIPEML',
         features: KtList.of(
-          {'gene': 'AXL2'},
-          {'note': 'plasma membrane glycoprotein'},
           {'codon_start': 1},
           {'protein_id': 'AAA98666.1'},
         ),
       ),
-      Feature(
+      const Feature(
         start: 3300,
         end: 4037,
         type: 'gene',
         strand: 1,
-        features: KtList.of({'gene': 'REV7'}),
+        name: 'REV7',
       ),
-      Feature(
+      const Feature(
         start: 3300,
         end: 4037,
         type: 'mRNA',
         strand: 1,
         product: 'Rev7p',
-        features: KtList.of({'gene': 'REV7'}),
+        name: 'REV7',
       ),
       Feature(
         start: 3300,
@@ -133,10 +133,10 @@ KtList<Feature> getLocusFeatures() => KtList.of(
         type: 'CDS',
         strand: 1,
         product: 'Rev7p',
+        name: 'REV7',
         aminoacids:
             'MNRWVEKWLRVYLKCYINLILFYRNVYPPQSFDYTTYQSFNLPQFVPINRHPALIDYIEELILDVLSKLTHVYRFSICIINKKNDLCIEKYVLDFSELQHVDKDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNRRVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEKLISGDDKILNGVYSQYEEGESIFGSLF',
         features: KtList.of(
-          {'gene': 'REV7'},
           {'codon_start': 1},
           {'protein_id': 'AAA98667.1'},
         ),
