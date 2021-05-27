@@ -6,9 +6,8 @@ import '../src/seqio/domain/genbank/genbank.dart' as src;
 import '../src/seqio/infrastructure/genbank/genbank_repository_file.dart';
 
 class Genbank {
-  final genbankRepositoryFile = GenbankRepositoryFile();
-
   Future<BioResult<Failure, KtList<src.Genbank>>> open(String fileName) async {
+    final genbankRepositoryFile = GenbankRepositoryFile();
     final fileOpened = genbankRepositoryFile.open(fileName);
 
     final result = await fileOpened.fold(
