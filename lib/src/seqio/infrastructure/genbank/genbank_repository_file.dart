@@ -47,6 +47,21 @@ class GenbankRepositoryFile extends RepositoryFile {
         switch (currentLabel) {
           case 'LOCUS':
             {
+              if (locusData != null) {
+                genbankData.add(
+                  Genbank(
+                    locus: locusDto.fromGenbankFile(
+                      locusData: locusData!,
+                      locusSequence: locusSequence,
+                    ),
+                    locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
+                    features: featuresDto.fromGenbankFile(featuresValues),
+                  ),
+                );
+                locusDetailsData.clear();
+                featuresValues.clear();
+                locusSequence.clear();
+              }
               locusData = line;
             }
             break;
