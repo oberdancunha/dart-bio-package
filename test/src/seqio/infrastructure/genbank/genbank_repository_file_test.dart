@@ -10,6 +10,7 @@ import 'package:path/path.dart' as path;
 import "package:path/path.dart" show dirname;
 
 import '../../../../data/SCU49845/SCU49845_genbank_data.dart';
+import '../../../../data/SCU49845_KX189121_genbank_data.dart';
 
 void main() {
   GenbankRepositoryFile? genbankRepositoryFile;
@@ -17,6 +18,8 @@ void main() {
   String? genbankFile;
   String? genbankFileNotFound;
   KtList<Genbank>? genbankDataMocked;
+  String? multiGenbankFile;
+  KtList<Genbank>? multiGenbankDataMocked;
 
   setUpAll(() {
     genbankRepositoryFile = GenbankRepositoryFile();
@@ -24,6 +27,8 @@ void main() {
     genbankFile = path.join(basePath, 'test/data/SCU49845/SCU49845.gb');
     genbankFileNotFound = path.join(basePath, 'test/data/sequence.gb1');
     genbankDataMocked = getGenbankDataEntity();
+    multiGenbankFile = path.join(basePath, 'test/data/SCU49845_KX189121_sequences.gb');
+    multiGenbankDataMocked = getGenbankMultiDataEntity();
   });
 
   group('Open file | ', () {
@@ -65,6 +70,21 @@ void main() {
               (genbankData) => genbankData,
             );
             expect(genbankData.toString(), equals(genbankDataMocked.toString()));
+          },
+        );
+
+        test(
+          'Should return a Genbank with more than one locuus',
+          () async {
+            final fileOpened = genbankRepositoryFile!
+                .open(multiGenbankFile!)
+                .fold((l) => null, (fileOpened) => fileOpened);
+            final genbankMultiData = (await genbankRepositoryFile!.parse(fileOpened!)).fold(
+              (l) => null,
+              (genbankMultiData) => genbankMultiData,
+            );
+            expect(genbankMultiData!.asList().length, equals(2));
+            expect(genbankMultiData.toString(), equals(multiGenbankDataMocked.toString()));
           },
         );
       });

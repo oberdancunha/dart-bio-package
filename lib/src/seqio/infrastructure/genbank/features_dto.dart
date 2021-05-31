@@ -8,7 +8,7 @@ class FeaturesDto {
     final regexFeatureLocations = RegExp(r'\(?\<?(\d+)\.\.\>?(\d+)\)?$');
     final regexIsComplement = RegExp('complement');
     final regexFeatureDetail = RegExp(r'\/(.+)\=(.+)');
-    final regexFeatureTypeAndValue = RegExp(r'^\s*([\w+]+)\s+(.+)$');
+    final regexFeatureTypeAndValue = RegExp(r'^\s{5}([\w+]+)\s+(.+)$');
     String? currentFeatureType;
     String? lastFeatureType;
     String featureValue;
