@@ -1,8 +1,8 @@
 import 'package:bio/src/seqio/infrastructure/genbank/locus_details_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../data/genbank_data.dart';
-import '../../../../data/genbank_original_format_data.dart';
+import '../../../../data/SCU49845/SCU49845_genbank_data.dart';
+import '../../../../data/SCU49845/SCU49845_genbank_original_format_data.dart';
 
 void main() {
   LocusDetailsDto? locusDetailsDto;

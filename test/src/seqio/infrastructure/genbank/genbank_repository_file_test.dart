@@ -9,7 +9,7 @@ import 'package:kt_dart/kt.dart';
 import 'package:path/path.dart' as path;
 import "package:path/path.dart" show dirname;
 
-import '../../../../data/genbank_data.dart';
+import '../../../../data/SCU49845/SCU49845_genbank_data.dart';
 
 void main() {
   GenbankRepositoryFile? genbankRepositoryFile;
@@ -21,7 +21,7 @@ void main() {
   setUpAll(() {
     genbankRepositoryFile = GenbankRepositoryFile();
     basePath = path.fromUri(dirname(Platform.script.toString()));
-    genbankFile = path.join(basePath, 'test/data/sequence.gb');
+    genbankFile = path.join(basePath, 'test/data/SCU49845/SCU49845.gb');
     genbankFileNotFound = path.join(basePath, 'test/data/sequence.gb1');
     genbankDataMocked = getGenbankDataEntity();
   });
