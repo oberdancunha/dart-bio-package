@@ -111,7 +111,7 @@ void main() {
           'Should return a Failure.fileParserError when there is an exception',
           () async {
             final genbankData = await genbankRepositoryFile!.parse(Stream.error('parserError'));
-            expect(genbankData, equals(left(const Failure.fileParserError(error: 'parserError'))));
+            expect(genbankData, equals(left(const Failure.fileParseError(error: 'parserError'))));
           },
         );
       });

@@ -101,7 +101,7 @@ class GenbankRepositoryFile extends RepositoryFile {
 
       return right(genbankData.toImmutableList());
     } catch (error) {
-      return left(Failure.fileParserError(error: error));
+      return left(Failure.fileParseError(error: error));
     }
   }
 }
