@@ -28,7 +28,7 @@ class GenbankRepositoryFile extends RepositoryFile {
     try {
       final lines = await fileOpened.toList();
       if (lines.isEmpty) {
-        return left(const Failure.fileIsEmpty());
+        return left(const Failure.fileEmpty());
       }
       lines.toList().forEach((line) {
         final matchLabelAndValue = regexLabelAndValue.allMatches(line);

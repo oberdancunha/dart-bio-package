@@ -29,7 +29,7 @@ void main() {
     return result.when(
       failure: (genbankFailure) => genbankFailure.maybeMap(
         fileNotFound: (_) => 'File $fileName not found',
-        fileIsEmpty: (_) => 'File $fileName is empty',
+        fileEmpty: (_) => 'File $fileName is empty',
         fileFormatIncorrect: (_) => 'File $fileName is not a genbank',
         fileParseError: (_) => 'An unexpected error occurred while reading the file',
         orElse: () => null,

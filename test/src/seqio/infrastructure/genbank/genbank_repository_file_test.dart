@@ -94,7 +94,7 @@ void main() {
           'Should return a Failure.fileIsEmpty when file is empty',
           () async {
             final genbankData = await genbankRepositoryFile!.parse(const Stream.empty());
-            expect(genbankData, equals(left(const Failure.fileIsEmpty())));
+            expect(genbankData, equals(left(const Failure.fileEmpty())));
           },
         );
 
