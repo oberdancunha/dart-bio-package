@@ -26,6 +26,7 @@ void main() {
 
   dynamic testResult(String fileName) async {
     final result = await genbank.open(fileName);
+
     return result.when(
       failure: (genbankFailure) => genbankFailure.maybeMap(
         fileNotFound: (_) => 'File $fileName not found',

@@ -16,7 +16,10 @@ void main() {
     () {
       final locusFeaturesGenbank = getGenbankLocusFeatures();
       final locusFeaturesMocked = getLocusFeatures();
-      final locusFeatures = featuresDto!.fromGenbankFile(locusFeaturesGenbank);
+      final locusFeatures = featuresDto!.fromGenbankFile(
+        features: locusFeaturesGenbank,
+        locusSequence: getLocusSequenceFormatted().split(''),
+      );
       expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
     },
   );

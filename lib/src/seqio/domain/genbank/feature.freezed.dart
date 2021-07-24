@@ -23,6 +23,7 @@ class _$FeatureTearOff {
       required int strand,
       String? name,
       String? note,
+      String? nucleotides,
       String? aminoacids,
       String? product,
       KtList<Map<String, dynamic>>? features}) {
@@ -33,6 +34,7 @@ class _$FeatureTearOff {
       strand: strand,
       name: name,
       note: note,
+      nucleotides: nucleotides,
       aminoacids: aminoacids,
       product: product,
       features: features,
@@ -51,6 +53,7 @@ mixin _$Feature {
   int get strand => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
+  String? get nucleotides => throw _privateConstructorUsedError;
   String? get aminoacids => throw _privateConstructorUsedError;
   String? get product => throw _privateConstructorUsedError;
   KtList<Map<String, dynamic>>? get features =>
@@ -71,6 +74,7 @@ abstract class $FeatureCopyWith<$Res> {
       int strand,
       String? name,
       String? note,
+      String? nucleotides,
       String? aminoacids,
       String? product,
       KtList<Map<String, dynamic>>? features});
@@ -92,6 +96,7 @@ class _$FeatureCopyWithImpl<$Res> implements $FeatureCopyWith<$Res> {
     Object? strand = freezed,
     Object? name = freezed,
     Object? note = freezed,
+    Object? nucleotides = freezed,
     Object? aminoacids = freezed,
     Object? product = freezed,
     Object? features = freezed,
@@ -121,6 +126,10 @@ class _$FeatureCopyWithImpl<$Res> implements $FeatureCopyWith<$Res> {
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
+      nucleotides: nucleotides == freezed
+          ? _value.nucleotides
+          : nucleotides // ignore: cast_nullable_to_non_nullable
+              as String?,
       aminoacids: aminoacids == freezed
           ? _value.aminoacids
           : aminoacids // ignore: cast_nullable_to_non_nullable
@@ -149,6 +158,7 @@ abstract class _$FeatureCopyWith<$Res> implements $FeatureCopyWith<$Res> {
       int strand,
       String? name,
       String? note,
+      String? nucleotides,
       String? aminoacids,
       String? product,
       KtList<Map<String, dynamic>>? features});
@@ -171,6 +181,7 @@ class __$FeatureCopyWithImpl<$Res> extends _$FeatureCopyWithImpl<$Res>
     Object? strand = freezed,
     Object? name = freezed,
     Object? note = freezed,
+    Object? nucleotides = freezed,
     Object? aminoacids = freezed,
     Object? product = freezed,
     Object? features = freezed,
@@ -200,6 +211,10 @@ class __$FeatureCopyWithImpl<$Res> extends _$FeatureCopyWithImpl<$Res>
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
+      nucleotides: nucleotides == freezed
+          ? _value.nucleotides
+          : nucleotides // ignore: cast_nullable_to_non_nullable
+              as String?,
       aminoacids: aminoacids == freezed
           ? _value.aminoacids
           : aminoacids // ignore: cast_nullable_to_non_nullable
@@ -226,6 +241,7 @@ class _$_Feature extends _Feature {
       required this.strand,
       this.name,
       this.note,
+      this.nucleotides,
       this.aminoacids,
       this.product,
       this.features})
@@ -244,6 +260,8 @@ class _$_Feature extends _Feature {
   @override
   final String? note;
   @override
+  final String? nucleotides;
+  @override
   final String? aminoacids;
   @override
   final String? product;
@@ -252,7 +270,7 @@ class _$_Feature extends _Feature {
 
   @override
   String toString() {
-    return 'Feature(start: $start, end: $end, type: $type, strand: $strand, name: $name, note: $note, aminoacids: $aminoacids, product: $product, features: $features)';
+    return 'Feature(start: $start, end: $end, type: $type, strand: $strand, name: $name, note: $note, nucleotides: $nucleotides, aminoacids: $aminoacids, product: $product, features: $features)';
   }
 
   @override
@@ -271,6 +289,9 @@ class _$_Feature extends _Feature {
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.note, note) ||
                 const DeepCollectionEquality().equals(other.note, note)) &&
+            (identical(other.nucleotides, nucleotides) ||
+                const DeepCollectionEquality()
+                    .equals(other.nucleotides, nucleotides)) &&
             (identical(other.aminoacids, aminoacids) ||
                 const DeepCollectionEquality()
                     .equals(other.aminoacids, aminoacids)) &&
@@ -291,6 +312,7 @@ class _$_Feature extends _Feature {
       const DeepCollectionEquality().hash(strand) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(note) ^
+      const DeepCollectionEquality().hash(nucleotides) ^
       const DeepCollectionEquality().hash(aminoacids) ^
       const DeepCollectionEquality().hash(product) ^
       const DeepCollectionEquality().hash(features);
@@ -309,6 +331,7 @@ abstract class _Feature extends Feature {
       required int strand,
       String? name,
       String? note,
+      String? nucleotides,
       String? aminoacids,
       String? product,
       KtList<Map<String, dynamic>>? features}) = _$_Feature;
@@ -326,6 +349,8 @@ abstract class _Feature extends Feature {
   String? get name => throw _privateConstructorUsedError;
   @override
   String? get note => throw _privateConstructorUsedError;
+  @override
+  String? get nucleotides => throw _privateConstructorUsedError;
   @override
   String? get aminoacids => throw _privateConstructorUsedError;
   @override

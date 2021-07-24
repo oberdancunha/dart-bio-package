@@ -1,3 +1,4 @@
+import 'package:bio/src/core/value_transformer.dart';
 import 'package:bio/src/seqio/infrastructure/genbank/locus_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,8 +17,7 @@ void main() {
     () {
       final genbankLocusSequenceMocked = getGenbankLocusSequence().join();
       final locusSequenceFormattedMocked = getLocusSequenceFormatted();
-      final locusSequenceFormatted =
-          locusDto!.formatGenbankLocusSequence(genbankLocusSequenceMocked);
+      final locusSequenceFormatted = formatGenbankLocusSequence(genbankLocusSequenceMocked);
       expect(locusSequenceFormatted, equals(locusSequenceFormattedMocked));
     },
   );
@@ -25,9 +25,10 @@ void main() {
   test('Should get locus data (Locus entity)', () {
     final locusGenbank = getGenbankLocus();
     final locusMocked = getLocus();
+    final locusSequence = getGenbankLocusSequence();
     final locus = locusDto!.fromGenbankFile(
       locusData: locusGenbank,
-      locusSequence: getGenbankLocusSequence(),
+      locusSequence: formatGenbankLocusSequence(locusSequence.join()),
     );
     expect(locus, equals(locusMocked));
   });

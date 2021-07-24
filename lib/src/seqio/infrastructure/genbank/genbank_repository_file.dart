@@ -3,6 +3,7 @@ import 'package:kt_dart/collection.dart';
 
 import '../../../core/failures.dart';
 import '../../../core/repository_file.dart';
+import '../../../core/value_transformer.dart';
 import '../../domain/genbank/genbank.dart';
 import 'features_dto.dart';
 import 'locus_details_dto.dart';
@@ -24,13 +25,14 @@ class GenbankRepositoryFile extends RepositoryFile {
     final locusDetailsData = <String>[];
     final featuresValues = <String>[];
     final locusSequence = <String>[];
+    String? locusSequenceFormatted;
 
     try {
       final lines = await fileOpened.toList();
       if (lines.isEmpty) {
         return left(const Failure.fileEmpty());
       }
-      lines.toList().forEach((line) {
+      lines.forEach((line) {
         final matchLabelAndValue = regexLabelAndValue.allMatches(line);
         if (matchLabelAndValue.isNotEmpty) {
           currentLabel = matchLabelAndValue.elementAt(0).group(1);
@@ -48,14 +50,20 @@ class GenbankRepositoryFile extends RepositoryFile {
           case 'LOCUS':
             {
               if (locusData != null) {
+                locusSequenceFormatted = locusSequence.isNotEmpty
+                    ? formatGenbankLocusSequence(locusSequence.join())
+                    : null;
                 genbankData.add(
                   Genbank(
                     locus: locusDto.fromGenbankFile(
                       locusData: locusData!,
-                      locusSequence: locusSequence,
+                      locusSequence: locusSequenceFormatted!,
                     ),
                     locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-                    features: featuresDto.fromGenbankFile(featuresValues),
+                    features: featuresDto.fromGenbankFile(
+                      features: featuresValues,
+                      locusSequence: locusSequenceFormatted!.split(''),
+                    ),
                   ),
                 );
                 locusDetailsData.clear();
@@ -85,14 +93,19 @@ class GenbankRepositoryFile extends RepositoryFile {
         }
       });
       if (locusData != null) {
+        locusSequenceFormatted =
+            locusSequence.isNotEmpty ? formatGenbankLocusSequence(locusSequence.join()) : null;
         genbankData.add(
           Genbank(
             locus: locusDto.fromGenbankFile(
               locusData: locusData!,
-              locusSequence: locusSequence,
+              locusSequence: locusSequenceFormatted!,
             ),
             locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-            features: featuresDto.fromGenbankFile(featuresValues),
+            features: featuresDto.fromGenbankFile(
+              features: featuresValues,
+              locusSequence: locusSequenceFormatted!.split(''),
+            ),
           ),
         );
       } else {

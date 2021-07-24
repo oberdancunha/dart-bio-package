@@ -1,9 +1,13 @@
 import 'package:kt_dart/kt.dart';
 
+import '../../../core/value_transformer.dart';
 import '../../domain/genbank/feature.dart';
 
 class FeaturesDto {
-  KtList<Feature> fromGenbankFile(List<String> features) {
+  KtList<Feature> fromGenbankFile({
+    required List<String> features,
+    required List<String> locusSequence,
+  }) {
     final featuresData = <Feature>[];
     final regexFeatureLocations = RegExp(r'\(?\<?(\d+)\.\.\>?(\d+)\)?$');
     final regexIsComplement = RegExp('complement');
@@ -22,11 +26,39 @@ class FeaturesDto {
     final translationValue = <String>[];
     final noteValue = <String>[];
     final complementFeaturesData = <Map<String, dynamic>>[];
+    int? codonStart;
+    String? nucleotides;
 
     features.forEach((feature) {
       final matchLabelAndValue = regexFeatureTypeAndValue.allMatches(feature);
+
       if (matchLabelAndValue.isNotEmpty) {
         if (start > 0) {
+          codonStart = int.tryParse(complementFeaturesData
+                  .firstWhere(
+                    (feature) => feature['codon_start'] != null,
+                    orElse: () => {},
+                  )['codon_start']
+                  .toString()) ??
+              1;
+          nucleotides = (currentFeatureType != 'source' &&
+                  currentFeatureType != 'gene' &&
+                  currentFeatureType != 'mRNA')
+              ? (strand == 0
+                      ? getSubSequence(
+                          sequence: locusSequence,
+                          start: start - 1,
+                          end: end,
+                          codonStart: codonStart!,
+                        )
+                      : getSubSequence(
+                          sequence: locusSequence,
+                          start: start - 1,
+                          end: end,
+                          codonStart: codonStart!,
+                        ).flatMap(getReverseSequence).flatMap(getComplementSequence))
+                  .foldRight(null, (nucleotides, previous) => nucleotides.join())
+              : null;
           featuresData.add(Feature(
             start: start,
             end: end,
@@ -34,6 +66,7 @@ class FeaturesDto {
             type: currentFeatureType!,
             product: productValue.isNotEmpty ? productValue.join(' ') : null,
             aminoacids: translationValue.isNotEmpty ? translationValue.join() : null,
+            nucleotides: nucleotides,
             name: nameValue,
             note: noteValue.isNotEmpty ? noteValue.join(' ') : null,
             features:
@@ -107,6 +140,31 @@ class FeaturesDto {
       }
     });
     if (start != 0) {
+      codonStart = int.tryParse(complementFeaturesData
+              .firstWhere(
+                (feature) => feature['codon_start'] != null,
+                orElse: () => {},
+              )['codon_start']
+              .toString()) ??
+          1;
+      nucleotides = (currentFeatureType != 'source' &&
+              currentFeatureType != 'gene' &&
+              currentFeatureType != 'mRNA')
+          ? (strand == 0
+                  ? getSubSequence(
+                      sequence: locusSequence,
+                      start: start - 1,
+                      end: end,
+                      codonStart: codonStart!,
+                    )
+                  : getSubSequence(
+                      sequence: locusSequence,
+                      start: start - 1,
+                      end: end,
+                      codonStart: codonStart!,
+                    ).flatMap(getReverseSequence).flatMap(getComplementSequence))
+              .foldRight(null, (nucleotides, previous) => nucleotides.join())
+          : null;
       featuresData.add(Feature(
         start: start,
         end: end,
@@ -114,6 +172,24 @@ class FeaturesDto {
         type: currentFeatureType!,
         product: productValue.join(),
         aminoacids: translationValue.join(),
+        nucleotides: (currentFeatureType != 'source' &&
+                currentFeatureType != 'gene' &&
+                currentFeatureType != 'mRNA')
+            ? (strand == 0
+                    ? getSubSequence(
+                        sequence: locusSequence,
+                        start: start - 1,
+                        end: end,
+                        codonStart: codonStart!,
+                      )
+                    : getSubSequence(
+                        sequence: locusSequence,
+                        start: start - 1,
+                        end: end,
+                        codonStart: codonStart!,
+                      ).flatMap(getReverseSequence).flatMap(getComplementSequence))
+                .foldRight(null, (nucleotides, previous) => nucleotides.join())
+            : null,
         name: nameValue,
         note: noteValue.isNotEmpty ? noteValue.join(' ') : null,
         features: complementFeaturesData.toImmutableList(),
