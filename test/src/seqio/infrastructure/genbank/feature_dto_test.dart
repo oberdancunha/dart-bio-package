@@ -1,14 +1,14 @@
-import 'package:bio/src/seqio/infrastructure/genbank/features_dto.dart';
+import 'package:bio/src/seqio/infrastructure/genbank/feature_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../data/SCU49845/SCU49845_genbank_data.dart';
 import '../../../../data/SCU49845/SCU49845_genbank_original_format_data.dart';
 
 void main() {
-  FeaturesDto? featuresDto;
+  FeatureDto? featuresDto;
 
   setUpAll(() {
-    featuresDto = FeaturesDto();
+    featuresDto = FeatureDto();
   });
 
   test(

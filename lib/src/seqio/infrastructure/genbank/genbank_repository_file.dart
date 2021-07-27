@@ -5,14 +5,14 @@ import '../../../core/failures.dart';
 import '../../../core/repository_file.dart';
 import '../../../core/value_transformer.dart';
 import '../../domain/genbank/genbank.dart';
-import 'features_dto.dart';
+import 'feature_dto.dart';
 import 'locus_details_dto.dart';
 import 'locus_dto.dart';
 
 class GenbankRepositoryFile extends RepositoryFile {
   final locusDto = LocusDto();
   final locusDetailsDto = LocusDetailsDto();
-  final featuresDto = FeaturesDto();
+  final featureDto = FeatureDto();
 
   Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {
     final genbankData = <Genbank>[];
@@ -60,7 +60,7 @@ class GenbankRepositoryFile extends RepositoryFile {
                       locusSequence: locusSequenceFormatted!,
                     ),
                     locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-                    features: featuresDto.fromGenbankFile(
+                    features: featureDto.fromGenbankFile(
                       features: featuresValues,
                       locusSequence: locusSequenceFormatted!.split(''),
                     ),
@@ -102,7 +102,7 @@ class GenbankRepositoryFile extends RepositoryFile {
               locusSequence: locusSequenceFormatted!,
             ),
             locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-            features: featuresDto.fromGenbankFile(
+            features: featureDto.fromGenbankFile(
               features: featuresValues,
               locusSequence: locusSequenceFormatted!.split(''),
             ),
