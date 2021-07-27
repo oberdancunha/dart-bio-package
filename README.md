@@ -49,5 +49,5 @@ Future<void> main() async {
 
 ## Lista de tarefas
 
- - (Genbank): obter as sequências de nucleotideos das features, a partir da subsequência de seu respectivo locus, com base no start, end e strand.
+ - (Genbank): obter as sequências de nucleotideos das features, a partir da subsequência de seu respectivo locus, com base no start, end e strand. :heavy_check_mark:
  - Implementar a leitura de dados de arquivos [GFF 2/GTF](https://www.ensembl.org/info/website/upload/gff.html) e [GFF 3](https://m.ensembl.org/info/website/upload/gff3.html).
