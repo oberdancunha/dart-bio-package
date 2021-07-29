@@ -13,18 +13,21 @@ Either<Unit, List<String>> getSubSequence({
 }) =>
     right(sequence.getRange(start + (codonStart - 1), end).toList());
 
+Either<Unit, List<String>> getSequenceToUpperCase(List<String> sequence) =>
+    right(sequence.join().toUpperCase().split('').toList());
+
 Either<Unit, List<String>> getReverseSequence(List<String> sequence) =>
     right(sequence.reversed.toList());
 
 Either<Unit, List<String>> getComplementSequence(List<String> sequence) {
   const complementMap = {
-    'a': 't',
-    't': 'a',
-    'c': 'g',
-    'g': 'c',
+    'A': 'T',
+    'T': 'A',
+    'C': 'G',
+    'G': 'C',
   };
 
   return right(
-    sequence.map((nucleotide) => complementMap[nucleotide.toLowerCase()].toString()).toList(),
+    sequence.map((nucleotide) => complementMap[nucleotide.toUpperCase()].toString()).toList(),
   );
 }

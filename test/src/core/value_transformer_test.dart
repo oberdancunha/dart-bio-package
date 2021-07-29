@@ -29,6 +29,48 @@ void main() {
   );
 
   group(
+    'getSequenceToUpperCase | ',
+    () {
+      test(
+        'Should transform lowercase sequence to uppercase sequence',
+        () {
+          final mockLowercaseSequence = [
+            'a',
+            't',
+            'g',
+            'a',
+            'c',
+            'a',
+            'c',
+            'a',
+            'g',
+            't',
+            'g',
+            'a',
+          ];
+          final mockUppercaseSequence = [
+            'A',
+            'T',
+            'G',
+            'A',
+            'C',
+            'A',
+            'C',
+            'A',
+            'G',
+            'T',
+            'G',
+            'A',
+          ];
+          final sequenceUppercase = getSequenceToUpperCase(mockLowercaseSequence)
+              .foldRight(null, (sequence, previous) => sequence);
+          expect(sequenceUppercase, equals(mockUppercaseSequence));
+        },
+      );
+    },
+  );
+
+  group(
     'Positive sequence (0 or +) | ',
     () {
       test(
@@ -61,12 +103,14 @@ void main() {
       final mockSubSequence =
           'ttaaaacaaagatccaaaaatgctctcgccctcttcatattgagaatacactccattcaaaattttgtcgtcaccgctgattaatttttcactaaactgatgaataatcaaaggccccacgtcagaaccgactaaagaagtgagttttattttaggaggttgaaaaccattattgtctggtaaattttcatcttcttgacatttaacccagtttgaatccctttcaatttctgctttttcctccaaactatcgaccctcctgtttctgtccaacttatgtcctagttccaattcgatcgcattaataactgcttcaaatgttattgtgtcatcgttgactttaggtaatttctccaaatgcataatcaaactatttaaggaagatcggaattcgtcgaacacttcagtttccgtaatgatctgatcgtctttatccacatgttgtaattcactaaaatctaaaacgtatttttcaatgcataaatcgttctttttattaataatgcagatggaaaatctgtaaacgtgcgttaatttagaaagaacatccagtataagttcttctatatagtcaattaaagcaggatgcctattaatgggaacgaactgcggcaagttgaatgactggtaagtagtgtagtcgaatgactgaggtgggtatacatttctataaaataaaatcaaattaatgtagcattttaagtataccctcagccacttctctacccatctattcat'
               .split('');
+      final mockSubSequenceUppercase =
+          'TTAAAACAAAGATCCAAAAATGCTCTCGCCCTCTTCATATTGAGAATACACTCCATTCAAAATTTTGTCGTCACCGCTGATTAATTTTTCACTAAACTGATGAATAATCAAAGGCCCCACGTCAGAACCGACTAAAGAAGTGAGTTTTATTTTAGGAGGTTGAAAACCATTATTGTCTGGTAAATTTTCATCTTCTTGACATTTAACCCAGTTTGAATCCCTTTCAATTTCTGCTTTTTCCTCCAAACTATCGACCCTCCTGTTTCTGTCCAACTTATGTCCTAGTTCCAATTCGATCGCATTAATAACTGCTTCAAATGTTATTGTGTCATCGTTGACTTTAGGTAATTTCTCCAAATGCATAATCAAACTATTTAAGGAAGATCGGAATTCGTCGAACACTTCAGTTTCCGTAATGATCTGATCGTCTTTATCCACATGTTGTAATTCACTAAAATCTAAAACGTATTTTTCAATGCATAAATCGTTCTTTTTATTAATAATGCAGATGGAAAATCTGTAAACGTGCGTTAATTTAGAAAGAACATCCAGTATAAGTTCTTCTATATAGTCAATTAAAGCAGGATGCCTATTAATGGGAACGAACTGCGGCAAGTTGAATGACTGGTAAGTAGTGTAGTCGAATGACTGAGGTGGGTATACATTTCTATAAAATAAAATCAAATTAATGTAGCATTTTAAGTATACCCTCAGCCACTTCTCTACCCATCTATTCAT'
+              .split('');
       final mockSubSequenceReverse =
-          'tacttatctacccatctcttcaccgactcccatatgaattttacgatgtaattaaactaaaataaaatatctttacatatgggtggagtcagtaagctgatgtgatgaatggtcagtaagttgaacggcgtcaagcaagggtaattatccgtaggacgaaattaactgatatatcttcttgaatatgacctacaagaaagatttaattgcgtgcaaatgtctaaaaggtagacgtaataattatttttcttgctaaatacgtaactttttatgcaaaatctaaaatcacttaatgttgtacacctatttctgctagtctagtaatgcctttgacttcacaagctgcttaaggctagaaggaatttatcaaactaatacgtaaacctctttaatggatttcagttgctactgtgttattgtaaacttcgtcaataattacgctagcttaaccttgatcctgtattcaacctgtctttgtcctcccagctatcaaacctcctttttcgtctttaactttccctaagtttgacccaatttacagttcttctacttttaaatggtctgttattaccaaaagttggaggattttattttgagtgaagaaatcagccaagactgcaccccggaaactaataagtagtcaaatcactttttaattagtcgccactgctgttttaaaacttacctcacataagagttatacttctcccgctctcgtaaaaacctagaaacaaaatt'
+          'TACTTATCTACCCATCTCTTCACCGACTCCCATATGAATTTTACGATGTAATTAAACTAAAATAAAATATCTTTACATATGGGTGGAGTCAGTAAGCTGATGTGATGAATGGTCAGTAAGTTGAACGGCGTCAAGCAAGGGTAATTATCCGTAGGACGAAATTAACTGATATATCTTCTTGAATATGACCTACAAGAAAGATTTAATTGCGTGCAAATGTCTAAAAGGTAGACGTAATAATTATTTTTCTTGCTAAATACGTAACTTTTTATGCAAAATCTAAAATCACTTAATGTTGTACACCTATTTCTGCTAGTCTAGTAATGCCTTTGACTTCACAAGCTGCTTAAGGCTAGAAGGAATTTATCAAACTAATACGTAAACCTCTTTAATGGATTTCAGTTGCTACTGTGTTATTGTAAACTTCGTCAATAATTACGCTAGCTTAACCTTGATCCTGTATTCAACCTGTCTTTGTCCTCCCAGCTATCAAACCTCCTTTTTCGTCTTTAACTTTCCCTAAGTTTGACCCAATTTACAGTTCTTCTACTTTTAAATGGTCTGTTATTACCAAAAGTTGGAGGATTTTATTTTGAGTGAAGAAATCAGCCAAGACTGCACCCCGGAAACTAATAAGTAGTCAAATCACTTTTTAATTAGTCGCCACTGCTGTTTTAAAACTTACCTCACATAAGAGTTATACTTCTCCCGCTCTCGTAAAAACCTAGAAACAAAATT'
               .split('');
       final mockSubSequenceComplement =
           'ATGAATAGATGGGTAGAGAAGTGGCTGAGGGTATACTTAAAATGCTACATTAATTTGATTTTATTTTATAGAAATGTATACCCACCTCAGTCATTCGACTACACTACTTACCAGTCATTCAACTTGCCGCAGTTCGTTCCCATTAATAGGCATCCTGCTTTAATTGACTATATAGAAGAACTTATACTGGATGTTCTTTCTAAATTAACGCACGTTTACAGATTTTCCATCTGCATTATTAATAAAAAGAACGATTTATGCATTGAAAAATACGTTTTAGATTTTAGTGAATTACAACATGTGGATAAAGACGATCAGATCATTACGGAAACTGAAGTGTTCGACGAATTCCGATCTTCCTTAAATAGTTTGATTATGCATTTGGAGAAATTACCTAAAGTCAACGATGACACAATAACATTTGAAGCAGTTATTAATGCGATCGAATTGGAACTAGGACATAAGTTGGACAGAAACAGGAGGGTCGATAGTTTGGAGGAAAAAGCAGAAATTGAAAGGGATTCAAACTGGGTTAAATGTCAAGAAGATGAAAATTTACCAGACAATAATGGTTTTCAACCTCCTAAAATAAAACTCACTTCTTTAGTCGGTTCTGACGTGGGGCCTTTGATTATTCATCAGTTTAGTGAAAAATTAATCAGCGGTGACGACAAAATTTTGAATGGAGTGTATTCTCAATATGAAGAGGGCGAGAGCATTTTTGGATCTTTGTTTTAA'
-              .toLowerCase()
               .split('');
 
       test(
@@ -84,7 +128,7 @@ void main() {
       test(
         'Should get reverse sequence ',
         () {
-          final subSequenceReverse = getReverseSequence(mockSubSequence).foldRight(
+          final subSequenceReverse = getReverseSequence(mockSubSequenceUppercase).foldRight(
             null,
             (subSequenceReverse, previous) => subSequenceReverse,
           );
@@ -104,7 +148,7 @@ void main() {
       );
 
       test(
-        'Should integrate getSubSequence, getReverseSequence and getComplementSequence functions',
+        'Should integrate getSubSequence, getSequenceToUpperCase, getReverseSequence and getComplementSequence functions',
         () {
           final subSequence = getSubSequence(
             sequence: mockSequence,
@@ -112,6 +156,7 @@ void main() {
             end: end,
             codonStart: codonStart,
           )
+              .flatMap(getSequenceToUpperCase)
               .flatMap(getReverseSequence)
               .flatMap(getComplementSequence)
               .foldRight(null, (finalSequence, previous) => finalSequence);

@@ -212,7 +212,7 @@ class FeatureDto {
         start: start - 1,
         end: end,
         codonStart: _getCodonStart(additionalFeaturesData),
-      );
+      ).flatMap(getSequenceToUpperCase);
       if (strand != 0) {
         nucleotides = nucleotides.flatMap(getReverseSequence).flatMap(getComplementSequence);
       }
