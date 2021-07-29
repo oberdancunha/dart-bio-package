@@ -23,7 +23,6 @@ class FeatureDto {
     final translationValue = <String>[];
     final noteValue = <String>[];
     final additionalFeaturesData = <Map<String, dynamic>>[];
-
     features.forEach((feature) {
       final featureNameAndValue = _getFeatureNameAndValue(feature);
       if (featureNameAndValue.currentFeatureName.isNotEmpty) {
@@ -104,9 +103,6 @@ class FeatureDto {
               break;
             default:
               {
-                additionalFeatureValue = additionalFeatureValue is String
-                    ? additionalFeatureValue.toString()
-                    : int.tryParse(additionalFeatureValue.toString());
                 additionalFeaturesData.add({additionalFeatureName: additionalFeatureValue});
               }
               break;
