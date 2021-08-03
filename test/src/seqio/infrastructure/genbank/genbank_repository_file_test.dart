@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:bio/src/core/failures.dart';
-import 'package:bio/src/seqio/domain/genbank/genbank.dart';
+import 'package:bio/src/seqio/domain/genbank/entities/genbank.dart';
 import 'package:bio/src/seqio/infrastructure/genbank/genbank_repository_file.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';

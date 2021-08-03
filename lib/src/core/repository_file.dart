@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:kt_dart/kt.dart';
 
 import 'failures.dart';
 
-class RepositoryFile {
+abstract class RepositoryFile<Type> {
   Either<Failure, Stream<String>> open(String fileName) {
     final file = File(fileName);
     if (file.existsSync()) {
@@ -16,4 +17,6 @@ class RepositoryFile {
       return left(const Failure.fileNotFound());
     }
   }
+
+  Future<Either<Failure, KtList<Type>>> parse(Stream<String> fileOpened);
 }

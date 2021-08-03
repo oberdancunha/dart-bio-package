@@ -1,7 +1,7 @@
 import 'package:kt_dart/kt.dart';
 
 import '../../../core/value_transformer.dart';
-import '../../domain/genbank/feature.dart';
+import '../../domain/genbank/entities/feature.dart';
 import 'feature_dto_typing.dart';
 
 class FeatureDto {

@@ -4,16 +4,17 @@ import 'package:kt_dart/collection.dart';
 import '../../../core/failures.dart';
 import '../../../core/repository_file.dart';
 import '../../../core/value_transformer.dart';
-import '../../domain/genbank/genbank.dart';
+import '../../domain/genbank/entities/genbank.dart';
 import 'feature_dto.dart';
 import 'locus_details_dto.dart';
 import 'locus_dto.dart';
 
-class GenbankRepositoryFile extends RepositoryFile {
+class GenbankRepositoryFile extends RepositoryFile<Genbank> {
   final locusDto = LocusDto();
   final locusDetailsDto = LocusDetailsDto();
   final featureDto = FeatureDto();
 
+  @override
   Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {
     final genbankData = <Genbank>[];
     final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');

@@ -1,4 +1,4 @@
-import 'package:bio/src/seqio/domain/genbank/genbank.dart';
+import 'package:bio/src/seqio/domain/genbank/entities/genbank.dart';
 import 'package:kt_dart/kt.dart';
 
 import 'KX189121/KX189121_genbank_data.dart' as KX189121;
