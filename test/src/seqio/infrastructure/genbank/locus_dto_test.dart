@@ -2,8 +2,8 @@ import 'package:bio/src/core/value_transformer.dart';
 import 'package:bio/src/seqio/infrastructure/genbank/locus_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../data/SCU49845/SCU49845_genbank_data.dart';
-import '../../../../data/SCU49845/SCU49845_genbank_original_format_data.dart';
+import '../../../../data/genbank/SCU49845/SCU49845_genbank_data.dart';
+import '../../../../data/genbank/SCU49845/SCU49845_genbank_original_format_data.dart';
 
 void main() {
   LocusDto? locusDto;

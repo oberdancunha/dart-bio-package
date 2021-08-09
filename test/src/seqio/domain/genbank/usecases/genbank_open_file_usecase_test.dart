@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../../data/SCU49845/SCU49845_genbank_data.dart';
+import '../../../../../data/genbank/SCU49845/SCU49845_genbank_data.dart';
 
 class MockRepositoryFile extends Mock implements RepositoryFile<Genbank> {}
 

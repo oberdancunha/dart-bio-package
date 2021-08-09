@@ -9,8 +9,8 @@ import 'package:kt_dart/kt.dart';
 import 'package:path/path.dart' as path;
 import "package:path/path.dart" show dirname;
 
-import '../../../../data/SCU49845/SCU49845_genbank_data.dart';
-import '../../../../data/SCU49845_KX189121_genbank_data.dart';
+import '../../../../data/genbank/SCU49845/SCU49845_genbank_data.dart';
+import '../../../../data/genbank/SCU49845_KX189121_genbank_data.dart';
 
 void main() {
   GenbankRepositoryFile? genbankRepositoryFile;
@@ -24,10 +24,10 @@ void main() {
   setUpAll(() {
     genbankRepositoryFile = GenbankRepositoryFile();
     basePath = path.fromUri(dirname(Platform.script.toString()));
-    genbankFile = path.join(basePath, 'test/data/SCU49845/SCU49845.gb');
-    genbankFileNotFound = path.join(basePath, 'test/data/sequence.gb1');
+    genbankFile = path.join(basePath, 'test/data/genbank/SCU49845/SCU49845.gb');
+    genbankFileNotFound = path.join(basePath, 'test/data/genbank/sequence.gb1');
     genbankDataMocked = getGenbankDataEntity();
-    multiGenbankFile = path.join(basePath, 'test/data/SCU49845_KX189121_sequences.gb');
+    multiGenbankFile = path.join(basePath, 'test/data/genbank/SCU49845_KX189121_sequences.gb');
     multiGenbankDataMocked = getGenbankMultiDataEntity();
   });
 

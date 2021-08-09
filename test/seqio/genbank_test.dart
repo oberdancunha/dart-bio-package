@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as path;
 import "package:path/path.dart" show dirname;
 
-import '../data/SCU49845/SCU49845_genbank_data.dart';
+import '../data/genbank/SCU49845/SCU49845_genbank_data.dart';
 
 void main() {
   late Genbank genbank;
@@ -18,8 +18,8 @@ void main() {
   setUpAll(() {
     genbank = Genbank();
     basePath = path.fromUri(dirname(Platform.script.toString()));
-    genbankFile = path.join(basePath, 'test/data/SCU49845/SCU49845.gb');
-    genbankFileNotFound = path.join(basePath, 'test/data/sequence1.gb');
+    genbankFile = path.join(basePath, 'test/data/genbank/SCU49845/SCU49845.gb');
+    genbankFileNotFound = path.join(basePath, 'test/data/genbank/sequence1.gb');
     genbankFileEmpty = path.join(basePath, 'test/data/sequence_empty.gb');
     genbankFileInvalidFormat = path.join(basePath, 'test/data/sequence_invalid_format.gb');
   });
