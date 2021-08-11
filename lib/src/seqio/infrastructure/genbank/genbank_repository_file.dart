@@ -4,7 +4,7 @@ import 'package:kt_dart/collection.dart';
 import '../../../core/failures.dart';
 import '../../../core/repository_file.dart';
 import '../../../core/value_transformer.dart';
-import '../../domain/genbank/entities/genbank.dart';
+import '../../domain/entities/genbank/genbank.dart';
 import 'feature_dto.dart';
 import 'locus_details_dto.dart';
 import 'locus_dto.dart';

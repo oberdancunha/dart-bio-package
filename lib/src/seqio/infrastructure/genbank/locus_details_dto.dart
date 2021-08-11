@@ -1,7 +1,7 @@
 import 'package:kt_dart/kt.dart';
 
-import '../../domain/genbank/entities/locus_details.dart';
-import '../../domain/genbank/entities/reference.dart';
+import '../../domain/entities/genbank/locus_details.dart';
+import '../../domain/entities/genbank/reference.dart';
 
 class LocusDetailsDto {
   // ignore: long-method

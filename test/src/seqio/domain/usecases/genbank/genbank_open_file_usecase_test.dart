@@ -1,8 +1,8 @@
 import 'package:bio/src/core/bio_result.dart';
 import 'package:bio/src/core/failures.dart';
 import 'package:bio/src/core/repository_file.dart';
-import 'package:bio/src/seqio/domain/genbank/entities/genbank.dart';
-import 'package:bio/src/seqio/domain/genbank/usecases/genbank_open_file_usecase.dart';
+import 'package:bio/src/seqio/domain/entities/genbank/genbank.dart';
+import 'package:bio/src/seqio/domain/usecases/genbank/genbank_open_file_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

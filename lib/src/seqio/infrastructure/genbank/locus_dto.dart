@@ -1,4 +1,4 @@
-import '../../domain/genbank/entities/locus.dart';
+import '../../domain/entities/genbank/locus.dart';
 
 class LocusDto {
   Locus fromGenbankFile({

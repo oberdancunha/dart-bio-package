@@ -4,7 +4,7 @@ import '../../../../core/bio_result.dart';
 import '../../../../core/failures.dart';
 import '../../../../core/repository_file.dart';
 import '../../../../core/usecase.dart';
-import '../entities/genbank.dart' as src;
+import '../../entities/genbank/genbank.dart' as src;
 
 class GenbankOpenFileUseCase implements UseCase<KtList<src.Genbank>, String> {
   final RepositoryFile<src.Genbank> repositoryFile;
