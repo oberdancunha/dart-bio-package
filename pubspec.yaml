@@ -1,7 +1,7 @@
 name: bio
 description: A dart package to aid in the development of solutions to problems related to biology.
 version: 1.0.0
-homepage: https://github.com/oberdancunha/dart-bio-package/tree/version-1.0.0
+homepage: https://github.com/oberdancunha/dart-bio-package/tree/1.0.0
 
 environment:
   sdk: ">=2.12.3 <3.0.0"
