@@ -92,24 +92,10 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.2"
-  dart_bio_core:
-    dependency: transitive
-    description:
-      path: dart_bio_core
-      relative: true
-    source: path
-    version: "2.0.0"
   dart_bio_dependency_module:
-    dependency: transitive
-    description:
-      path: dart_bio_dependency_module
-      relative: true
-    source: path
-    version: "2.0.0"
-  dart_bio_seqio:
     dependency: "direct main"
     description:
-      path: dart_bio_seqio
+      path: "../dart_bio_dependency_module"
       relative: true
     source: path
     version: "2.0.0"

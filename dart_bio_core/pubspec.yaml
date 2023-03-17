@@ -1,5 +1,5 @@
-name: dart_bio_package
-description: A dart package to aid in the development of solutions to problems related to biology.
+name: dart_bio_core
+description: A dart project to implement core project.
 version: 2.0.0
 homepage: https://github.com/oberdancunha/dart-bio-package/tree/2.0.0
 publish_to: none
@@ -11,8 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dart_bio_seqio:
-    path: ./dart_bio_seqio
+  dart_bio_dependency_module:
+    path: ../dart_bio_dependency_module
 
 dev_dependencies:
   dart_code_metrics: ^5.6.0

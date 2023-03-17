@@ -22,9 +22,6 @@ analyzer:
     always_use_package_imports: ignore
 
 dart_code_metrics:
-  anti-patterns:
-    - long-method
-    - long-parameter-list
   metrics:
     cyclomatic-complexity: 20
     lines-of-executable-code: 100
