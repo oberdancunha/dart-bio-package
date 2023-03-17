@@ -211,7 +211,7 @@ class FeatureDto {
         sequence: locusSequence,
         start: start - 1,
         end: end,
-        codonStart: _getCodonStart(additionalFeaturesData),
+        codonStart: getCodonStart(additionalFeaturesData),
       ).flatMap(getSequenceToUpperCase);
       if (strand != 0) {
         nucleotides = nucleotides.flatMap(getReverseSequence).flatMap(getComplementSequence);
@@ -223,11 +223,12 @@ class FeatureDto {
     return null;
   }
 
-  int _getCodonStart(List<Map<String, dynamic>> additionalFeaturesData) =>
+  int getCodonStart(List<Map<String, dynamic>> additionalFeaturesData) =>
       int.tryParse(
         additionalFeaturesData
             .firstWhere(
               (feature) => feature['codon_start'] != null,
+              orElse: () => {},
             )['codon_start']
             .toString(),
       ) ??

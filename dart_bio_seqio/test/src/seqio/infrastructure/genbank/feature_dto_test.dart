@@ -5,7 +5,7 @@ import '../../../../data/genbank/SCU49845/SCU49845_genbank_original_format_data.
 import '../../../../data/genbank/SCU49845/scu49845_genbank_data.dart';
 
 void main() {
-  FeatureDto? featuresDto;
+  late FeatureDto featuresDto;
 
   setUpAll(() {
     featuresDto = FeatureDto();
@@ -16,11 +16,25 @@ void main() {
     () {
       final locusFeaturesGenbank = getGenbankLocusFeatures();
       final locusFeaturesMocked = getLocusFeatures();
-      final locusFeatures = featuresDto!.fromGenbankFile(
+      final locusFeatures = featuresDto.fromGenbankFile(
         features: locusFeaturesGenbank,
         locusSequence: getLocusSequenceFormatted().split(''),
       );
       expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
+    },
+  );
+
+  test(
+    'Should there is not start codon',
+    () {
+      final List<Map<String, dynamic>> featuresList = [
+        {'organism': 'Saccharomyces cerevisiae'},
+        {'mol_type': 'genomic DNA'},
+        {'db_xref': 'taxon:4932'},
+        {'chromosome': 'IX'},
+      ];
+      final codonStart = featuresDto.getCodonStart(featuresList);
+      expect(codonStart, equals(1));
     },
   );
 }
