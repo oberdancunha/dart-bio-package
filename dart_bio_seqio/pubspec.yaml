@@ -12,9 +12,15 @@ dependencies:
   flutter:
     sdk: flutter
   dart_bio_dependency_module:
-    path: ../dart_bio_dependency_module
+    git: 
+      url: https://github.com/oberdancunha/dart-bio-package.git
+      ref: 2.0.0
+      path: dart_bio_dependency_module
   dart_bio_core:
-    path: ../dart_bio_core
+    git: 
+      url: https://github.com/oberdancunha/dart-bio-package.git
+      ref: 2.0.0
+      path: dart_bio_core
 
 dev_dependencies:
   flutter_test:

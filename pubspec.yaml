@@ -14,7 +14,7 @@ dependencies:
   dart_bio_seqio:
     git: 
       url: https://github.com/oberdancunha/dart-bio-package.git
-      version: 2.0.0
+      ref: 2.0.0
       path: dart_bio_seqio
 
 dev_dependencies:
