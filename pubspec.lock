@@ -96,22 +96,28 @@ packages:
     dependency: transitive
     description:
       path: dart_bio_core
-      relative: true
-    source: path
+      ref: "2.0.0"
+      resolved-ref: e7f022c9c60e2348364b1fe7bb91007caacf7389
+      url: "https://github.com/oberdancunha/dart-bio-package.git"
+    source: git
     version: "2.0.0"
   dart_bio_dependency_module:
     dependency: transitive
     description:
       path: dart_bio_dependency_module
-      relative: true
-    source: path
+      ref: "2.0.0"
+      resolved-ref: e7f022c9c60e2348364b1fe7bb91007caacf7389
+      url: "https://github.com/oberdancunha/dart-bio-package.git"
+    source: git
     version: "2.0.0"
   dart_bio_seqio:
     dependency: "direct main"
     description:
       path: dart_bio_seqio
-      relative: true
-    source: path
+      ref: "2.0.0"
+      resolved-ref: e7f022c9c60e2348364b1fe7bb91007caacf7389
+      url: "https://github.com/oberdancunha/dart-bio-package.git"
+    source: git
     version: "2.0.0"
   dart_code_metrics:
     dependency: "direct dev"
