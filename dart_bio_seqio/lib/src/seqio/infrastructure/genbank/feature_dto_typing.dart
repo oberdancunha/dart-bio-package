@@ -1,3 +1,5 @@
+import '../../domain/entities/genbank/location_position.dart';
+
 class FeatureNameAndValueType {
   late String currentFeatureName;
   late String currentFeatureValue;
@@ -14,19 +16,16 @@ class FeatureNameAndValueType {
 }
 
 class LocationsType {
-  late int start;
-  late int end;
+  late List<LocationPosition> positions;
   late int strand;
 
   LocationsType({
-    required this.start,
-    required this.end,
+    required this.positions,
     required this.strand,
   });
 
   LocationsType.empty() {
-    start = 0;
-    end = 0;
+    positions = [];
     strand = 0;
   }
 }

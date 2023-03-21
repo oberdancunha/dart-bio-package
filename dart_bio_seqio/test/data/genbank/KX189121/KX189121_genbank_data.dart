@@ -1,6 +1,7 @@
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/feature.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/genbank.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/location_position.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus_details.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/reference.dart';
@@ -51,8 +52,12 @@ LocusDetails getLocusDetails() => LocusDetails(
 
 KtList<Feature> getLocusFeatures() => KtList.of(
       Feature(
-        start: 1,
-        end: 684,
+        positions: const [
+          LocationPosition(
+            start: 1,
+            end: 684,
+          ),
+        ],
         type: 'source',
         strand: 0,
         features: KtList.of(
@@ -63,23 +68,35 @@ KtList<Feature> getLocusFeatures() => KtList.of(
         ),
       ),
       const Feature(
-        start: 1,
-        end: 684,
+        positions: [
+          LocationPosition(
+            start: 1,
+            end: 684,
+          ),
+        ],
         type: 'gene',
         strand: 0,
         name: 'FLO11',
       ),
       const Feature(
-        start: 1,
-        end: 684,
+        positions: [
+          LocationPosition(
+            start: 1,
+            end: 684,
+          ),
+        ],
         type: 'mRNA',
         strand: 0,
         name: 'FLO11',
         product: 'Flo11p',
       ),
       Feature(
-        start: 1,
-        end: 684,
+        positions: const [
+          LocationPosition(
+            start: 1,
+            end: 684,
+          ),
+        ],
         type: 'CDS',
         strand: 0,
         name: 'FLO11',

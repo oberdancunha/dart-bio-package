@@ -1,8 +1,9 @@
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
+import 'location_position.dart';
+
 class Feature extends Equatable {
-  final int start;
-  final int end;
+  final List<LocationPosition> positions;
   final String type;
   final int strand;
   final String? name;
@@ -13,8 +14,7 @@ class Feature extends Equatable {
   final KtList<Map<String, dynamic>>? features;
 
   const Feature({
-    required this.start,
-    required this.end,
+    required this.positions,
     required this.type,
     required this.strand,
     this.name,
@@ -27,8 +27,7 @@ class Feature extends Equatable {
 
   @override
   List<Object?> get props => [
-        start,
-        end,
+        positions,
         type,
         strand,
         name,

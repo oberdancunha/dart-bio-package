@@ -1,6 +1,7 @@
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/feature.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/genbank.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/location_position.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus_details.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/reference.dart';
@@ -52,8 +53,12 @@ LocusDetails getLocusDetails() => LocusDetails(
 
 KtList<Feature> getLocusFeatures() => KtList.of(
       Feature(
-        start: 1,
-        end: 5028,
+        positions: const [
+          LocationPosition(
+            start: 1,
+            end: 5028,
+          ),
+        ],
         type: 'source',
         strand: 0,
         features: KtList.of(
@@ -64,15 +69,23 @@ KtList<Feature> getLocusFeatures() => KtList.of(
         ),
       ),
       const Feature(
-        start: 1,
-        end: 206,
+        positions: [
+          LocationPosition(
+            start: 1,
+            end: 206,
+          ),
+        ],
         type: 'mRNA',
         strand: 0,
         product: 'TCP1-beta',
       ),
       Feature(
-        start: 1,
-        end: 206,
+        positions: const [
+          LocationPosition(
+            start: 1,
+            end: 206,
+          ),
+        ],
         type: 'CDS',
         strand: 0,
         product: 'TCP1-beta',
@@ -85,23 +98,35 @@ KtList<Feature> getLocusFeatures() => KtList.of(
         ),
       ),
       const Feature(
-        start: 687,
-        end: 3158,
+        positions: [
+          LocationPosition(
+            start: 687,
+            end: 3158,
+          ),
+        ],
         type: 'gene',
         strand: 0,
         name: 'AXL2',
       ),
       const Feature(
-        start: 687,
-        end: 3158,
+        positions: [
+          LocationPosition(
+            start: 687,
+            end: 3158,
+          ),
+        ],
         type: 'mRNA',
         strand: 0,
         product: 'Axl2p',
         name: 'AXL2',
       ),
       Feature(
-        start: 687,
-        end: 3158,
+        positions: const [
+          LocationPosition(
+            start: 687,
+            end: 3158,
+          ),
+        ],
         type: 'CDS',
         strand: 0,
         product: 'Axl2p',
@@ -117,23 +142,35 @@ KtList<Feature> getLocusFeatures() => KtList.of(
         ),
       ),
       const Feature(
-        start: 3300,
-        end: 4037,
+        positions: [
+          LocationPosition(
+            start: 3300,
+            end: 4037,
+          ),
+        ],
         type: 'gene',
         strand: 1,
         name: 'REV7',
       ),
       const Feature(
-        start: 3300,
-        end: 4037,
+        positions: [
+          LocationPosition(
+            start: 3300,
+            end: 4037,
+          ),
+        ],
         type: 'mRNA',
         strand: 1,
         product: 'Rev7p',
         name: 'REV7',
       ),
       Feature(
-        start: 3300,
-        end: 4037,
+        positions: const [
+          LocationPosition(
+            start: 3300,
+            end: 4037,
+          ),
+        ],
         type: 'CDS',
         strand: 1,
         product: 'Rev7p',

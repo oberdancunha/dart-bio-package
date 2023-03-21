@@ -2,6 +2,7 @@ import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/feature.dart';
+import '../../domain/entities/genbank/location_position.dart';
 import 'feature_dto_typing.dart';
 
 class FeatureDto {
@@ -15,8 +16,7 @@ class FeatureDto {
     String currentFeatureValue;
     String additionalFeatureName = '';
     dynamic additionalFeatureValue;
-    int start = 0;
-    int end = 0;
+    final positions = <LocationPosition>[];
     int strand = 0;
     String? nameValue;
     final productValue = <String>[];
@@ -26,11 +26,10 @@ class FeatureDto {
     features.forEach((feature) {
       final featureNameAndValue = _getFeatureNameAndValue(feature);
       if (featureNameAndValue.currentFeatureName.isNotEmpty) {
-        if (start > 0) {
+        if (positions.isNotEmpty) {
           featuresData.add(
             Feature(
-              start: start,
-              end: end,
+              positions: positions,
               strand: strand,
               type: currentFeatureName!,
               product: _getProduct(productValue),
@@ -39,8 +38,7 @@ class FeatureDto {
                 currentFeatureName: currentFeatureName!,
                 strand: strand,
                 locusSequence: locusSequence,
-                start: start,
-                end: end,
+                positions: positions,
                 additionalFeaturesData: additionalFeaturesData,
               ),
               name: nameValue,
@@ -48,8 +46,7 @@ class FeatureDto {
               features: _getAdditionalFeatures(additionalFeaturesData),
             ),
           );
-          start = 0;
-          end = 0;
+          positions.clear();
           strand = 0;
           nameValue = null;
           productValue.clear();
@@ -66,10 +63,9 @@ class FeatureDto {
         currentFeatureValue = _removeBeginningWhitespaces(feature);
       }
       if (currentFeatureName != 'FEATURES') {
-        final locations = _getLocations(currentFeatureValue);
-        if (locations.start != 0) {
-          start = locations.start;
-          end = locations.end;
+        final locations = getLocations(currentFeatureValue);
+        if (locations.positions.isNotEmpty) {
+          positions.addAll(locations.positions.map((position) => position));
           strand = locations.strand;
         }
         final additionalFeature = _getAdditionalFeature(
@@ -110,11 +106,10 @@ class FeatureDto {
         }
       }
     });
-    if (start != 0) {
+    if (positions.isNotEmpty) {
       featuresData.add(
         Feature(
-          start: start,
-          end: end,
+          positions: positions,
           strand: strand,
           type: currentFeatureName!,
           product: _getProduct(productValue),
@@ -123,8 +118,7 @@ class FeatureDto {
             currentFeatureName: currentFeatureName!,
             strand: strand,
             locusSequence: locusSequence,
-            start: start,
-            end: end,
+            positions: positions,
             additionalFeaturesData: additionalFeaturesData,
           ),
           name: nameValue,
@@ -150,18 +144,77 @@ class FeatureDto {
     return FeatureNameAndValueType.empty();
   }
 
-  LocationsType _getLocations(String featureValue) {
-    final regexLocations = RegExp(r'\(?\<?(\d+)\.\.\>?(\d+)\)?$');
-    final matchLocations = regexLocations.allMatches(featureValue);
-    if (matchLocations.isNotEmpty) {
+  LocationsType getLocations(String featureValue) {
+    final positions = _isMultipleLocations(featureValue)
+        ? getMultiplePositions(featureValue)
+        : getSinglePosition(featureValue);
+
+    if (positions.isNotEmpty) {
       return LocationsType(
-        start: int.tryParse(matchLocations.elementAt(0).group(1).toString())!,
-        end: int.tryParse(matchLocations.elementAt(0).group(2).toString())!,
+        positions: positions,
         strand: _getStrand(featureValue),
       );
     }
 
     return LocationsType.empty();
+  }
+
+  // Values:
+  // join(<147594..151006,151097..>151166)
+  // join(147594..151006,151097..151166)
+  bool _isMultipleLocations(String featureValue) => featureValue.contains('join(');
+
+  Iterable<RegExpMatch> _matchLocations(String featureValue, String locationPattern) {
+    final regexLocations = RegExp(locationPattern);
+    final matchLocations = regexLocations.allMatches(featureValue);
+
+    return matchLocations;
+  }
+
+  // Values:
+  // <143707..>147531
+  // 143707..147531
+  // complement(<139503..>141431)
+  // complement(139503..141431)
+  String get _singleLocationPattern => r'\(?\<?(\d+)\.\.\>?(\d+)\)?$';
+
+  List<LocationPosition> getSinglePosition(String featureValue) {
+    final matchLocations = _matchLocations(featureValue, _singleLocationPattern);
+    if (matchLocations.isNotEmpty) {
+      return [
+        LocationPosition(
+          start: int.tryParse(matchLocations.elementAt(0).group(1).toString())!,
+          end: int.tryParse(matchLocations.elementAt(0).group(2).toString())!,
+        ),
+      ];
+    }
+
+    return List<LocationPosition>.empty();
+  }
+
+  // Values:
+  // join(<147594..151006,151097..>151166)
+  // join(147594..151006,151097..151166)
+  // complement(join(<147594..151006,151097..>151166))
+  // complement(join(147594..151006,151097..151166))
+  String get _multipleLocationsPattern => r'\(?join\(?([\d\.\,]+)\)?\)?$';
+
+  List<LocationPosition> getMultiplePositions(String featureValue) {
+    final matchLocations = _matchLocations(featureValue, _multipleLocationsPattern);
+    if (matchLocations.isNotEmpty) {
+      final positions = matchLocations.elementAt(0).group(1)!.split(',');
+
+      return positions.map((position) {
+        final startAndEnd = position.split('..');
+
+        return LocationPosition(
+          start: int.tryParse(startAndEnd.elementAt(0))!,
+          end: int.tryParse(startAndEnd.elementAt(1))!,
+        );
+      }).toList();
+    }
+
+    return List<LocationPosition>.empty();
   }
 
   int _getStrand(String featureValue) {
@@ -200,24 +253,31 @@ class FeatureDto {
     required String currentFeatureName,
     required int strand,
     required List<String> locusSequence,
-    required int start,
-    required int end,
+    required List<LocationPosition> positions,
     required List<Map<String, dynamic>> additionalFeaturesData,
   }) {
     if (currentFeatureName != 'source' &&
         currentFeatureName != 'gene' &&
         currentFeatureName != 'mRNA') {
-      var nucleotides = getSubSequence(
-        sequence: locusSequence,
-        start: start - 1,
-        end: end,
-        codonStart: getCodonStart(additionalFeaturesData),
-      ).flatMap(getSequenceToUpperCase);
+      final nucleotidesList = positions
+          .map(
+            (position) => getSubSequence(
+              sequence: locusSequence,
+              start: position.start - 1,
+              end: position.end,
+              codonStart: getCodonStart(additionalFeaturesData),
+            ).flatMap(getSequenceToUpperCase).foldRight(
+                  "",
+                  (_, nucleotides) => nucleotides.join(),
+                ),
+          )
+          .toList();
+      Either<Unit, List<String>> nucleotides = right(nucleotidesList.join().split(''));
       if (strand != 0) {
         nucleotides = nucleotides.flatMap(getReverseSequence).flatMap(getComplementSequence);
       }
 
-      return nucleotides.foldRight(null, (_, nucleotides) => nucleotides.join());
+      return nucleotides.foldRight("", (_, nucleotides) => nucleotides.join());
     }
 
     return null;
