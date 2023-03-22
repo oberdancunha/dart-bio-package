@@ -14,7 +14,7 @@ void main() {
   );
 
   group(
-    'formatGenbankLocusSequence | ',
+    'formatGenbankLocusSequence |',
     () {
       test(
         'Should transform the genbank locus sequence format (sequences that contain nucleotides, blanks and base position in each line) to nucleotide format only',
@@ -29,7 +29,7 @@ void main() {
   );
 
   group(
-    'getSequenceToUpperCase | ',
+    'getSequenceToUpperCase |',
     () {
       test(
         'Should transform lowercase sequence to uppercase sequence',
@@ -71,7 +71,7 @@ void main() {
   );
 
   group(
-    'Positive sequence (0 or +) | ',
+    'Positive sequence (0 or +) |',
     () {
       test(
         'Should get sub sequence from whole sequence based on start, end positions, codon_start is 3',
@@ -95,7 +95,7 @@ void main() {
   );
 
   group(
-    'Reverse sequence (strand is -1 or -) | ',
+    'Reverse sequence (strand is -1 or -) |',
     () {
       const start = 3300;
       const end = 4037;

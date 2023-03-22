@@ -28,7 +28,7 @@ void main() {
   }
 
   group(
-    'Repository success | ',
+    'Repository success |',
     () {
       test(
         'Should return a genbank data (SCU49845)',
@@ -44,7 +44,7 @@ void main() {
   );
 
   group(
-    'Repository failure | ',
+    'Repository failure |',
     () {
       void setUpMockRepositoryParseFailure(Failure failure) {
         when(() => mockRepositoryFile.parse(any())).thenAnswer((_) async => left(failure));

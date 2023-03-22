@@ -30,7 +30,7 @@ void main() {
     multiGenbankDataMocked = getGenbankMultiDataEntity();
   });
 
-  group('Open file | ', () {
+  group('Open file |', () {
     test(
       'Should open genbank file',
       () async {
@@ -55,9 +55,9 @@ void main() {
   });
 
   group(
-    'Parser file',
+    'Parser file |',
     () {
-      group('Success', () {
+      group('Success |', () {
         test(
           'Should return a Genbank entity',
           () async {
@@ -88,7 +88,7 @@ void main() {
         );
       });
 
-      group('Failure', () {
+      group('Failure |', () {
         test(
           'Should return a Failure.fileEmpty when file is empty',
           () async {
