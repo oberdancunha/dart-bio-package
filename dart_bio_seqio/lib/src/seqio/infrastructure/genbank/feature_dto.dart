@@ -29,7 +29,11 @@ class FeatureDto {
         if (positions.isNotEmpty) {
           featuresData.add(
             Feature(
-              positions: positions,
+              positions: positions
+                  .map(
+                    (position) => position.copyWith(),
+                  )
+                  .toList(),
               strand: strand,
               type: currentFeatureName!,
               product: _getProduct(productValue),
