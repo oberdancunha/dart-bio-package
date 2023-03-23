@@ -1,4 +1,4 @@
-import '../../domain/entities/genbank/location_position.dart';
+import '../../../domain/entities/genbank/location_position.dart';
 
 class FeatureNameAndValueType {
   late String currentFeatureName;

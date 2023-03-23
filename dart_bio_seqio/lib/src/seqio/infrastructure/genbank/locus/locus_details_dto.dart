@@ -1,7 +1,7 @@
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-import '../../domain/entities/genbank/locus_details.dart';
-import '../../domain/entities/genbank/reference.dart';
+import '../../../domain/entities/genbank/locus_details.dart';
+import '../../../domain/entities/genbank/reference.dart';
 
 class LocusDetailsDto {
   // ignore: long-method

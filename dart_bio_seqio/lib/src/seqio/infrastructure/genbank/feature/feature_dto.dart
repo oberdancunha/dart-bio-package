@@ -1,8 +1,8 @@
 import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-import '../../domain/entities/genbank/feature.dart';
-import '../../domain/entities/genbank/location_position.dart';
+import '../../../domain/entities/genbank/feature.dart';
+import '../../../domain/entities/genbank/location_position.dart';
 import 'feature_dto_typing.dart';
 
 class FeatureDto {

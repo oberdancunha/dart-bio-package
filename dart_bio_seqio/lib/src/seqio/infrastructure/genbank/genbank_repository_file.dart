@@ -4,9 +4,9 @@ import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/genbank.dart';
-import 'feature_dto.dart';
-import 'locus_details_dto.dart';
-import 'locus_dto.dart';
+import 'feature/feature_dto.dart';
+import 'locus/locus_details_dto.dart';
+import 'locus/locus_dto.dart';
 
 class GenbankRepositoryFile extends RepositoryFile<Genbank> {
   final locusDto = LocusDto();
