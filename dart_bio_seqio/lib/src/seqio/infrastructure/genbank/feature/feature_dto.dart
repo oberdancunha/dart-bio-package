@@ -3,7 +3,11 @@ import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../../domain/entities/genbank/feature.dart';
 import '../../../domain/entities/genbank/location_position.dart';
-import 'feature_dto_typing.dart';
+import 'feature_additional.dart';
+import 'feature_identifier.dart';
+import 'feature_location.dart';
+import 'feature_sequence.dart';
+import 'feature_typing.dart';
 
 class FeatureDto {
   KtList<Feature> fromGenbankFile({
@@ -15,17 +19,19 @@ class FeatureDto {
     String? lastFeatureName;
     String currentFeatureValue;
     String additionalFeatureName = '';
-    dynamic additionalFeatureValue;
+    String additionalFeatureValue;
     final positions = <LocationPosition>[];
     int strand = 0;
-    String? nameValue;
-    final productValue = <String>[];
-    final translationValue = <String>[];
-    final noteValue = <String>[];
-    final additionalFeaturesData = <Map<String, dynamic>>[];
+
+    final featureIdentifier = FeatureIdentifier();
+    final featureLocation = FeatureLocation();
+    final featureSequence = FeatureSequence();
+    final featureAdditional = FeatureAdditional();
+    var additionalFeatureValueType = AdditionalFeatureValueType.init();
+
     features.forEach((feature) {
-      final featureNameAndValue = _getFeatureNameAndValue(feature);
-      if (featureNameAndValue.currentFeatureName.isNotEmpty) {
+      final featureNameAndValue = featureIdentifier.getFeatureNameAndValue(feature);
+      if (featureNameAndValue.name.isNotEmpty) {
         if (positions.isNotEmpty) {
           featuresData.add(
             Feature(
@@ -36,78 +42,49 @@ class FeatureDto {
                   .toList(),
               strand: strand,
               type: currentFeatureName!,
-              product: _getProduct(productValue),
-              aminoacids: _getTranslation(translationValue),
-              nucleotides: _getNucleotides(
+              product: _getProduct(additionalFeatureValueType.product),
+              aminoacids: featureSequence.getTranslation(additionalFeatureValueType.translation),
+              nucleotides: featureSequence.getNucleotides(
                 currentFeatureName: currentFeatureName!,
                 strand: strand,
                 locusSequence: locusSequence,
                 positions: positions,
-                additionalFeaturesData: additionalFeaturesData,
+                additionalFeaturesData: additionalFeatureValueType.anotherFeatures,
               ),
-              name: nameValue,
-              note: _getNote(noteValue),
-              features: _getAdditionalFeatures(additionalFeaturesData),
+              name: additionalFeatureValueType.name,
+              note: _getNote(additionalFeatureValueType.note),
+              features: _getAdditionalFeatures(additionalFeatureValueType.anotherFeatures),
             ),
           );
           positions.clear();
           strand = 0;
-          nameValue = null;
-          productValue.clear();
-          translationValue.clear();
-          noteValue.clear();
-          additionalFeaturesData.clear();
+          additionalFeatureValueType = AdditionalFeatureValueType.init();
           additionalFeatureName = '';
         }
-        currentFeatureName = featureNameAndValue.currentFeatureName;
+        currentFeatureName = featureNameAndValue.name;
         lastFeatureName = currentFeatureName;
-        currentFeatureValue = featureNameAndValue.currentFeatureValue;
+        currentFeatureValue = featureNameAndValue.value;
       } else {
         currentFeatureName = lastFeatureName;
-        currentFeatureValue = _removeBeginningWhitespaces(feature);
+        currentFeatureValue = feature.removeBeginningWhitespaces;
       }
       if (currentFeatureName != 'FEATURES') {
-        final locations = getLocations(currentFeatureValue);
+        final locations = featureLocation.getLocations(currentFeatureValue);
         if (locations.positions.isNotEmpty) {
           positions.addAll(locations.positions.map((position) => position));
           strand = locations.strand;
         }
-        final additionalFeature = _getAdditionalFeature(
-          currentFeatureValue: currentFeatureValue,
-          currentAdditionalFeatureName: additionalFeatureName,
+        final additionalFeatureData = featureAdditional.getAdditionalFeatureData(
+          featureName: additionalFeatureName,
+          featureValue: currentFeatureValue,
         );
-        additionalFeatureName = additionalFeature.additionalFeatureName;
-        additionalFeatureValue = additionalFeature.additionalFeatureValue;
-        if (additionalFeatureName != '') {
-          additionalFeatureValue = _removeDoubleQuotes(additionalFeatureValue);
-          switch (additionalFeatureName) {
-            case 'product':
-              {
-                productValue.add(additionalFeatureValue.toString());
-              }
-              break;
-            case 'translation':
-              {
-                translationValue.add(additionalFeatureValue.toString());
-              }
-              break;
-            case 'gene':
-              {
-                nameValue = additionalFeatureValue.toString();
-              }
-              break;
-            case 'note':
-              {
-                noteValue.add(additionalFeatureValue.toString());
-              }
-              break;
-            default:
-              {
-                additionalFeaturesData.add({additionalFeatureName: additionalFeatureValue});
-              }
-              break;
-          }
-        }
+        additionalFeatureName = additionalFeatureData.name;
+        additionalFeatureValue = additionalFeatureData.value.removeDoubleQuotes;
+        additionalFeatureValueType = featureAdditional.getAdditionalFeaturesValues(
+          additionalFeatureName: additionalFeatureName,
+          additionalFeatureValue: additionalFeatureValue,
+          additionalFeature: additionalFeatureValueType,
+        );
       }
     });
     if (positions.isNotEmpty) {
@@ -116,18 +93,18 @@ class FeatureDto {
           positions: positions,
           strand: strand,
           type: currentFeatureName!,
-          product: _getProduct(productValue),
-          aminoacids: _getTranslation(translationValue),
-          nucleotides: _getNucleotides(
+          product: _getProduct(additionalFeatureValueType.product),
+          aminoacids: featureSequence.getTranslation(additionalFeatureValueType.translation),
+          nucleotides: featureSequence.getNucleotides(
             currentFeatureName: currentFeatureName!,
             strand: strand,
             locusSequence: locusSequence,
             positions: positions,
-            additionalFeaturesData: additionalFeaturesData,
+            additionalFeaturesData: additionalFeatureValueType.anotherFeatures,
           ),
-          name: nameValue,
-          note: _getNote(noteValue),
-          features: _getAdditionalFeatures(additionalFeaturesData),
+          name: additionalFeatureValueType.name,
+          note: _getNote(additionalFeatureValueType.note),
+          features: _getAdditionalFeatures(additionalFeatureValueType.anotherFeatures),
         ),
       );
     }
@@ -135,174 +112,8 @@ class FeatureDto {
     return featuresData.toImmutableList();
   }
 
-  FeatureNameAndValueType _getFeatureNameAndValue(String feature) {
-    final regexFeatureNameAndValue = RegExp(r'^\s{5}([\w+]+)\s+(.+)$');
-    final matchNameAndValue = regexFeatureNameAndValue.allMatches(feature);
-    if (matchNameAndValue.isNotEmpty) {
-      return FeatureNameAndValueType(
-        currentFeatureName: matchNameAndValue.elementAt(0).group(1)!,
-        currentFeatureValue: matchNameAndValue.elementAt(0).group(2)!,
-      );
-    }
-
-    return FeatureNameAndValueType.empty();
-  }
-
-  LocationsType getLocations(String featureValue) {
-    final positions = _isMultipleLocations(featureValue)
-        ? getMultiplePositions(featureValue)
-        : getSinglePosition(featureValue);
-
-    if (positions.isNotEmpty) {
-      return LocationsType(
-        positions: positions,
-        strand: _getStrand(featureValue),
-      );
-    }
-
-    return LocationsType.empty();
-  }
-
-  // Values:
-  // join(<147594..151006,151097..>151166)
-  // join(147594..151006,151097..151166)
-  bool _isMultipleLocations(String featureValue) => featureValue.contains('join(');
-
-  Iterable<RegExpMatch> _matchLocations(String featureValue, String locationPattern) {
-    final regexLocations = RegExp(locationPattern);
-    final matchLocations = regexLocations.allMatches(featureValue);
-
-    return matchLocations;
-  }
-
-  // Values:
-  // <143707..>147531
-  // 143707..147531
-  // complement(<139503..>141431)
-  // complement(139503..141431)
-  String get _singleLocationPattern => r'\(?\<?(\d+)\.\.\>?(\d+)\)?$';
-
-  List<LocationPosition> getSinglePosition(String featureValue) {
-    final matchLocations = _matchLocations(featureValue, _singleLocationPattern);
-    if (matchLocations.isNotEmpty) {
-      return [
-        LocationPosition(
-          start: int.tryParse(matchLocations.elementAt(0).group(1).toString())!,
-          end: int.tryParse(matchLocations.elementAt(0).group(2).toString())!,
-        ),
-      ];
-    }
-
-    return List<LocationPosition>.empty();
-  }
-
-  // Values:
-  // join(<147594..151006,151097..>151166)
-  // join(147594..151006,151097..151166)
-  // complement(join(<147594..151006,151097..>151166))
-  // complement(join(147594..151006,151097..151166))
-  String get _multipleLocationsPattern => r'\(?join\(?([\d\.\,]+)\)?\)?$';
-
-  List<LocationPosition> getMultiplePositions(String featureValue) {
-    final matchLocations = _matchLocations(featureValue, _multipleLocationsPattern);
-    if (matchLocations.isNotEmpty) {
-      final positions = matchLocations.elementAt(0).group(1)!.split(',');
-
-      return positions.map((position) {
-        final startAndEnd = position.split('..');
-
-        return LocationPosition(
-          start: int.tryParse(startAndEnd.elementAt(0))!,
-          end: int.tryParse(startAndEnd.elementAt(1))!,
-        );
-      }).toList();
-    }
-
-    return List<LocationPosition>.empty();
-  }
-
-  int _getStrand(String featureValue) {
-    final regexIsComplement = RegExp('complement');
-    final matchIsComplement = regexIsComplement.allMatches(featureValue);
-
-    return matchIsComplement.isEmpty ? 0 : 1;
-  }
-
-  String _removeBeginningWhitespaces(String line) => line.replaceAll(RegExp(r'^\s+'), "");
-
-  String _removeDoubleQuotes(value) => value.toString().replaceAll(RegExp(r'\"'), '');
-
-  AdditionalFeatureType _getAdditionalFeature({
-    required String currentFeatureValue,
-    required String currentAdditionalFeatureName,
-  }) {
-    final regexAdditionalFeatures = RegExp(r'\/(.+)\=(.+)');
-    final matchFeatureDetail = regexAdditionalFeatures.allMatches(currentFeatureValue);
-    String? additionalFeatureName = currentAdditionalFeatureName;
-    String? additionalFeatureValue;
-    if (matchFeatureDetail.isNotEmpty) {
-      additionalFeatureName = matchFeatureDetail.elementAt(0).group(1);
-      additionalFeatureValue = matchFeatureDetail.elementAt(0).group(2);
-    } else {
-      additionalFeatureValue = currentFeatureValue;
-    }
-
-    return AdditionalFeatureType(
-      additionalFeatureName: additionalFeatureName!,
-      additionalFeatureValue: additionalFeatureValue,
-    );
-  }
-
-  String? _getNucleotides({
-    required String currentFeatureName,
-    required int strand,
-    required List<String> locusSequence,
-    required List<LocationPosition> positions,
-    required List<Map<String, dynamic>> additionalFeaturesData,
-  }) {
-    if (currentFeatureName != 'source' &&
-        currentFeatureName != 'gene' &&
-        currentFeatureName != 'mRNA') {
-      final nucleotidesList = positions
-          .map(
-            (position) => getSubSequence(
-              sequence: locusSequence,
-              start: position.start - 1,
-              end: position.end,
-              codonStart: getCodonStart(additionalFeaturesData),
-            ).flatMap(getSequenceToUpperCase).foldRight(
-                  "",
-                  (_, nucleotides) => nucleotides.join(),
-                ),
-          )
-          .toList();
-      Either<Unit, List<String>> nucleotides = right(nucleotidesList.join().split(''));
-      if (strand != 0) {
-        nucleotides = nucleotides.flatMap(getReverseSequence).flatMap(getComplementSequence);
-      }
-
-      return nucleotides.foldRight("", (_, nucleotides) => nucleotides.join());
-    }
-
-    return null;
-  }
-
-  int getCodonStart(List<Map<String, dynamic>> additionalFeaturesData) =>
-      int.tryParse(
-        additionalFeaturesData
-            .firstWhere(
-              (feature) => feature['codon_start'] != null,
-              orElse: () => {},
-            )['codon_start']
-            .toString(),
-      ) ??
-      1;
-
   String? _getProduct(List<String> productValue) =>
       productValue.isNotEmpty ? productValue.join(' ') : null;
-
-  String? _getTranslation(List<String> translationValue) =>
-      translationValue.isNotEmpty ? translationValue.join() : null;
 
   String? _getNote(List<String> noteValue) => noteValue.isNotEmpty ? noteValue.join(' ') : null;
 

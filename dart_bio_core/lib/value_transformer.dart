@@ -31,3 +31,9 @@ Either<Unit, List<String>> getComplementSequence(List<String> sequence) {
     sequence.map((nucleotide) => complementMap[nucleotide.toUpperCase()].toString()).toList(),
   );
 }
+
+extension StringX on String {
+  String get removeDoubleQuotes => replaceAll(RegExp(r'\"'), '');
+
+  String get removeBeginningWhitespaces => replaceAll(RegExp(r'^\s+'), "");
+}
