@@ -4,10 +4,10 @@ import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import '../../../domain/entities/genbank/feature.dart';
 import '../../../domain/entities/genbank/location_position.dart';
 import 'feature_additional.dart';
+import 'feature_additional_value.dart';
 import 'feature_identifier.dart';
 import 'feature_location.dart';
 import 'feature_sequence.dart';
-import 'feature_typing.dart';
 
 class FeatureDto {
   KtList<Feature> fromGenbankFile({
@@ -27,7 +27,7 @@ class FeatureDto {
     final featureLocation = FeatureLocation();
     final featureSequence = FeatureSequence();
     final featureAdditional = FeatureAdditional();
-    var additionalFeatureValueType = AdditionalFeatureValueType.init();
+    var featureAdditionalValue = FeatureAdditionalValue.init();
 
     features.forEach((feature) {
       final featureNameAndValue = featureIdentifier.getFeatureNameAndValue(feature);
@@ -42,23 +42,23 @@ class FeatureDto {
                   .toList(),
               strand: strand,
               type: currentFeatureName!,
-              product: _getProduct(additionalFeatureValueType.product),
-              aminoacids: featureSequence.getTranslation(additionalFeatureValueType.translation),
+              product: featureAdditionalValue.product,
+              aminoacids: featureAdditionalValue.translation,
               nucleotides: featureSequence.getNucleotides(
                 currentFeatureName: currentFeatureName!,
                 strand: strand,
                 locusSequence: locusSequence,
                 positions: positions,
-                additionalFeaturesData: additionalFeatureValueType.anotherFeatures,
+                additionalFeaturesData: featureAdditionalValue.anotherFeatures,
               ),
-              name: additionalFeatureValueType.name,
-              note: _getNote(additionalFeatureValueType.note),
-              features: _getAdditionalFeatures(additionalFeatureValueType.anotherFeatures),
+              name: featureAdditionalValue.name,
+              note: featureAdditionalValue.note,
+              features: featureAdditionalValue.anotherFeatures?.toImmutableList(),
             ),
           );
           positions.clear();
           strand = 0;
-          additionalFeatureValueType = AdditionalFeatureValueType.init();
+          featureAdditionalValue = FeatureAdditionalValue.init();
           additionalFeatureName = '';
         }
         currentFeatureName = featureNameAndValue.name;
@@ -80,10 +80,10 @@ class FeatureDto {
         );
         additionalFeatureName = additionalFeatureData.name;
         additionalFeatureValue = additionalFeatureData.value.removeDoubleQuotes;
-        additionalFeatureValueType = featureAdditional.getAdditionalFeaturesValues(
+        featureAdditionalValue = featureAdditional.getAdditionalFeaturesValues(
           additionalFeatureName: additionalFeatureName,
           additionalFeatureValue: additionalFeatureValue,
-          additionalFeature: additionalFeatureValueType,
+          additionalFeature: featureAdditionalValue,
         );
       }
     });
@@ -93,32 +93,22 @@ class FeatureDto {
           positions: positions,
           strand: strand,
           type: currentFeatureName!,
-          product: _getProduct(additionalFeatureValueType.product),
-          aminoacids: featureSequence.getTranslation(additionalFeatureValueType.translation),
+          product: featureAdditionalValue.product,
+          aminoacids: featureAdditionalValue.translation,
           nucleotides: featureSequence.getNucleotides(
             currentFeatureName: currentFeatureName!,
             strand: strand,
             locusSequence: locusSequence,
             positions: positions,
-            additionalFeaturesData: additionalFeatureValueType.anotherFeatures,
+            additionalFeaturesData: featureAdditionalValue.anotherFeatures,
           ),
-          name: additionalFeatureValueType.name,
-          note: _getNote(additionalFeatureValueType.note),
-          features: _getAdditionalFeatures(additionalFeatureValueType.anotherFeatures),
+          name: featureAdditionalValue.name,
+          note: featureAdditionalValue.note,
+          features: featureAdditionalValue.anotherFeatures?.toImmutableList(),
         ),
       );
     }
 
     return featuresData.toImmutableList();
   }
-
-  String? _getProduct(List<String> productValue) =>
-      productValue.isNotEmpty ? productValue.join(' ') : null;
-
-  String? _getNote(List<String> noteValue) => noteValue.isNotEmpty ? noteValue.join(' ') : null;
-
-  KtList<Map<String, dynamic>>? _getAdditionalFeatures(
-    List<Map<String, dynamic>> additionalFeaturesData,
-  ) =>
-      additionalFeaturesData.isNotEmpty ? additionalFeaturesData.toImmutableList() : null;
 }

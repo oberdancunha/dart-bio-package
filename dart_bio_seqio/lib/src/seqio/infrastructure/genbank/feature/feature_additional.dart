@@ -1,3 +1,4 @@
+import 'feature_additional_value.dart';
 import 'feature_typing.dart';
 
 class FeatureAdditional {
@@ -24,21 +25,21 @@ class FeatureAdditional {
     );
   }
 
-  AdditionalFeatureValueType getAdditionalFeaturesValues({
+  FeatureAdditionalValue getAdditionalFeaturesValues({
     required String additionalFeatureName,
     required String additionalFeatureValue,
-    required AdditionalFeatureValueType additionalFeature,
+    required FeatureAdditionalValue additionalFeature,
   }) {
     if (additionalFeatureName != '') {
       switch (additionalFeatureName) {
         case 'product':
           {
-            additionalFeature.product.add(additionalFeatureValue);
+            additionalFeature.product = additionalFeatureValue;
           }
           break;
         case 'translation':
           {
-            additionalFeature.translation.add(additionalFeatureValue);
+            additionalFeature.translation = additionalFeatureValue;
           }
           break;
         case 'gene':
@@ -48,12 +49,12 @@ class FeatureAdditional {
           break;
         case 'note':
           {
-            additionalFeature.note.add(additionalFeatureValue);
+            additionalFeature.note = additionalFeatureValue;
           }
           break;
         default:
           {
-            additionalFeature.anotherFeatures.add({additionalFeatureName: additionalFeatureValue});
+            additionalFeature.addAnotherFeatures({additionalFeatureName: additionalFeatureValue});
           }
           break;
       }

@@ -9,7 +9,7 @@ class FeatureSequence {
     required int strand,
     required List<String> locusSequence,
     required List<LocationPosition> positions,
-    required List<Map<String, dynamic>> additionalFeaturesData,
+    required List<Map<String, dynamic>>? additionalFeaturesData,
   }) {
     if (currentFeatureName != 'source' &&
         currentFeatureName != 'gene' &&
@@ -38,9 +38,9 @@ class FeatureSequence {
     return null;
   }
 
-  int getCodonStart(List<Map<String, dynamic>> additionalFeaturesData) =>
+  int getCodonStart(List<Map<String, dynamic>>? additionalFeaturesData) =>
       int.tryParse(
-        additionalFeaturesData
+        additionalFeaturesData!
             .firstWhere(
               (feature) => feature['codon_start'] != null,
               orElse: () => {},
@@ -48,7 +48,4 @@ class FeatureSequence {
             .toString(),
       ) ??
       1;
-
-  String? getTranslation(List<String> translationValue) =>
-      translationValue.isNotEmpty ? translationValue.join() : null;
 }
