@@ -39,6 +39,7 @@ class FeatureSequence {
   }
 
   int getCodonStart(List<Map<String, dynamic>>? additionalFeaturesData) =>
+      // /codon_start=1
       int.tryParse(
         additionalFeaturesData!
             .firstWhere(
