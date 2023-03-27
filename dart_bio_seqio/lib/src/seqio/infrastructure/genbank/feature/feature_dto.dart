@@ -15,100 +15,97 @@ class FeatureDto {
     required List<String> locusSequence,
   }) {
     final featuresData = <Feature>[];
-    String? currentFeatureName;
-    String? lastFeatureName;
-    String currentFeatureValue;
-    String additionalFeatureName = '';
-    String additionalFeatureValue;
-    final positions = <LocationPosition>[];
-    int strand = 0;
-
     final featureIdentifier = FeatureIdentifier();
     final featureLocation = FeatureLocation();
     final featureSequence = FeatureSequence();
     final featureAdditional = FeatureAdditional();
-    var featureAdditionalValue = FeatureAdditionalValue.init();
+    String? currentFeatureName;
+    String? currentFeatureValue;
+    var strand = 0;
+    var featureAdditionalName = '';
+    var positions = <LocationPosition>[];
+    var featureAdditionalValuesType = FeatureAdditionalValue.init();
 
     features.forEach((feature) {
       final featureNameAndValue = featureIdentifier.getFeatureNameAndValue(feature);
       if (featureNameAndValue.name.isNotEmpty) {
         if (positions.isNotEmpty) {
           featuresData.add(
-            Feature(
-              positions: positions
-                  .map(
-                    (position) => position.copyWith(),
-                  )
-                  .toList(),
+            _setFeature(
+              positions: positions,
               strand: strand,
-              type: currentFeatureName!,
-              product: featureAdditionalValue.product,
-              aminoacids: featureAdditionalValue.translation,
-              nucleotides: featureSequence.getNucleotides(
-                currentFeatureName: currentFeatureName!,
-                strand: strand,
-                locusSequence: locusSequence,
-                positions: positions,
-                additionalFeaturesData: featureAdditionalValue.anotherFeatures,
-              ),
-              name: featureAdditionalValue.name,
-              note: featureAdditionalValue.note,
-              features: featureAdditionalValue.anotherFeatures?.toImmutableList(),
+              currentFeatureName: currentFeatureName!,
+              featureAdditionalValuesType: featureAdditionalValuesType,
+              locusSequence: locusSequence,
+              featureSequence: featureSequence,
             ),
           );
           positions.clear();
           strand = 0;
-          featureAdditionalValue = FeatureAdditionalValue.init();
-          additionalFeatureName = '';
+          featureAdditionalValuesType = FeatureAdditionalValue.init();
+          featureAdditionalName = '';
         }
         currentFeatureName = featureNameAndValue.name;
-        lastFeatureName = currentFeatureName;
-        currentFeatureValue = featureNameAndValue.value;
-      } else {
-        currentFeatureName = lastFeatureName;
-        currentFeatureValue = feature.removeBeginningWhitespaces;
       }
+      currentFeatureValue = feature.removeBeginningWhitespaces;
+      // FEATURES             Location/Qualifiers
       if (currentFeatureName != 'FEATURES') {
-        final locations = featureLocation.getLocations(currentFeatureValue);
+        final locations = featureLocation.getLocations(currentFeatureValue!);
         if (locations.positions.isNotEmpty) {
-          positions.addAll(locations.positions.map((position) => position));
+          positions = List.from(locations.positions);
           strand = locations.strand;
         }
-        final additionalFeatureData = featureAdditional.getAdditionalFeatureData(
-          featureName: additionalFeatureName,
-          featureValue: currentFeatureValue,
+        final featureAdditionalData = featureAdditional.getAdditionalFeatureData(
+          featureName: featureAdditionalName,
+          featureValue: currentFeatureValue!,
         );
-        additionalFeatureName = additionalFeatureData.name;
-        additionalFeatureValue = additionalFeatureData.value.removeDoubleQuotes;
-        featureAdditionalValue = featureAdditional.getAdditionalFeaturesValues(
-          additionalFeatureName: additionalFeatureName,
-          additionalFeatureValue: additionalFeatureValue,
-          additionalFeature: featureAdditionalValue,
+        featureAdditionalName = featureAdditionalData.name;
+        featureAdditionalValuesType = featureAdditional.getFeatureAdditionalValuesType(
+          featureAdditionalName: featureAdditionalName,
+          featureAdditionalValue: featureAdditionalData.value.removeDoubleQuotes,
+          featureAdditionalValuesType: featureAdditionalValuesType,
         );
       }
     });
     if (positions.isNotEmpty) {
       featuresData.add(
-        Feature(
+        _setFeature(
           positions: positions,
           strand: strand,
-          type: currentFeatureName!,
-          product: featureAdditionalValue.product,
-          aminoacids: featureAdditionalValue.translation,
-          nucleotides: featureSequence.getNucleotides(
-            currentFeatureName: currentFeatureName!,
-            strand: strand,
-            locusSequence: locusSequence,
-            positions: positions,
-            additionalFeaturesData: featureAdditionalValue.anotherFeatures,
-          ),
-          name: featureAdditionalValue.name,
-          note: featureAdditionalValue.note,
-          features: featureAdditionalValue.anotherFeatures?.toImmutableList(),
+          currentFeatureName: currentFeatureName!,
+          featureAdditionalValuesType: featureAdditionalValuesType,
+          locusSequence: locusSequence,
+          featureSequence: featureSequence,
         ),
       );
     }
 
     return featuresData.toImmutableList();
   }
+
+  Feature _setFeature({
+    required List<LocationPosition> positions,
+    required int strand,
+    required String currentFeatureName,
+    required FeatureAdditionalValue featureAdditionalValuesType,
+    required List<String> locusSequence,
+    required FeatureSequence featureSequence,
+  }) =>
+      Feature(
+        positions: List.from(positions),
+        strand: strand,
+        type: currentFeatureName,
+        product: featureAdditionalValuesType.product,
+        aminoacids: featureAdditionalValuesType.translation,
+        nucleotides: featureSequence.getNucleotides(
+          currentFeatureName: currentFeatureName,
+          strand: strand,
+          locusSequence: locusSequence,
+          positions: positions,
+          additionalFeaturesData: featureAdditionalValuesType.anotherFeatures,
+        ),
+        name: featureAdditionalValuesType.name,
+        note: featureAdditionalValuesType.note,
+        features: featureAdditionalValuesType.anotherFeatures?.toImmutableList(),
+      );
 }

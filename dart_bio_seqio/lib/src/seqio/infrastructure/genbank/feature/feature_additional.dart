@@ -10,56 +10,66 @@ class FeatureAdditional {
   }) {
     final regexAdditionalFeatures = RegExp(r'\/(.+)\=(.+)');
     final matchFeatureDetail = regexAdditionalFeatures.allMatches(featureValue);
-    String? additionalFeatureName = featureName;
-    String? additionalFeatureValue;
+    String? featureAdditionalName = featureName;
+    String? featureAdditionalValue;
     if (matchFeatureDetail.isNotEmpty) {
-      additionalFeatureName = matchFeatureDetail.elementAt(0).group(1);
-      additionalFeatureValue = matchFeatureDetail.elementAt(0).group(2);
+      featureAdditionalName = matchFeatureDetail.elementAt(0).group(1);
+      featureAdditionalValue = matchFeatureDetail.elementAt(0).group(2);
     } else {
-      additionalFeatureValue = featureValue;
+      featureAdditionalValue = featureValue;
     }
 
     return FeatureData(
-      name: additionalFeatureName!,
-      value: additionalFeatureValue!,
+      name: featureAdditionalName!,
+      value: featureAdditionalValue!,
     );
   }
 
-  FeatureAdditionalValue getAdditionalFeaturesValues({
-    required String additionalFeatureName,
-    required String additionalFeatureValue,
-    required FeatureAdditionalValue additionalFeature,
+  FeatureAdditionalValue getFeatureAdditionalValuesType({
+    required String featureAdditionalName,
+    required String featureAdditionalValue,
+    required FeatureAdditionalValue featureAdditionalValuesType,
   }) {
-    if (additionalFeatureName != '') {
-      switch (additionalFeatureName) {
+    if (featureAdditionalName != '') {
+      switch (featureAdditionalName) {
+        // /product="seripauperin PAU8"
+
         case 'product':
           {
-            additionalFeature.product = additionalFeatureValue;
+            featureAdditionalValuesType.product = featureAdditionalValue;
           }
           break;
+        // /translation="MVKLTSIAAGVAAIAATASATTTLAQSDERVNLVELGVYVSDIR
         case 'translation':
           {
-            additionalFeature.translation = additionalFeatureValue;
+            featureAdditionalValuesType.translation = featureAdditionalValue;
           }
           break;
+        // /gene="PAU8"
         case 'gene':
           {
-            additionalFeature.name = additionalFeatureValue;
+            featureAdditionalValuesType.name = featureAdditionalValue;
           }
           break;
+        // /note="hypothetical protein; member of the seripauperin
         case 'note':
           {
-            additionalFeature.note = additionalFeatureValue;
+            featureAdditionalValuesType.note = featureAdditionalValue;
           }
           break;
+        // /locus_tag="YAL068C"
+        // /experiment="EXISTENCE:mutant phenotype:GO:0045944
+        // /protein_id="NP_009332.1"
+        // /db_xref="GeneID:851229
         default:
           {
-            additionalFeature.addAnotherFeatures({additionalFeatureName: additionalFeatureValue});
+            featureAdditionalValuesType
+                .addAnotherFeatures({featureAdditionalName: featureAdditionalValue});
           }
           break;
       }
     }
 
-    return additionalFeature;
+    return featureAdditionalValuesType;
   }
 }
