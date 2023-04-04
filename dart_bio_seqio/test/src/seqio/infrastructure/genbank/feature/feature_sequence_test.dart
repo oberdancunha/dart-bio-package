@@ -8,8 +8,13 @@ void main() {
     featureSequence = FeatureSequence();
   });
 
+  test('Should return 1 when features list is not defined', () {
+    final codonStart = featureSequence.getCodonStart(null);
+    expect(codonStart, equals(1));
+  });
+
   test(
-    'Should there is not start codon',
+    'Should return 1 when features list is defined, but there is not codon_start feature',
     () {
       final List<Map<String, dynamic>> featuresList = [
         {'organism': 'Saccharomyces cerevisiae'},
@@ -19,6 +24,20 @@ void main() {
       ];
       final codonStart = featureSequence.getCodonStart(featuresList);
       expect(codonStart, equals(1));
+    },
+  );
+
+  test(
+    'Should return 3 when features list is defined and codon_start feature is 3',
+    () {
+      final List<Map<String, dynamic>> featuresList = [
+        {'codon_start': '3'},
+        {'product': 'TCP1-beta'},
+        {'protein_id': 'AAA98665.1'},
+        {'translation': 'SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA'},
+      ];
+      final codonStart = featureSequence.getCodonStart(featuresList);
+      expect(codonStart, equals(3));
     },
   );
 }
