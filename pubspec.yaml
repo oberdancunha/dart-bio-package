@@ -22,6 +22,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^2.0.1
+  melos: ^3.1.0
 
 flutter:
 
