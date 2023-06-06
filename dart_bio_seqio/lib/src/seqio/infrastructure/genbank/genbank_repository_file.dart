@@ -113,6 +113,8 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
       }
 
       return right(genbankData.toImmutableList());
+    } on FormatException catch (_) {
+      return left(Failure.fileFormatIncorrect());
       // ignore: avoid_catches_without_on_clauses
     } catch (error) {
       return left(Failure.fileParseError(error));

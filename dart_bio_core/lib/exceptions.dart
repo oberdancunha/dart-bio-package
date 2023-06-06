@@ -1,0 +1,1 @@
+class FormatException extends Error {}

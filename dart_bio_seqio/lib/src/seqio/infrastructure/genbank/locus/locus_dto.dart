@@ -1,3 +1,5 @@
+import 'package:dart_bio_core/value_validation.dart';
+
 import '../../../domain/entities/genbank/locus.dart';
 
 class LocusDto {
@@ -13,7 +15,7 @@ class LocusDto {
       type: locusDataSplitted[4],
       shape: locusDataSplitted[5],
       taxonomicDivision: locusDataSplitted[6],
-      releaseDate: locusDataSplitted[7],
+      releaseDate: ValueValidation.genbankDateValidation(locusDataSplitted[7]),
       sequence: locusSequence,
     );
   }

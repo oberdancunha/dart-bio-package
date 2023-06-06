@@ -2,8 +2,8 @@ import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/locus/locus_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../../data/genbank/SCU49845/SCU49845_genbank_data.dart';
 import '../../../../../data/genbank/SCU49845/SCU49845_genbank_original_format_data.dart';
-import '../../../../../data/genbank/SCU49845/scu49845_genbank_data.dart';
 
 void main() {
   LocusDto? locusDto;
@@ -31,5 +31,17 @@ void main() {
       locusSequence: formatGenbankLocusSequence(locusSequence.join()),
     );
     expect(locus, equals(locusMocked));
+  });
+
+  test('Should throw FormatException exception if release date is not in dd-MMM-yyyy format', () {
+    final locusGenbank = getGenbankLocusReleaseDateError();
+    final locusDtoFromGenbankFileFunction = locusDto!.fromGenbankFile;
+    expect(
+      () => locusDtoFromGenbankFileFunction(
+        locusData: locusGenbank,
+        locusSequence: formatGenbankLocusSequence(""),
+      ),
+      throwsA(isA<FormatException>()),
+    );
   });
 }

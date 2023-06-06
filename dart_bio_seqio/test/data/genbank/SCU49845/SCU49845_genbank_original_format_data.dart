@@ -2,6 +2,9 @@
 String getGenbankLocus() =>
     'LOCUS       SCU49845                5028 bp    DNA     linear   PLN 29-OCT-2018';
 
+String getGenbankLocusReleaseDateError() =>
+    'LOCUS       SCU49845                5028 bp    DNA     linear   PLN 29-OCT';
+
 List<String> getGenbankLocusDetails() => [
       'DEFINITION  Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p',
       '            (AXL2) and Rev7p (REV7) genes, complete cds.',

@@ -15,6 +15,7 @@ void main() {
   GenbankRepositoryFile? genbankRepositoryFile;
   String basePath;
   String? genbankFile;
+  String? genbankFileIncorrectFormat;
   String? genbankFileNotFound;
   KtList<Genbank>? genbankDataMocked;
   String? multiGenbankFile;
@@ -24,6 +25,10 @@ void main() {
     genbankRepositoryFile = GenbankRepositoryFile();
     basePath = path.fromUri(dirname(Platform.script.toString()));
     genbankFile = path.join(basePath, 'test/data/genbank/SCU49845/SCU49845.gb');
+    genbankFileIncorrectFormat = path.join(
+      basePath,
+      'test/data/genbank/SCU49845/SCU49845_incorrect_format.gb',
+    );
     genbankFileNotFound = path.join(basePath, 'test/data/genbank/sequence.gb1');
     genbankDataMocked = getGenbankDataEntity();
     multiGenbankFile = path.join(basePath, 'test/data/genbank/SCU49845_KX189121_sequences.gb');
@@ -46,7 +51,7 @@ void main() {
     );
 
     test(
-      'Should return a Failure.fileNotFound when not finding the file',
+      'Should return a Failure.fileFormatIncorrect when the file is not a valid gbk',
       () {
         final fileOpened = genbankRepositoryFile!.open(genbankFileNotFound!);
         expect(fileOpened, left(Failure.fileNotFound()));
@@ -73,7 +78,7 @@ void main() {
         );
 
         test(
-          'Should return a Genbank with more than one locuus',
+          'Should return a Genbank with more than one locus',
           () async {
             final fileOpened = genbankRepositoryFile!
                 .open(multiGenbankFile!)
@@ -89,6 +94,18 @@ void main() {
       });
 
       group('Failure |', () {
+        test(
+          'Should return a Failure.fileFormatIncorrect when file is not a valid gbk',
+          () async {
+            final fileOpened = genbankRepositoryFile!
+                .open(genbankFileIncorrectFormat!)
+                .fold((l) => null, (fileOpened) => fileOpened);
+            final genbankData = await genbankRepositoryFile!.parse(fileOpened!);
+            expect(genbankData.isLeft(), isTrue);
+            expect(genbankData, left(Failure.fileFormatIncorrect()));
+          },
+        );
+
         test(
           'Should return a Failure.fileEmpty when file is empty',
           () async {
