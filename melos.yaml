@@ -8,7 +8,7 @@ packages:
   - dart_bio_dependency_module
   - dart_bio_core
   - dart_bio_seqio
-  - dart_bio_package
+  - .
 
 command:
   bootstrap:
