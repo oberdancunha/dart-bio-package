@@ -1,3 +1,4 @@
+import 'package:dart_bio_core/exceptions.dart';
 import 'package:dart_bio_core/failures.dart';
 import 'package:dart_bio_core/repository_file.dart';
 import 'package:dart_bio_core/value_transformer.dart';
@@ -113,7 +114,8 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
       }
 
       return right(genbankData.toImmutableList());
-    } on FormatException catch (_) {
+      // ignore: avoid_catching_errors
+    } on FileFormatException catch (_) {
       return left(Failure.fileFormatIncorrect());
       // ignore: avoid_catches_without_on_clauses
     } catch (error) {

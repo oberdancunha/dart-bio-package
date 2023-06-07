@@ -1,3 +1,4 @@
+import 'package:dart_bio_core/exceptions.dart';
 import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/locus/locus_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,7 +42,7 @@ void main() {
         locusData: locusGenbank,
         locusSequence: formatGenbankLocusSequence(""),
       ),
-      throwsA(isA<FormatException>()),
+      throwsA(isA<FileFormatException>()),
     );
   });
 }
