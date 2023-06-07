@@ -34,7 +34,8 @@ void main() {
     expect(locus, equals(locusMocked));
   });
 
-  test('Should throw FormatException exception if release date is not in dd-MMM-yyyy format', () {
+  test('Should throw FileFormatException exception if release date is not in dd-MMM-yyyy format',
+      () {
     final locusGenbank = getGenbankLocusReleaseDateError();
     final locusDtoFromGenbankFileFunction = locusDto!.fromGenbankFile;
     expect(
