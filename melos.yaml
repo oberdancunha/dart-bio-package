@@ -12,7 +12,7 @@ packages:
 
 command:
   bootstrap:
-    usePubspecOverrides: true
+    runPubGetInParallel: true
   version:
     updateGitTagRefs: true
     branch: main
@@ -21,9 +21,9 @@ scripts:
   test:flutter:
     run: melos exec flutter test --coverage
     description: Run test in all projects packages.
-    select-package:
+    packageFilters:
       flutter: true
-      dir-exists: test
+      dirExists: test
     
   analyze:
     exec: dart analyze .
