@@ -8,11 +8,11 @@ packages:
   - dart_bio_dependency_module
   - dart_bio_core
   - dart_bio_seqio
-  - .
+  - ./
 
 command:
   bootstrap:
-    runPubGetInParallel: true
+    runPubGetInParallel: false
   version:
     updateGitTagRefs: true
     branch: main
