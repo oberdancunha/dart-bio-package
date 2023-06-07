@@ -12,10 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   dart_bio_seqio:
-    git: 
-      url: https://github.com/oberdancunha/dart-bio-package.git
-      ref: 2.0.0
-      path: dart_bio_seqio
+    path: dart_bio_seqio
 
 dev_dependencies:
   dart_code_metrics: ^5.6.0
