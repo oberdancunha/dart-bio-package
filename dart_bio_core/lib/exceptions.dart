@@ -1,1 +1,1 @@
-class FileFormatException extends Error {}
+class FileDataFormatException extends Error {}

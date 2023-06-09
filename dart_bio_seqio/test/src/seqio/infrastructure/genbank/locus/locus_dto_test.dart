@@ -34,16 +34,18 @@ void main() {
     expect(locus, equals(locusMocked));
   });
 
-  test('Should throw FileFormatException exception if release date is not in dd-MMM-yyyy format',
-      () {
-    final locusGenbank = getGenbankLocusReleaseDateError();
-    final locusDtoFromGenbankFileFunction = locusDto!.fromGenbankFile;
-    expect(
-      () => locusDtoFromGenbankFileFunction(
-        locusData: locusGenbank,
-        locusSequence: formatGenbankLocusSequence(""),
-      ),
-      throwsA(isA<FileFormatException>()),
-    );
-  });
+  test(
+    'Should throw FileDataException exception if release date is not in dd-MMM-yyyy format',
+    () {
+      final locusGenbank = getGenbankLocusReleaseDateError();
+      final locusDtoFromGenbankFileFunction = locusDto!.fromGenbankFile;
+      expect(
+        () => locusDtoFromGenbankFileFunction(
+          locusData: locusGenbank,
+          locusSequence: formatGenbankLocusSequence(""),
+        ),
+        throwsA(isA<FileDataFormatException>()),
+      );
+    },
+  );
 }

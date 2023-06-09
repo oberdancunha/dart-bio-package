@@ -27,7 +27,7 @@ void main() {
     genbankFile = path.join(basePath, 'test/data/genbank/SCU49845/SCU49845.gb');
     genbankFileIncorrectFormat = path.join(
       basePath,
-      'test/data/genbank/SCU49845/SCU49845_incorrect_format.gb',
+      'test/data/genbank/SCU49845/SCU49845_incorrect_data_format.gb',
     );
     genbankFileNotFound = path.join(basePath, 'test/data/genbank/sequence.gb1');
     genbankDataMocked = getGenbankDataEntity();
@@ -95,14 +95,14 @@ void main() {
 
       group('Failure |', () {
         test(
-          'Should return a Failure.fileFormatIncorrect when file is not a valid gbk',
+          'Should return a Failure.fileDataFormatIncorrect when gbk file has an incorrect data',
           () async {
             final fileOpened = genbankRepositoryFile!
                 .open(genbankFileIncorrectFormat!)
                 .fold((l) => null, (fileOpened) => fileOpened);
             final genbankData = await genbankRepositoryFile!.parse(fileOpened!);
             expect(genbankData.isLeft(), isTrue);
-            expect(genbankData, left(Failure.fileFormatIncorrect()));
+            expect(genbankData, left(Failure.fileDataFormatIncorrect()));
           },
         );
 

@@ -1,8 +1,9 @@
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-class Failure extends Union4Impl<_FileNotFound, _FileParseError, _FileEmpty, _FileFormatIncorrect> {
-  static const _factory =
-      Quartet<_FileNotFound, _FileParseError, _FileEmpty, _FileFormatIncorrect>();
+class Failure extends Union5Impl<_FileNotFound, _FileParseError, _FileEmpty, _FileFormatIncorrect,
+    _FileDataFormatIncorrect> {
+  static const _factory = Quintet<_FileNotFound, _FileParseError, _FileEmpty, _FileFormatIncorrect,
+      _FileDataFormatIncorrect>();
 
   Failure._(super.union);
 
@@ -13,6 +14,9 @@ class Failure extends Union4Impl<_FileNotFound, _FileParseError, _FileEmpty, _Fi
   factory Failure.fileEmpty() => Failure._(_factory.third(_FileEmpty()));
 
   factory Failure.fileFormatIncorrect() => Failure._(_factory.fourth(_FileFormatIncorrect()));
+
+  factory Failure.fileDataFormatIncorrect() =>
+      Failure._(_factory.fifth(_FileDataFormatIncorrect()));
 }
 
 class _FileNotFound extends Equatable {
@@ -35,6 +39,11 @@ class _FileEmpty extends Equatable {
 }
 
 class _FileFormatIncorrect extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class _FileDataFormatIncorrect extends Equatable {
   @override
   List<Object?> get props => [];
 }

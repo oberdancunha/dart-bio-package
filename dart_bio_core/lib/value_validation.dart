@@ -5,7 +5,7 @@ class ValueValidation {
   static String genbankDateValidation(String date) {
     final genbankDatePattern = RegExp(r'\d{2}\-[A-Z]{3}\-\d{4}');
     if (!genbankDatePattern.hasMatch(date)) {
-      throw FileFormatException();
+      throw FileDataFormatException();
     }
 
     return date;
