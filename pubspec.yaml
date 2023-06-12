@@ -1,56 +1,58 @@
-name: bio
+name: dart_bio_package
 description: A dart package to aid in the development of solutions to problems related to biology.
-version: 1.0.0
-homepage: https://github.com/oberdancunha/dart-bio-package/tree/1.0.0
+version: 2.0.0
+homepage: https://github.com/oberdancunha/dart-bio-package/tree/2.0.0
+publish_to: none
 
 environment:
-  sdk: ">=2.12.3 <3.0.0"
-  flutter: ">=2.0.6"
+  sdk: '>=2.18.2 <3.0.0'
+  flutter: ">=3.3.6"
 
 dependencies:
   flutter:
     sdk: flutter
-  dartz: ^0.10.0-nullsafety.2
-  equatable: ^2.0.3
-  kt_dart: ^0.9.0
-  path: ^1.8.0
+  dart_bio_seqio:
+    git: 
+      url: https://github.com/oberdancunha/dart-bio-package.git
+      ref: 2.0.0
+      path: dart_bio_seqio
 
 dev_dependencies:
+  dart_code_metrics: ^5.6.0
   flutter_test:
     sdk: flutter
-  build_runner: ^2.0.3
-  dart_code_metrics: ^3.2.3
-  freezed: ^0.14.2
-  lint: ^1.5.3
-  mocktail: ^0.1.4
+  lint: ^2.0.1
+  melos: ^3.1.0
 
-flutter: null
+flutter:
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

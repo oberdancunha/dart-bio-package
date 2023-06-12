@@ -1,0 +1,64 @@
+name: dart_bio_seqio
+description: A dart project to aid in the development of solutions to problems related to biology.
+version: 2.0.0
+homepage: https://github.com/oberdancunha/dart-bio-package/tree/2.0.0
+publish_to: none
+
+environment:
+  sdk: ">=2.18.2 <3.0.0"
+  flutter: ">=3.3.6"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dart_bio_dependency_module:
+    git: 
+      url: https://github.com/oberdancunha/dart-bio-package.git
+      ref: 2.0.0
+      path: dart_bio_dependency_module
+  dart_bio_core:
+    git: 
+      url: https://github.com/oberdancunha/dart-bio-package.git
+      ref: 2.0.0
+      path: dart_bio_core
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^0.3.0
+  lint: ^2.0.1
+  dart_code_metrics: ^4.19.2
+  path: ^1.8.2
+
+flutter:
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

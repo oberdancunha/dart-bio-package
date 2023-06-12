@@ -1,0 +1,29 @@
+name: dart_bio_package
+
+ide:
+  intellij: 
+    enabled: false
+
+packages:
+  - dart_bio_dependency_module
+  - dart_bio_core
+  - dart_bio_seqio
+  - ./
+
+command:
+  bootstrap:
+    runPubGetInParallel: false
+  version:
+    updateGitTagRefs: true
+    branch: main
+
+scripts:
+  test:flutter:
+    run: melos exec flutter test --coverage
+    description: Run test in all projects packages.
+    packageFilters:
+      flutter: true
+      dirExists: test
+    
+  analyze:
+    exec: dart analyze .

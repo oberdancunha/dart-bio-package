@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: dart_bio_dependency_module
+dependency_overrides:
+  dart_bio_dependency_module:
+    path: ../dart_bio_dependency_module
