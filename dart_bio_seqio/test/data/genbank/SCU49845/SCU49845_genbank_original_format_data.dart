@@ -1,4 +1,4 @@
-// ignore: file_names
+// ignore_for_file: file_names
 String getGenbankLocus() =>
     'LOCUS       SCU49845                5028 bp    DNA     linear   PLN 29-OCT-2018';
 

@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/feature.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/genbank.dart';
