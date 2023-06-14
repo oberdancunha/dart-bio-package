@@ -1,3 +1,3 @@
 abstract class SourceFeatureFilePatterns {
-  RegExp get locationPatternRegExp;
+  String get locationPattern;
 }

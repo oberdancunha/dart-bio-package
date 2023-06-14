@@ -18,7 +18,8 @@ class GenbankFeatureLocation {
   }
 
   FeatureLocation getNameAndLocation(String featureLocation) {
-    final locationPatternRegExp = GenbankFeatureFilePatterns().locationPatternRegExp;
+    final locationPattern = GenbankFeatureFilePatterns().locationPattern;
+    final locationPatternRegExp = RegExp(locationPattern);
     final matchLocation = locationPatternRegExp.firstMatch(featureLocation);
     if (matchLocation != null) {
       return FeatureLocation(
