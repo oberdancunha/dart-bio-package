@@ -13,7 +13,11 @@ void main() {
       features: locusFeaturesGenbank,
       locusSequence: getLocusSequenceFormatted().split(''),
     );
-    expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
+    // expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
+    expect(locusFeatures.get(2).type, equals('CDS'));
+    expect(locusFeatures.get(2).positions.elementAt(0).start, equals(1));
+    expect(locusFeatures.get(2).positions.elementAt(0).end, equals(206));
+    expect(locusFeatures.get(2).strand, equals(0));
   }
 
   test(

@@ -14,7 +14,17 @@ class FeatureDto {
   }) {
     final featuresData = <Feature>[];
 
-    features.forEach(_sourceFeatureFileExecute.callActionByPattern);
+    features.forEach((feature) {
+      final featureData = _sourceFeatureFileExecute.orchestrateParseEventsToRun(feature);
+      if (featureData != null) {
+        featuresData.add(featureData);
+      }
+      _sourceFeatureFileExecute.callActionByPattern(feature);
+    });
+    final featureData = _sourceFeatureFileExecute.orchestrateParseEventsToRun("");
+    if (featureData != null) {
+      featuresData.add(featureData);
+    }
 
     return featuresData.toImmutableList();
   }
