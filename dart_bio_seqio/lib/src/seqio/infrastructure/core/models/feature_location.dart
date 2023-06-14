@@ -1,9 +1,9 @@
 class FeatureLocation {
-  final String name;
+  final String identifier;
   final String location;
 
   FeatureLocation({
-    required this.name,
+    required this.identifier,
     required this.location,
   });
 }

@@ -29,7 +29,7 @@ void main() {
     test('Should identify location name and positions', () {
       const featureLocation = "     source          1..5028";
       final featureIdentifierPositions = genbankFeatureLocation.pipelineLocation(featureLocation);
-      expect(featureIdentifierPositions.name, equals('source'));
+      expect(featureIdentifierPositions.identifier, equals('source'));
       expect(
         featureIdentifierPositions.featurePositions.positions.elementAt(0).start,
         equals(1),
@@ -46,7 +46,7 @@ void main() {
           "     CDS          complement(join(<147594..151006,151097..>151166))";
       final featureIdentifierPositions =
           genbankFeatureLocation.pipelineLocation(featureComplementMultiLocation);
-      expect(featureIdentifierPositions.name, equals('CDS'));
+      expect(featureIdentifierPositions.identifier, equals('CDS'));
       expect(
         featureIdentifierPositions.featurePositions.positions.elementAt(0).start,
         equals(147594),
@@ -80,7 +80,7 @@ void main() {
     test('Should identify location name and position', () {
       const featureLocation = "     source          1..5028";
       final featureLocationModel = genbankFeatureLocation.getNameAndLocation(featureLocation);
-      expect(featureLocationModel.name, equals('source'));
+      expect(featureLocationModel.identifier, equals('source'));
       expect(featureLocationModel.location, equals('1..5028'));
     });
   });

@@ -12,7 +12,7 @@ class GenbankFeatureLocation {
     final featurePositions = getPositionsAndStrand(nameAndLocation.location);
 
     return FeatureIdentifierPositions(
-      name: nameAndLocation.name,
+      identifier: nameAndLocation.identifier,
       featurePositions: featurePositions,
     );
   }
@@ -22,7 +22,7 @@ class GenbankFeatureLocation {
     final matchLocation = locationPatternRegExp.firstMatch(featureLocation);
     if (matchLocation != null) {
       return FeatureLocation(
-        name: matchLocation.group(1).toString(),
+        identifier: matchLocation.group(1).toString(),
         location: matchLocation.group(2).toString(),
       );
     }
