@@ -6,13 +6,14 @@ import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/genbank.dart';
 import '../core/feature_dto.dart';
+import 'feature/genbank_feature_file_execute.dart';
 import 'locus/locus_details_dto.dart';
 import 'locus/locus_dto.dart';
 
 class GenbankRepositoryFile extends RepositoryFile<Genbank> {
   final locusDto = LocusDto();
   final locusDetailsDto = LocusDetailsDto();
-  final featureDto = FeatureDto();
+  final featureDto = FeatureDto(GenbankFeatureFileExecute());
 
   @override
   Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {
@@ -61,7 +62,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
                       locusSequence: locusSequenceFormatted!,
                     ),
                     locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-                    features: featureDto.fromGenbankFile(
+                    features: featureDto.fromFile(
                       features: featuresValues,
                       locusSequence: locusSequenceFormatted!.split(''),
                     ),
@@ -103,7 +104,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
               locusSequence: locusSequenceFormatted!,
             ),
             locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-            features: featureDto.fromGenbankFile(
+            features: featureDto.fromFile(
               features: featuresValues,
               locusSequence: locusSequenceFormatted!.split(''),
             ),
