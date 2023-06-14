@@ -31,10 +31,10 @@ abstract class SourceFeatureFileExecute {
         // ignore: avoid_dynamic_calls
         final featureData = _parseEvents[event]!.call();
         switch (featureData.runtimeType) {
-          case FeatureIdentifierPositions:
+          case FeatureIdentifierPositionsModel:
             {
               feature = Feature(
-                type: (featureData as FeatureIdentifierPositions).identifier,
+                type: (featureData as FeatureIdentifierPositionsModel).identifier,
                 positions: featureData.featurePositions.positions,
                 strand: featureData.featurePositions.strand,
               );
@@ -71,5 +71,5 @@ abstract class SourceFeatureFileExecute {
   void _restartEvents() => _parseEvents = {};
 
   SourceFeatureFilePatterns get sourceFeatureFilePatterns;
-  FeatureIdentifierPositions getLocations(String featureLocation);
+  FeatureIdentifierPositionsModel getLocations(String featureLocation);
 }

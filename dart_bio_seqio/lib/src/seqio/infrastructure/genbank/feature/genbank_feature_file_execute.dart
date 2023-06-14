@@ -8,6 +8,6 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
   GenbankFeatureFilePatterns get sourceFeatureFilePatterns => GenbankFeatureFilePatterns();
 
   @override
-  FeatureIdentifierPositions getLocations(String featureLocation) =>
+  FeatureIdentifierPositionsModel getLocations(String featureLocation) =>
       GenbankFeatureLocation().pipelineLocation(featureLocation);
 }

@@ -1,10 +1,10 @@
 import 'feature_positions.dart';
 
-class FeatureIdentifierPositions {
+class FeatureIdentifierPositionsModel {
   final String identifier;
-  final FeaturePositions featurePositions;
+  final FeaturePositionsModel featurePositions;
 
-  FeatureIdentifierPositions({
+  FeatureIdentifierPositionsModel({
     required this.identifier,
     required this.featurePositions,
   });

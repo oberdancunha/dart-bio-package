@@ -7,22 +7,22 @@ import '../../core/models/feature_positions.dart';
 import 'genbank_feature_file_patterns.dart';
 
 class GenbankFeatureLocation {
-  FeatureIdentifierPositions pipelineLocation(String featureLocation) {
+  FeatureIdentifierPositionsModel pipelineLocation(String featureLocation) {
     final nameAndLocation = getNameAndLocation(featureLocation);
     final featurePositions = getPositionsAndStrand(nameAndLocation.location);
 
-    return FeatureIdentifierPositions(
+    return FeatureIdentifierPositionsModel(
       identifier: nameAndLocation.identifier,
       featurePositions: featurePositions,
     );
   }
 
-  FeatureLocation getNameAndLocation(String featureLocation) {
+  FeatureLocationModel getNameAndLocation(String featureLocation) {
     final locationPattern = GenbankFeatureFilePatterns().locationPattern;
     final locationPatternRegExp = RegExp(locationPattern);
     final matchLocation = locationPatternRegExp.firstMatch(featureLocation);
     if (matchLocation != null) {
-      return FeatureLocation(
+      return FeatureLocationModel(
         identifier: matchLocation.group(1).toString(),
         location: matchLocation.group(2).toString(),
       );
@@ -30,7 +30,7 @@ class GenbankFeatureLocation {
     throw FileDataFormatException();
   }
 
-  FeaturePositions getPositionsAndStrand(String location) {
+  FeaturePositionsModel getPositionsAndStrand(String location) {
     final singleLocationMatch = matchSingleLocation(location);
     var positions = <LocationPosition>[];
     if (singleLocationMatch != null) {
@@ -42,7 +42,7 @@ class GenbankFeatureLocation {
       }
     }
     if (positions.isNotEmpty) {
-      return FeaturePositions(
+      return FeaturePositionsModel(
         positions: positions,
         strand: getStrand(location),
       );

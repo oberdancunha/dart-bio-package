@@ -1,8 +1,8 @@
-class FeatureLocation {
+class FeatureLocationModel {
   final String identifier;
   final String location;
 
-  FeatureLocation({
+  FeatureLocationModel({
     required this.identifier,
     required this.location,
   });
