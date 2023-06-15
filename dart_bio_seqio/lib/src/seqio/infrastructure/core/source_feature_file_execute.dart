@@ -1,34 +1,57 @@
+// ignore_for_file: avoid_dynamic_calls
+import 'package:dart_bio_core/parse_event.dart';
+
 import '../../domain/entities/genbank/feature.dart';
 import 'models/feature_identifier_positions.dart';
+import 'models/feature_product_model.dart';
 import 'source_feature_file_patterns.dart';
 
 abstract class SourceFeatureFileExecute {
   Map<String, Function> _parseEvents = {};
+  Function? _lastEvent;
 
-  Map<String, Function> get patternsList => Map.from({
-        sourceFeatureFilePatterns.locationPattern: getLocations,
-      });
+  List<ParseEvent> get patternsList => [
+        ParseEvent(
+          identifierPattern: sourceFeatureFilePatterns.locationPattern,
+          action: getLocations,
+          isRecall: false,
+        ),
+        ParseEvent(
+          identifierPattern: sourceFeatureFilePatterns.productPattern,
+          action: getProduct,
+          isRecall: true,
+        ),
+        ParseEvent(
+          identifierPattern: sourceFeatureFilePatterns.recallLastEventPattern,
+          isRecall: true,
+        ),
+      ];
 
   void callActionByPattern(String value) {
-    patternsList.keys.forEach((pattern) {
-      final regexPattern = RegExp(pattern);
+    final eventsLength = _parseEvents.length;
+    patternsList.forEach((pattern) {
+      final regexPattern = RegExp(pattern.identifierPattern);
       if (regexPattern.hasMatch(value)) {
-        final function = patternsList[pattern]!;
-        _parseEvents.addAll({
-          // ignore: avoid_dynamic_calls
-          pattern: () => function.call(value),
-        });
+        final action = pattern.action ?? _lastEvent;
+        if (action != null) {
+          _parseEvents.addAll({
+            pattern.identifierPattern: () => action.call(value, pattern.identifierPattern),
+          });
+          _lastEvent = pattern.isRecall ? action : null;
+        }
 
         return;
       }
     });
+    if (_noEventAdded(eventsLength)) {
+      _lastEvent = null;
+    }
   }
 
   Feature? orchestrateParseEventsToRun(String value) {
-    if (_isNextFeature(value) || _isFinishFeature(value)) {
+    if ((isNextFeature(value) || _isFinishFeature(value)) && _parseEvents.keys.isNotEmpty) {
       late Feature feature;
       _parseEvents.keys.forEach((event) {
-        // ignore: avoid_dynamic_calls
         final featureData = _parseEvents[event]!.call();
         switch (featureData.runtimeType) {
           case FeatureIdentifierPositionsModel:
@@ -39,6 +62,15 @@ abstract class SourceFeatureFileExecute {
                 strand: featureData.featurePositions.strand,
               );
             }
+            break;
+          case FeatureProductModel:
+            {
+              final product = (featureData as FeatureProductModel).product;
+              feature = feature.copyWith(
+                product: feature.product != null ? "${feature.product} $product" : product,
+              );
+            }
+            break;
         }
       });
       _restartEvents();
@@ -49,27 +81,17 @@ abstract class SourceFeatureFileExecute {
     return null;
   }
 
-  bool _isNextFeature(String value) {
-    var isNextFeature = false;
-
-    for (final pattern in patternsList.keys) {
-      final regexPattern = RegExp(pattern);
-      if (regexPattern.hasMatch(value)) {
-        isNextFeature = _isRepetitiveEvent(pattern);
-
-        break;
-      }
-    }
-
-    return isNextFeature;
-  }
-
-  bool _isRepetitiveEvent(String pattern) => _parseEvents.containsKey(pattern);
-
   bool _isFinishFeature(value) => value == "";
 
-  void _restartEvents() => _parseEvents = {};
+  bool _noEventAdded(int eventsLength) => eventsLength == _parseEvents.length;
 
+  void _restartEvents() {
+    _parseEvents = {};
+    _lastEvent = null;
+  }
+
+  bool isNextFeature(String value);
   SourceFeatureFilePatterns get sourceFeatureFilePatterns;
-  FeatureIdentifierPositionsModel getLocations(String featureLocation);
+  FeatureIdentifierPositionsModel getLocations(String featureLocation, String locationPattern);
+  FeatureProductModel getProduct(String featureProduct, String productPattern);
 }
