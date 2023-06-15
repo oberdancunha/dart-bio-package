@@ -6,9 +6,11 @@ void main() {
   late GenbankFeatureLocation genbankFeatureLocation;
   late String location;
   late String locations;
+  late String locationPattern;
 
   setUpAll(() {
     genbankFeatureLocation = GenbankFeatureLocation();
+    locationPattern = r'^\s{5}([\w+]+)\s+(.+)$';
     location = '1..5028';
     locations = 'join(<147594..151006,151097..>151166)';
   });
@@ -20,7 +22,7 @@ void main() {
         const featureLocation = "source          1..5028";
         final callPipelineLocation = genbankFeatureLocation.pipelineLocation;
         expect(
-          () => callPipelineLocation(featureLocation),
+          () => callPipelineLocation(featureLocation, locationPattern),
           throwsA(isA<FileDataFormatException>()),
         );
       },
@@ -28,7 +30,10 @@ void main() {
 
     test('Should identify location name and positions', () {
       const featureLocation = "     source          1..5028";
-      final featureIdentifierPositions = genbankFeatureLocation.pipelineLocation(featureLocation);
+      final featureIdentifierPositions = genbankFeatureLocation.pipelineLocation(
+        featureLocation,
+        locationPattern,
+      );
       expect(featureIdentifierPositions.identifier, equals('source'));
       expect(
         featureIdentifierPositions.featurePositions.positions.elementAt(0).start,
@@ -45,7 +50,7 @@ void main() {
       const featureComplementMultiLocation =
           "     CDS          complement(join(<147594..151006,151097..>151166))";
       final featureIdentifierPositions =
-          genbankFeatureLocation.pipelineLocation(featureComplementMultiLocation);
+          genbankFeatureLocation.pipelineLocation(featureComplementMultiLocation, locationPattern);
       expect(featureIdentifierPositions.identifier, equals('CDS'));
       expect(
         featureIdentifierPositions.featurePositions.positions.elementAt(0).start,
@@ -73,13 +78,19 @@ void main() {
       () {
         const featureLocation = "source          1..5028";
         final callGetLocation = genbankFeatureLocation.getNameAndLocation;
-        expect(() => callGetLocation(featureLocation), throwsA(isA<FileDataFormatException>()));
+        expect(
+          () => callGetLocation(featureLocation, locationPattern),
+          throwsA(isA<FileDataFormatException>()),
+        );
       },
     );
 
     test('Should identify location name and position', () {
       const featureLocation = "     source          1..5028";
-      final featureLocationModel = genbankFeatureLocation.getNameAndLocation(featureLocation);
+      final featureLocationModel = genbankFeatureLocation.getNameAndLocation(
+        featureLocation,
+        locationPattern,
+      );
       expect(featureLocationModel.identifier, equals('source'));
       expect(featureLocationModel.location, equals('1..5028'));
     });
