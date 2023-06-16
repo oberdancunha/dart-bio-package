@@ -23,11 +23,7 @@ void main() {
   }
 
   group('From Genbank file |', () {
-    late FeatureDto featureDto;
-
-    setUpAll(() {
-      featureDto = FeatureDto(GenbankFeatureFileExecute());
-    });
+    final featureDto = FeatureDto(GenbankFeatureFileExecute());
 
     test(
       'Should get features data (Feature entity) from genbank file',
@@ -37,15 +33,29 @@ void main() {
       },
     );
 
-    test('Should join the product separated by more than one line', () {
+    group('Individual data |', () {
       final locusFeatures = featureDto.fromFile(
         features: featureDataMoreThanOneLine,
         locusSequence: [],
       );
-      expect(
-        locusFeatures.get(0).product,
-        equals('mannosyl-3-phosphoglycerate phosphatase-related protein'),
-      );
+
+      group('Product data |', () {
+        test('Should join the product separated by more than one line', () {
+          expect(
+            locusFeatures.get(0).product,
+            equals('mannosyl-3-phosphoglycerate phosphatase-related protein'),
+          );
+        });
+      });
+
+      group('Note data |', () {
+        test('Should join the note separated by more than one line', () {
+          expect(
+            locusFeatures.get(0).note,
+            'Derived by automated computational analysis using gene prediction method: Protein Homology.',
+          );
+        });
+      });
     });
   });
 }

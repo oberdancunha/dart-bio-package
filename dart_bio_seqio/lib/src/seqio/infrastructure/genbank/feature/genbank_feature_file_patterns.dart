@@ -8,5 +8,8 @@ class GenbankFeatureFilePatterns implements SourceFeatureFilePatterns {
   String get productPattern => r'^\s{21}\/product\=\"(.+)\"?$';
 
   @override
+  String get notePattern => r'^\s{21}\/note\=\"(.+)\"?$';
+
+  @override
   String get recallLastEventPattern => r'^\s{21}((?!\/).+)\"?$';
 }

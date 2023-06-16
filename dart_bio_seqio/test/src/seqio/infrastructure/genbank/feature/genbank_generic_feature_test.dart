@@ -25,11 +25,35 @@ void main() {
       );
     });
 
-    test('Should get product description when its all in just one line', () {
+    test('Should get product description', () {
       const featureProduct =
           '                     /product="flagella biosynthesis regulatory protein FliZ"';
       final product = genbankGenericFeature.getData(featureProduct, productPattern);
       expect(product, equals('flagella biosynthesis regulatory protein FliZ'));
+    });
+  });
+
+  group('Get note |', () {
+    late String notePattern;
+
+    setUpAll(() {
+      notePattern = r'^\s{21}\/note\=\"(.+)\"?$';
+    });
+
+    test('Should throw FileDataFormatException when note is not found', () {
+      const featureNote = '                     /note=Derived by automated computational analysis';
+      final noteCall = genbankGenericFeature.getData;
+      expect(
+        () => noteCall(featureNote, notePattern),
+        throwsA(isA<FileDataFormatException>()),
+      );
+    });
+
+    test('Should get note description', () {
+      const featureNote =
+          '                     /note="Derived by automated computational analysis"';
+      final product = genbankGenericFeature.getData(featureNote, notePattern);
+      expect(product, equals('Derived by automated computational analysis'));
     });
   });
 }

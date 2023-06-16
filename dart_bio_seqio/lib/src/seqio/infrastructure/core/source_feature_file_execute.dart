@@ -2,12 +2,13 @@
 import 'package:dart_bio_core/parse_event.dart';
 
 import '../../domain/entities/genbank/feature.dart';
-import 'models/feature_identifier_positions.dart';
+import 'models/feature_identifier_positions_model.dart';
+import 'models/feature_note_model.dart';
 import 'models/feature_product_model.dart';
 import 'source_feature_file_patterns.dart';
 
 abstract class SourceFeatureFileExecute {
-  Map<String, Function> _parseEvents = {};
+  var _parseEvents = <Function>[];
   Function? _lastEvent;
 
   List<ParseEvent> get patternsList => [
@@ -19,6 +20,11 @@ abstract class SourceFeatureFileExecute {
         ParseEvent(
           identifierPattern: sourceFeatureFilePatterns.productPattern,
           action: getProduct,
+          isRecall: true,
+        ),
+        ParseEvent(
+          identifierPattern: sourceFeatureFilePatterns.notePattern,
+          action: getNote,
           isRecall: true,
         ),
         ParseEvent(
@@ -34,9 +40,9 @@ abstract class SourceFeatureFileExecute {
       if (regexPattern.hasMatch(value)) {
         final action = pattern.action ?? _lastEvent;
         if (action != null) {
-          _parseEvents.addAll({
-            pattern.identifierPattern: () => action.call(value, pattern.identifierPattern),
-          });
+          _parseEvents.add(
+            () => action.call(value, pattern.identifierPattern),
+          );
           _lastEvent = pattern.isRecall ? action : null;
         }
 
@@ -49,10 +55,10 @@ abstract class SourceFeatureFileExecute {
   }
 
   Feature? orchestrateParseEventsToRun(String value) {
-    if ((isNextFeature(value) || _isFinishFeature(value)) && _parseEvents.keys.isNotEmpty) {
+    if ((isNextFeature(value) || _isFinishFeature(value)) && _parseEvents.isNotEmpty) {
       late Feature feature;
-      _parseEvents.keys.forEach((event) {
-        final featureData = _parseEvents[event]!.call();
+      _parseEvents.forEach((event) {
+        final featureData = event.call();
         switch (featureData.runtimeType) {
           case FeatureIdentifierPositionsModel:
             {
@@ -71,6 +77,13 @@ abstract class SourceFeatureFileExecute {
               );
             }
             break;
+          case FeatureNoteModel:
+            {
+              final note = (featureData as FeatureNoteModel).note;
+              feature = feature.copyWith(
+                note: feature.note != null ? "${feature.note} $note" : note,
+              );
+            }
         }
       });
       _restartEvents();
@@ -86,7 +99,7 @@ abstract class SourceFeatureFileExecute {
   bool _noEventAdded(int eventsLength) => eventsLength == _parseEvents.length;
 
   void _restartEvents() {
-    _parseEvents = {};
+    _parseEvents = <Function>[];
     _lastEvent = null;
   }
 
@@ -94,4 +107,5 @@ abstract class SourceFeatureFileExecute {
   SourceFeatureFilePatterns get sourceFeatureFilePatterns;
   FeatureIdentifierPositionsModel getLocations(String featureLocation, String locationPattern);
   FeatureProductModel getProduct(String featureProduct, String productPattern);
+  FeatureNoteModel getNote(String featureNote, String notePattern);
 }

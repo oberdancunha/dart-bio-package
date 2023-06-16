@@ -1,4 +1,5 @@
-import '../../core/models/feature_identifier_positions.dart';
+import '../../core/models/feature_identifier_positions_model.dart';
+import '../../core/models/feature_note_model.dart';
 import '../../core/models/feature_product_model.dart';
 import '../../core/source_feature_file_execute.dart';
 import 'genbank_feature_file_patterns.dart';
@@ -18,6 +19,13 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
     final product = GenbankGenericFeature().getData(featureProduct, productPattern);
 
     return FeatureProductModel(product: product);
+  }
+
+  @override
+  FeatureNoteModel getNote(String featureNote, String notePattern) {
+    final note = GenbankGenericFeature().getData(featureNote, notePattern);
+
+    return FeatureNoteModel(note: note);
   }
 
   @override
