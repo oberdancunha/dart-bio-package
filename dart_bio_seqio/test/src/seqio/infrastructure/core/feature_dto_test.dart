@@ -20,6 +20,10 @@ void main() {
     expect(locusFeatures.get(2).positions.elementAt(0).end, equals(206));
     expect(locusFeatures.get(2).strand, equals(0));
     expect(locusFeatures.get(2).product, equals('TCP1-beta'));
+    expect(
+      locusFeatures.get(2).aminoacids,
+      equals('SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM'),
+    );
   }
 
   group('From Genbank file |', () {
@@ -52,7 +56,20 @@ void main() {
         test('Should join the note separated by more than one line', () {
           expect(
             locusFeatures.get(0).note,
-            'Derived by automated computational analysis using gene prediction method: Protein Homology.',
+            equals(
+              'Derived by automated computational analysis using gene prediction method: Protein Homology.',
+            ),
+          );
+        });
+      });
+
+      group('Aminoacid sequence data |', () {
+        test('Should join the aminoacid sequence separated by more than one line', () {
+          expect(
+            locusFeatures.get(0).aminoacids,
+            equals(
+              'MLSIHDPLLIFTDLDGTLLNSHTFEWQPAAPWLTRLHESGVPVILCSSKTAAEMLQLQTTLNLQGLPLIAENGAVIQLDVHWEDHPNYPRLIAGISHNEIRLVLHKLREKEQFKFTTFDDVDDQVISEWTGLNRAQSALTRLHEASVSLIWRDSDERMAQFVARLNDLGLQFVHGARFWHVLDASAGKDQAANWLIEAYRRQWRARPLTLGLGDGPNDAPLLDVMDYAVVVKGLNREGVHLRNDDPQRVYRSQNEGPDGWREGMDYFFSRS',
+            ),
           );
         });
       });

@@ -2,6 +2,7 @@
 import 'package:dart_bio_core/parse_event.dart';
 
 import '../../domain/entities/genbank/feature.dart';
+import 'models/feature_aminoacid_sequence_model.dart';
 import 'models/feature_identifier_positions_model.dart';
 import 'models/feature_note_model.dart';
 import 'models/feature_product_model.dart';
@@ -25,6 +26,11 @@ abstract class SourceFeatureFileExecute {
         ParseEvent(
           identifierPattern: sourceFeatureFilePatterns.notePattern,
           action: getNote,
+          isRecall: true,
+        ),
+        ParseEvent(
+          identifierPattern: sourceFeatureFilePatterns.aminoacidSequencePattern,
+          action: getAminoacidSequence,
           isRecall: true,
         ),
         ParseEvent(
@@ -84,6 +90,18 @@ abstract class SourceFeatureFileExecute {
                 note: feature.note != null ? "${feature.note} $note" : note,
               );
             }
+            break;
+          case FeatureAminoacidSequenceModel:
+            {
+              final aminoacidSequence =
+                  (featureData as FeatureAminoacidSequenceModel).aminoacidSequence;
+              feature = feature.copyWith(
+                aminoacids: feature.aminoacids != null
+                    ? "${feature.aminoacids}$aminoacidSequence"
+                    : aminoacidSequence,
+              );
+            }
+            break;
         }
       });
       _restartEvents();
@@ -108,4 +126,8 @@ abstract class SourceFeatureFileExecute {
   FeatureIdentifierPositionsModel getLocations(String featureLocation, String locationPattern);
   FeatureProductModel getProduct(String featureProduct, String productPattern);
   FeatureNoteModel getNote(String featureNote, String notePattern);
+  FeatureAminoacidSequenceModel getAminoacidSequence(
+    String featureAminoacidSequence,
+    String aminoacidSequencePattern,
+  );
 }

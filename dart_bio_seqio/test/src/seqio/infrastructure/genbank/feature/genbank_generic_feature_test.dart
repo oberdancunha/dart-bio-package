@@ -16,7 +16,7 @@ void main() {
       productPattern = r'^\s{21}\/product\=\"(.+)\"?$';
     });
 
-    test('Should throw FileDataFormatException when product description is not found', () {
+    test('Should throw FileDataFormatException when product description is not in pattern', () {
       const featureProduct = '                     /product=';
       final productCall = genbankGenericFeature.getData;
       expect(
@@ -40,7 +40,7 @@ void main() {
       notePattern = r'^\s{21}\/note\=\"(.+)\"?$';
     });
 
-    test('Should throw FileDataFormatException when note is not found', () {
+    test('Should throw FileDataFormatException when note is not in pattern', () {
       const featureNote = '                     /note=Derived by automated computational analysis';
       final noteCall = genbankGenericFeature.getData;
       expect(
@@ -54,6 +54,29 @@ void main() {
           '                     /note="Derived by automated computational analysis"';
       final product = genbankGenericFeature.getData(featureNote, notePattern);
       expect(product, equals('Derived by automated computational analysis'));
+    });
+  });
+
+  group('Get aminoacid sequence |', () {
+    const aminoacidSequencePattern = r'^\s{21}\/translation\=\"(.+)\"?$';
+
+    test('Should throw FileDataFormatException when aminoacid sequence is not in pattern', () {
+      const featureAminoacidSequence = '                     /translation=MTQLQISLLLTATISLLHLVVATP';
+      final aminoacidSequenceCall = genbankGenericFeature.getData;
+      expect(
+        () => aminoacidSequenceCall(featureAminoacidSequence, aminoacidSequencePattern),
+        throwsA(isA<FileDataFormatException>()),
+      );
+    });
+
+    test('Should get aminoacid sequence', () {
+      const featureAminoacidSequence =
+          '                     /translation="MTQLQISLLLTATISLLHLVVATP"';
+      final aminoacidSequence = genbankGenericFeature.getData(
+        featureAminoacidSequence,
+        aminoacidSequencePattern,
+      );
+      expect(aminoacidSequence, equals('MTQLQISLLLTATISLLHLVVATP'));
     });
   });
 }
