@@ -13,6 +13,7 @@ List<String> featureDataMoreThanOneLine = [
   '                     /product="mannosyl-3-phosphoglycerate phosphatase-related',
   '                     protein"',
   '                     /protein_id="WP_000948794.1"',
+  '                     /gene="AXL2"',
   '                     /translation="MLSIHDPLLIFTDLDGTLLNSHTFEWQPAAPWLTRLHESGVPVI',
   '                     LCSSKTAAEMLQLQTTLNLQGLPLIAENGAVIQLDVHWEDHPNYPRLIAGISHNEIRL',
   '                     VLHKLREKEQFKFTTFDDVDDQVISEWTGLNRAQSALTRLHEASVSLIWRDSDERMAQ',

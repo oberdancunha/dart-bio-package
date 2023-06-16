@@ -73,6 +73,12 @@ void main() {
           );
         });
       });
+
+      group('Gene data |', () {
+        test('Should get gene data', () {
+          expect(locusFeatures.get(0).name, equals('AXL2'));
+        });
+      });
     });
   });
 }

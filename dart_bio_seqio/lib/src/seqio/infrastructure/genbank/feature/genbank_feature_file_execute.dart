@@ -1,4 +1,5 @@
 import '../../core/models/feature_aminoacid_sequence_model.dart';
+import '../../core/models/feature_gene_model.dart';
 import '../../core/models/feature_identifier_positions_model.dart';
 import '../../core/models/feature_note_model.dart';
 import '../../core/models/feature_product_model.dart';
@@ -40,6 +41,13 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
     );
 
     return FeatureAminoacidSequenceModel(aminoacidSequence: aminoacidSequence);
+  }
+
+  @override
+  FeatureGeneModel getGene(String featureGene, String genePattern) {
+    final gene = GenbankGenericFeature().getData(featureGene, genePattern);
+
+    return FeatureGeneModel(gene: gene);
   }
 
   @override

@@ -14,5 +14,8 @@ class GenbankFeatureFilePatterns implements SourceFeatureFilePatterns {
   String get aminoacidSequencePattern => r'^\s{21}\/translation\=\"(.+)\"?$';
 
   @override
+  String get genePattern => r'^\s{21}\/gene\=\"(.+)\"$';
+
+  @override
   String get recallLastEventPattern => r'^\s{21}((?!\/).+)\"?$';
 }

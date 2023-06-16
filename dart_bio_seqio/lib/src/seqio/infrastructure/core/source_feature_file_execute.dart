@@ -3,6 +3,7 @@ import 'package:dart_bio_core/parse_event.dart';
 
 import '../../domain/entities/genbank/feature.dart';
 import 'models/feature_aminoacid_sequence_model.dart';
+import 'models/feature_gene_model.dart';
 import 'models/feature_identifier_positions_model.dart';
 import 'models/feature_note_model.dart';
 import 'models/feature_product_model.dart';
@@ -32,6 +33,11 @@ abstract class SourceFeatureFileExecute {
           identifierPattern: sourceFeatureFilePatterns.aminoacidSequencePattern,
           action: getAminoacidSequence,
           isRecall: true,
+        ),
+        ParseEvent(
+          identifierPattern: sourceFeatureFilePatterns.genePattern,
+          action: getGene,
+          isRecall: false,
         ),
         ParseEvent(
           identifierPattern: sourceFeatureFilePatterns.recallLastEventPattern,
@@ -102,6 +108,14 @@ abstract class SourceFeatureFileExecute {
               );
             }
             break;
+          case FeatureGeneModel:
+            {
+              final gene = (featureData as FeatureGeneModel).gene;
+              feature = feature.copyWith(
+                name: gene,
+              );
+            }
+            break;
         }
       });
       _restartEvents();
@@ -130,4 +144,5 @@ abstract class SourceFeatureFileExecute {
     String featureAminoacidSequence,
     String aminoacidSequencePattern,
   );
+  FeatureGeneModel getGene(String featureGene, String genePattern);
 }

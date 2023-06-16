@@ -3,5 +3,6 @@ abstract class SourceFeatureFilePatterns {
   String get productPattern;
   String get notePattern;
   String get aminoacidSequencePattern;
+  String get genePattern;
   String get recallLastEventPattern;
 }

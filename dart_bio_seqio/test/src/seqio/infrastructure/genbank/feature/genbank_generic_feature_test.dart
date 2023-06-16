@@ -61,7 +61,7 @@ void main() {
     const aminoacidSequencePattern = r'^\s{21}\/translation\=\"(.+)\"?$';
 
     test('Should throw FileDataFormatException when aminoacid sequence is not in pattern', () {
-      const featureAminoacidSequence = '                     /translation=MTQLQISLLLTATISLLHLVVATP';
+      const featureAminoacidSequence = '                     /translation=MTQLQISLLLTATISLLHLVVAT';
       final aminoacidSequenceCall = genbankGenericFeature.getData;
       expect(
         () => aminoacidSequenceCall(featureAminoacidSequence, aminoacidSequencePattern),
@@ -70,13 +70,28 @@ void main() {
     });
 
     test('Should get aminoacid sequence', () {
-      const featureAminoacidSequence =
-          '                     /translation="MTQLQISLLLTATISLLHLVVATP"';
+      const featureAminoacidSequence = '                     /translation="MTQLQISLLLTATISLLHLVVA"';
       final aminoacidSequence = genbankGenericFeature.getData(
         featureAminoacidSequence,
         aminoacidSequencePattern,
       );
-      expect(aminoacidSequence, equals('MTQLQISLLLTATISLLHLVVATP'));
+      expect(aminoacidSequence, equals('MTQLQISLLLTATISLLHLVVA'));
+    });
+  });
+
+  group('Get gene |', () {
+    const genePattern = r'^\s{21}\/gene\=\"(.+)\"$';
+
+    test('Should throw FileDataFormatException when gene is not in pattern', () {
+      const featureGene = '                     /gene="AXL2';
+      final geneCall = genbankGenericFeature.getData;
+      expect(() => geneCall(featureGene, genePattern), throwsA(isA<FileDataFormatException>()));
+    });
+
+    test('Should get gene', () {
+      const featureGene = '                     /gene="AXL2"';
+      final gene = genbankGenericFeature.getData(featureGene, genePattern);
+      expect(gene, equals('AXL2'));
     });
   });
 }
