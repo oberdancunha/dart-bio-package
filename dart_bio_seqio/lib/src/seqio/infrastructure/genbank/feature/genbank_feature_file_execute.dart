@@ -13,19 +13,22 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
   GenbankFeatureFilePatterns get sourceFeatureFilePatterns => GenbankFeatureFilePatterns();
 
   @override
-  FeatureIdentifierPositionsModel getLocations(String featureLocation, String locationPattern) =>
-      GenbankFeatureLocation().pipelineLocation(featureLocation, locationPattern);
+  FeatureIdentifierPositionsModel getLocations(
+    String featureLocation,
+    String featureLocationPattern,
+  ) =>
+      GenbankFeatureLocation().pipelineLocation(featureLocation, featureLocationPattern);
 
   @override
-  FeatureProductModel getProduct(String featureProduct, String productPattern) {
-    final product = GenbankGenericFeature().getData(featureProduct, productPattern);
+  FeatureProductModel getProduct(String featureProduct, String featureProductPattern) {
+    final product = GenbankGenericFeature().getData(featureProduct, featureProductPattern);
 
     return FeatureProductModel(product: product);
   }
 
   @override
-  FeatureNoteModel getNote(String featureNote, String notePattern) {
-    final note = GenbankGenericFeature().getData(featureNote, notePattern);
+  FeatureNoteModel getNote(String featureNote, String featureNotePattern) {
+    final note = GenbankGenericFeature().getData(featureNote, featureNotePattern);
 
     return FeatureNoteModel(note: note);
   }
@@ -33,19 +36,19 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
   @override
   FeatureAminoacidSequenceModel getAminoacidSequence(
     String featureAminoacidSequence,
-    String aminoacidSequencePattern,
+    String featureAminoacidSequencePattern,
   ) {
     final aminoacidSequence = GenbankGenericFeature().getData(
       featureAminoacidSequence,
-      aminoacidSequencePattern,
+      featureAminoacidSequencePattern,
     );
 
     return FeatureAminoacidSequenceModel(aminoacidSequence: aminoacidSequence);
   }
 
   @override
-  FeatureGeneModel getGene(String featureGene, String genePattern) {
-    final gene = GenbankGenericFeature().getData(featureGene, genePattern);
+  FeatureGeneModel getGene(String featureGene, String featureGenePattern) {
+    final gene = GenbankGenericFeature().getData(featureGene, featureGenePattern);
 
     return FeatureGeneModel(gene: gene);
   }

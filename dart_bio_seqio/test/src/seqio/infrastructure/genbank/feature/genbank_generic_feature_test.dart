@@ -10,17 +10,17 @@ void main() {
   });
 
   group('Get product |', () {
-    late String productPattern;
+    late String featureProductPattern;
 
     setUpAll(() {
-      productPattern = r'^\s{21}\/product\=\"(.+)\"?$';
+      featureProductPattern = r'^\s{21}\/product\=\"(.+)\"?$';
     });
 
     test('Should throw FileDataFormatException when product description is not in pattern', () {
       const featureProduct = '                     /product=';
       final productCall = genbankGenericFeature.getData;
       expect(
-        () => productCall(featureProduct, productPattern),
+        () => productCall(featureProduct, featureProductPattern),
         throwsA(isA<FileDataFormatException>()),
       );
     });
@@ -28,23 +28,23 @@ void main() {
     test('Should get product description', () {
       const featureProduct =
           '                     /product="flagella biosynthesis regulatory protein FliZ"';
-      final product = genbankGenericFeature.getData(featureProduct, productPattern);
+      final product = genbankGenericFeature.getData(featureProduct, featureProductPattern);
       expect(product, equals('flagella biosynthesis regulatory protein FliZ'));
     });
   });
 
   group('Get note |', () {
-    late String notePattern;
+    late String featureNotePattern;
 
     setUpAll(() {
-      notePattern = r'^\s{21}\/note\=\"(.+)\"?$';
+      featureNotePattern = r'^\s{21}\/note\=\"(.+)\"?$';
     });
 
     test('Should throw FileDataFormatException when note is not in pattern', () {
       const featureNote = '                     /note=Derived by automated computational analysis';
       final noteCall = genbankGenericFeature.getData;
       expect(
-        () => noteCall(featureNote, notePattern),
+        () => noteCall(featureNote, featureNotePattern),
         throwsA(isA<FileDataFormatException>()),
       );
     });
@@ -52,19 +52,19 @@ void main() {
     test('Should get note description', () {
       const featureNote =
           '                     /note="Derived by automated computational analysis"';
-      final product = genbankGenericFeature.getData(featureNote, notePattern);
+      final product = genbankGenericFeature.getData(featureNote, featureNotePattern);
       expect(product, equals('Derived by automated computational analysis'));
     });
   });
 
   group('Get aminoacid sequence |', () {
-    const aminoacidSequencePattern = r'^\s{21}\/translation\=\"(.+)\"?$';
+    const featureAminoacidSequencePattern = r'^\s{21}\/translation\=\"(.+)\"?$';
 
     test('Should throw FileDataFormatException when aminoacid sequence is not in pattern', () {
       const featureAminoacidSequence = '                     /translation=MTQLQISLLLTATISLLHLVVAT';
       final aminoacidSequenceCall = genbankGenericFeature.getData;
       expect(
-        () => aminoacidSequenceCall(featureAminoacidSequence, aminoacidSequencePattern),
+        () => aminoacidSequenceCall(featureAminoacidSequence, featureAminoacidSequencePattern),
         throwsA(isA<FileDataFormatException>()),
       );
     });
@@ -73,24 +73,27 @@ void main() {
       const featureAminoacidSequence = '                     /translation="MTQLQISLLLTATISLLHLVVA"';
       final aminoacidSequence = genbankGenericFeature.getData(
         featureAminoacidSequence,
-        aminoacidSequencePattern,
+        featureAminoacidSequencePattern,
       );
       expect(aminoacidSequence, equals('MTQLQISLLLTATISLLHLVVA'));
     });
   });
 
   group('Get gene |', () {
-    const genePattern = r'^\s{21}\/gene\=\"(.+)\"$';
+    const featureGenePattern = r'^\s{21}\/gene\=\"(.+)\"$';
 
     test('Should throw FileDataFormatException when gene is not in pattern', () {
       const featureGene = '                     /gene="AXL2';
       final geneCall = genbankGenericFeature.getData;
-      expect(() => geneCall(featureGene, genePattern), throwsA(isA<FileDataFormatException>()));
+      expect(
+        () => geneCall(featureGene, featureGenePattern),
+        throwsA(isA<FileDataFormatException>()),
+      );
     });
 
     test('Should get gene', () {
       const featureGene = '                     /gene="AXL2"';
-      final gene = genbankGenericFeature.getData(featureGene, genePattern);
+      final gene = genbankGenericFeature.getData(featureGene, featureGenePattern);
       expect(gene, equals('AXL2'));
     });
   });

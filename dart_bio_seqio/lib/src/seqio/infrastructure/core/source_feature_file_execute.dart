@@ -137,12 +137,15 @@ abstract class SourceFeatureFileExecute {
 
   bool isNextFeature(String value);
   SourceFeatureFilePatterns get sourceFeatureFilePatterns;
-  FeatureIdentifierPositionsModel getLocations(String featureLocation, String locationPattern);
-  FeatureProductModel getProduct(String featureProduct, String productPattern);
-  FeatureNoteModel getNote(String featureNote, String notePattern);
+  FeatureIdentifierPositionsModel getLocations(
+    String featureLocation,
+    String featureLocationPattern,
+  );
+  FeatureProductModel getProduct(String featureProduct, String featureProductPattern);
+  FeatureNoteModel getNote(String featureNote, String featureNotePattern);
   FeatureAminoacidSequenceModel getAminoacidSequence(
     String featureAminoacidSequence,
-    String aminoacidSequencePattern,
+    String featureAminoacidSequencePattern,
   );
-  FeatureGeneModel getGene(String featureGene, String genePattern);
+  FeatureGeneModel getGene(String featureGene, String featureGenePattern);
 }

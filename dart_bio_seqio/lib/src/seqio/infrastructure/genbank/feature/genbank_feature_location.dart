@@ -6,8 +6,11 @@ import '../../core/models/feature_location_model.dart';
 import '../../core/models/feature_positions_model.dart';
 
 class GenbankFeatureLocation {
-  FeatureIdentifierPositionsModel pipelineLocation(String featureLocation, String locationPattern) {
-    final nameAndLocation = getNameAndLocation(featureLocation, locationPattern);
+  FeatureIdentifierPositionsModel pipelineLocation(
+    String featureLocation,
+    String featureLocationPattern,
+  ) {
+    final nameAndLocation = getNameAndLocation(featureLocation, featureLocationPattern);
     final featurePositions = getPositionsAndStrand(nameAndLocation.location);
 
     return FeatureIdentifierPositionsModel(
@@ -16,8 +19,8 @@ class GenbankFeatureLocation {
     );
   }
 
-  FeatureLocationModel getNameAndLocation(String featureLocation, String locationPattern) {
-    final locationPatternRegExp = RegExp(locationPattern);
+  FeatureLocationModel getNameAndLocation(String featureLocation, String featureLocationPattern) {
+    final locationPatternRegExp = RegExp(featureLocationPattern);
     final matchLocation = locationPatternRegExp.firstMatch(featureLocation);
     if (matchLocation != null) {
       return FeatureLocationModel(
