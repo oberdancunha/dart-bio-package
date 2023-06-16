@@ -1,4 +1,4 @@
-import 'feature_positions.dart';
+import 'feature_positions_model.dart';
 
 class FeatureIdentifierPositionsModel {
   final String identifier;
