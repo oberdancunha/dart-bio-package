@@ -1,4 +1,5 @@
 import '../../core/models/feature_aminoacid_sequence_model.dart';
+import '../../core/models/feature_codon_start_model.dart';
 import '../../core/models/feature_gene_model.dart';
 import '../../core/models/feature_identifier_positions_model.dart';
 import '../../core/models/feature_note_model.dart';
@@ -51,6 +52,13 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
     final gene = GenbankGenericFeature().getData(featureGene, featureGenePattern);
 
     return FeatureGeneModel(gene: gene);
+  }
+
+  @override
+  FeatureCodonStartModel getCodonStart(String featureCodonStart, String featureCodonStartPattern) {
+    final codonStart = GenbankGenericFeature().getData(featureCodonStart, featureCodonStartPattern);
+
+    return FeatureCodonStartModel(codonStart: int.parse(codonStart));
   }
 
   @override

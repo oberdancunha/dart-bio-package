@@ -20,6 +20,7 @@ void main() {
     expect(locusFeatures.get(2).positions.elementAt(0).end, equals(206));
     expect(locusFeatures.get(2).strand, equals(0));
     expect(locusFeatures.get(2).product, equals('TCP1-beta'));
+    expect(locusFeatures.get(2).codonStart, equals(3));
     expect(
       locusFeatures.get(2).aminoacids,
       equals('SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM'),
@@ -77,6 +78,12 @@ void main() {
       group('Gene data |', () {
         test('Should get gene data', () {
           expect(locusFeatures.get(0).name, equals('AXL2'));
+        });
+      });
+
+      group('Get codon start data |', () {
+        test('Should get codon start data', () {
+          expect(locusFeatures.get(0).codonStart, equals(1));
         });
       });
     });

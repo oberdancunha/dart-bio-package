@@ -104,8 +104,8 @@ KtList<Feature> getLocusFeatures() => KtList.of(
         product: 'Flo11p',
         note:
             'cell wall protein involved in adhesive cell-cell interactions during yeast cell-substrate adhesion, haploid invasive growth, flocculation, diploid pseudohyphae formation and biofilm (flor) development',
+        codonStart: 1,
         features: KtList.of(
-          {'codon_start': 1},
           {'protein_id': 'ANX99850.1'},
         ),
         aminoacids:

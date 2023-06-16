@@ -12,6 +12,7 @@ class Feature extends Equatable {
   final String? nucleotides;
   final String? aminoacids;
   final String? product;
+  final int? codonStart;
   final KtList<Map<String, dynamic>>? features;
 
   const Feature({
@@ -24,6 +25,7 @@ class Feature extends Equatable {
     this.aminoacids,
     this.product,
     this.features,
+    this.codonStart,
   });
 
   @override
@@ -36,6 +38,7 @@ class Feature extends Equatable {
         nucleotides,
         aminoacids,
         product,
+        codonStart,
         features,
       ];
 
@@ -48,6 +51,7 @@ class Feature extends Equatable {
     String? nucleotides,
     String? aminoacids,
     String? product,
+    int? codonStart,
     KtList<Map<String, dynamic>>? features,
   }) =>
       Feature(
@@ -59,6 +63,7 @@ class Feature extends Equatable {
         nucleotides: nucleotides ?? this.nucleotides,
         aminoacids: aminoacids ?? this.aminoacids,
         product: product ?? this.product,
+        codonStart: codonStart ?? this.codonStart,
         features: features ?? this.features,
       );
 }

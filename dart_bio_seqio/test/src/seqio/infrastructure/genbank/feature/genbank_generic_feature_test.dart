@@ -97,4 +97,23 @@ void main() {
       expect(gene, equals('AXL2'));
     });
   });
+
+  group('Get codon start |', () {
+    const featureCodonStartPattern = r'^\s{21}\/codon_start\=(\d{1})$';
+
+    test('Should throw FileDataFormatException when codon start is not in pattern', () {
+      const featureCodonStart = '                     /codon_start="3"';
+      final codonStartCall = genbankGenericFeature.getData;
+      expect(
+        () => codonStartCall(featureCodonStart, featureCodonStartPattern),
+        throwsA(isA<FileDataFormatException>()),
+      );
+    });
+
+    test('Should get codon start', () {
+      const featureCodonStart = '                     /codon_start=3';
+      final codonStart = genbankGenericFeature.getData(featureCodonStart, featureCodonStartPattern);
+      expect(codonStart, equals("3"));
+    });
+  });
 }
