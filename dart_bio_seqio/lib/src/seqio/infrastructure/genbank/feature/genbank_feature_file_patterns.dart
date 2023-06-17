@@ -20,5 +20,9 @@ class GenbankFeatureFilePatterns implements SourceFeatureFilePatterns {
   String get codonStartPattern => r'^\s{21}\/codon_start\=(\d{1})$';
 
   @override
+  String get anotherFeaturesPattern =>
+      r'^\s{21}\/((?!product)(?!note)(?!translation)(?!gene)(?!codon_start).+)\=(.+)$';
+
+  @override
   String get recallLastEventPattern => r'^\s{21}((?!\/).+)\"?$';
 }

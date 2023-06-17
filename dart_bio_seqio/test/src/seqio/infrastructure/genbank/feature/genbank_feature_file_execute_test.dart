@@ -12,4 +12,18 @@ void main() {
     const featureLocation = "     source          1..5028";
     genbankFeatureFileExecute.callActionByPattern(featureLocation);
   });
+
+  group('getAnother function |', () {
+    test('Should call getData function when another feature is continuous on another line', () {
+      const recallLastEventPattern = r'^\s{21}((?!\/).+)\"?$';
+      const featureAnother = '                     sequence:RefSeq:NP_460937.1"';
+      final data = genbankFeatureFileExecute.getAnother(featureAnother, recallLastEventPattern);
+      expect(
+        data.another,
+        equals(
+          {'another': "sequence:RefSeq:NP_460937.1"},
+        ),
+      );
+    });
+  });
 }

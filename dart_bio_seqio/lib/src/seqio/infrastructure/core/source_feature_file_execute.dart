@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_dynamic_calls
 import 'package:dart_bio_core/parse_event.dart';
+import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/feature.dart';
 import 'models/feature_aminoacid_sequence_model.dart';
+import 'models/feature_another_model.dart';
 import 'models/feature_codon_start_model.dart';
 import 'models/feature_gene_model.dart';
 import 'models/feature_identifier_positions_model.dart';
@@ -44,6 +46,11 @@ abstract class SourceFeatureFileExecute {
           identifierPattern: sourceFeatureFilePatterns.codonStartPattern,
           action: getCodonStart,
           isRecall: false,
+        ),
+        ParseEvent(
+          identifierPattern: sourceFeatureFilePatterns.anotherFeaturesPattern,
+          action: getAnother,
+          isRecall: true,
         ),
         ParseEvent(
           identifierPattern: sourceFeatureFilePatterns.recallLastEventPattern,
@@ -130,6 +137,25 @@ abstract class SourceFeatureFileExecute {
               );
             }
             break;
+          case FeatureAnotherModel:
+            {
+              final another = (featureData as FeatureAnotherModel).another;
+              final featuresAnother = feature.features != null
+                  ? feature.features!.toMutableList().asList()
+                  : <Map<String, dynamic>>[];
+              if (another.containsKey('another')) {
+                final existsFeature = featuresAnother.last;
+                existsFeature.keys.forEach((feature) {
+                  featuresAnother.last[feature] += " ${another['another']}";
+                });
+              } else {
+                featuresAnother.add(another);
+              }
+              feature = feature.copyWith(
+                features: featuresAnother.toImmutableList(),
+              );
+            }
+            break;
         }
       });
       _restartEvents();
@@ -163,4 +189,5 @@ abstract class SourceFeatureFileExecute {
   );
   FeatureGeneModel getGene(String featureGene, String featureGenePattern);
   FeatureCodonStartModel getCodonStart(String featureCodonStart, String featureCodonStartPattern);
+  FeatureAnotherModel getAnother(String featureAnother, String featuresAnotherPattern);
 }

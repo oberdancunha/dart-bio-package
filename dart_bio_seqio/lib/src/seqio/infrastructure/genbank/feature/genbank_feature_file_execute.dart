@@ -1,4 +1,9 @@
+// ignore_for_file: avoid_catching_errors
+
+import 'package:dart_bio_core/exceptions.dart';
+
 import '../../core/models/feature_aminoacid_sequence_model.dart';
+import '../../core/models/feature_another_model.dart';
 import '../../core/models/feature_codon_start_model.dart';
 import '../../core/models/feature_gene_model.dart';
 import '../../core/models/feature_identifier_positions_model.dart';
@@ -59,6 +64,26 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
     final codonStart = GenbankGenericFeature().getData(featureCodonStart, featureCodonStartPattern);
 
     return FeatureCodonStartModel(codonStart: int.parse(codonStart));
+  }
+
+  @override
+  FeatureAnotherModel getAnother(String featureAnother, String featuresAnotherPattern) {
+    final genbankGenericFeature = GenbankGenericFeature();
+    try {
+      final another = genbankGenericFeature.getMapAnotherData(
+        featureAnother,
+        featuresAnotherPattern,
+      );
+
+      return FeatureAnotherModel(another: another);
+    } on FileDataFormatException catch (_) {
+      final data = genbankGenericFeature.getData(
+        featureAnother,
+        featuresAnotherPattern,
+      );
+
+      return FeatureAnotherModel(another: {'another': data});
+    }
   }
 
   @override

@@ -5,5 +5,6 @@ abstract class SourceFeatureFilePatterns {
   String get aminoacidSequencePattern;
   String get genePattern;
   String get codonStartPattern;
+  String get anotherFeaturesPattern;
   String get recallLastEventPattern;
 }

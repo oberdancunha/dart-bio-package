@@ -116,4 +116,33 @@ void main() {
       expect(codonStart, equals("3"));
     });
   });
+
+  group('Get another |', () {
+    const featuresAnotherPattern =
+        r'^\s{21}\/((?!product)(?!note)(?!translation)(?!gene)(?!codon_start).+)\=(.+)$';
+
+    test(
+      'Should throw FileDataFormatException when not in pattern',
+      () {
+        const featureAnother = '                     /protein_id=';
+        final featureAnotherCall = genbankGenericFeature.getMapAnotherData;
+        expect(
+          () => featureAnotherCall(featureAnother, featuresAnotherPattern),
+          throwsA(isA<FileDataFormatException>()),
+        );
+      },
+    );
+
+    test(
+      'Should throw FileDataFormatException when a knowledge resource is found',
+      () {
+        const featureAnother = '                     /gene="AXL2"';
+        final featureAnotherCall = genbankGenericFeature.getMapAnotherData;
+        expect(
+          () => featureAnotherCall(featureAnother, featuresAnotherPattern),
+          throwsA(isA<FileDataFormatException>()),
+        );
+      },
+    );
+  });
 }
