@@ -81,13 +81,13 @@ abstract class SourceFeatureFileExecute {
 
   Feature? orchestrateParseEventsToRun(String value) {
     if ((isNextFeature(value) || _isFinishFeature(value)) && _parseEvents.isNotEmpty) {
-      late Feature feature;
+      var feature = Feature.init();
       _parseEvents.forEach((event) {
         final featureData = event.call();
         switch (featureData.runtimeType) {
           case FeatureIdentifierPositionsModel:
             {
-              feature = Feature(
+              feature = feature.copyWith(
                 type: (featureData as FeatureIdentifierPositionsModel).identifier,
                 positions: featureData.featurePositions.positions,
                 strand: featureData.featurePositions.strand,

@@ -42,6 +42,14 @@ class Feature extends Equatable {
         features,
       ];
 
+  factory Feature.init() => const Feature(
+        positions: [
+          LocationPosition(start: 0, end: 0),
+        ],
+        type: '',
+        strand: 0,
+      );
+
   Feature copyWith({
     List<LocationPosition>? positions,
     String? type,
