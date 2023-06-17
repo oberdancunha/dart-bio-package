@@ -139,20 +139,20 @@ abstract class SourceFeatureFileExecute {
             break;
           case FeatureAnotherModel:
             {
-              final another = (featureData as FeatureAnotherModel).another;
-              final featuresAnother = feature.features != null
+              final featureAnother = (featureData as FeatureAnotherModel).another;
+              final featuresAlreadyAdded = feature.features != null
                   ? feature.features!.toMutableList().asList()
                   : <Map<String, dynamic>>[];
-              if (another.containsKey('another')) {
-                final existsFeature = featuresAnother.last;
-                existsFeature.keys.forEach((feature) {
-                  featuresAnother.last[feature] += " ${another['another']}";
-                });
+              final isContinuationPreviousFeature =
+                  featureAnother.keys.first == 'continuation_previous_feature';
+              if (isContinuationPreviousFeature) {
+                final lastFeatureAddedKey = featuresAlreadyAdded.last.keys.elementAt(0);
+                featuresAlreadyAdded.last[lastFeatureAddedKey] += ' ${featureAnother.values.first}';
               } else {
-                featuresAnother.add(another);
+                featuresAlreadyAdded.add(featureAnother);
               }
               feature = feature.copyWith(
-                features: featuresAnother.toImmutableList(),
+                features: featuresAlreadyAdded.toImmutableList(),
               );
             }
             break;

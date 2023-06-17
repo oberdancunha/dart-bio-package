@@ -82,7 +82,7 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
         featuresAnotherPattern,
       );
 
-      return FeatureAnotherModel(another: {'another': data});
+      return FeatureAnotherModel(another: {'continuation_previous_feature': data});
     }
   }
 
