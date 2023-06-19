@@ -21,7 +21,7 @@ void main() {
       expect(
         data.another,
         equals(
-          {'another': "sequence:RefSeq:NP_460937.1"},
+          {'continuation_previous_feature': "sequence:RefSeq:NP_460937.1"},
         ),
       );
     });
