@@ -2,12 +2,15 @@
 
 import 'package:dart_bio_core/exceptions.dart';
 
+import '../../../domain/entities/genbank/location_position.dart';
+import '../../core/feature_sequence.dart';
 import '../../core/models/feature_aminoacid_sequence_model.dart';
 import '../../core/models/feature_another_model.dart';
 import '../../core/models/feature_codon_start_model.dart';
 import '../../core/models/feature_gene_model.dart';
 import '../../core/models/feature_identifier_positions_model.dart';
 import '../../core/models/feature_note_model.dart';
+import '../../core/models/feature_nucleotide_sequence_model.dart';
 import '../../core/models/feature_product_model.dart';
 import '../../core/source_feature_file_execute.dart';
 import 'genbank_feature_file_patterns.dart';
@@ -84,6 +87,25 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
 
       return FeatureAnotherModel(another: {'continuation_previous_feature': data});
     }
+  }
+
+  @override
+  FeatureNucleotideSequenceModel getNucleotideSequence({
+    required String type,
+    required int strand,
+    required List<LocationPosition> positions,
+    required int codonStart,
+    required List<String> originalNucleotideSequence,
+  }) {
+    final nucleotideSubSequence = FeatureSequence().getNucleotideSubSequence(
+      type: type,
+      strand: strand,
+      positions: positions,
+      codonStart: codonStart,
+      originalNucleotideSequence: originalNucleotideSequence,
+    );
+
+    return FeatureNucleotideSequenceModel(nucleotideSequence: nucleotideSubSequence);
   }
 
   @override

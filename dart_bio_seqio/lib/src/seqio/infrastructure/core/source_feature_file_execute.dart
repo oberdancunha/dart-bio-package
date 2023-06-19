@@ -3,12 +3,14 @@ import 'package:dart_bio_core/parse_event.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/feature.dart';
+import '../../domain/entities/genbank/location_position.dart';
 import 'models/feature_aminoacid_sequence_model.dart';
 import 'models/feature_another_model.dart';
 import 'models/feature_codon_start_model.dart';
 import 'models/feature_gene_model.dart';
 import 'models/feature_identifier_positions_model.dart';
 import 'models/feature_note_model.dart';
+import 'models/feature_nucleotide_sequence_model.dart';
 import 'models/feature_product_model.dart';
 import 'source_feature_file_patterns.dart';
 
@@ -79,7 +81,7 @@ abstract class SourceFeatureFileExecute {
     }
   }
 
-  Feature? orchestrateParseEventsToRun(String value) {
+  Feature? orchestrateParseEventsToRun(String value, List<String> locusSequence) {
     if ((isNextFeature(value) || _isFinishFeature(value)) && _parseEvents.isNotEmpty) {
       var feature = Feature.init();
       _parseEvents.forEach((event) {
@@ -158,6 +160,18 @@ abstract class SourceFeatureFileExecute {
             break;
         }
       });
+      if (locusSequence.isNotEmpty) {
+        final featureNucleotideSequence = getNucleotideSequence(
+          type: feature.type,
+          strand: feature.strand,
+          positions: feature.positions,
+          codonStart: feature.codonStart ?? 1,
+          originalNucleotideSequence: locusSequence,
+        );
+        feature = feature.copyWith(
+          nucleotides: featureNucleotideSequence.nucleotideSequence,
+        );
+      }
       _restartEvents();
 
       return feature;
@@ -190,4 +204,11 @@ abstract class SourceFeatureFileExecute {
   FeatureGeneModel getGene(String featureGene, String featureGenePattern);
   FeatureCodonStartModel getCodonStart(String featureCodonStart, String featureCodonStartPattern);
   FeatureAnotherModel getAnother(String featureAnother, String featuresAnotherPattern);
+  FeatureNucleotideSequenceModel getNucleotideSequence({
+    required String type,
+    required int strand,
+    required List<LocationPosition> positions,
+    required int codonStart,
+    required List<String> originalNucleotideSequence,
+  });
 }

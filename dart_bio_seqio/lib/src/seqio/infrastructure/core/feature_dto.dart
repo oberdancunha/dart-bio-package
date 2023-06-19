@@ -15,13 +15,14 @@ class FeatureDto {
     final featuresData = <Feature>[];
 
     features.forEach((feature) {
-      final featureData = _sourceFeatureFileExecute.orchestrateParseEventsToRun(feature);
+      final featureData =
+          _sourceFeatureFileExecute.orchestrateParseEventsToRun(feature, locusSequence);
       if (featureData != null) {
         featuresData.add(featureData);
       }
       _sourceFeatureFileExecute.callActionByPattern(feature);
     });
-    final featureData = _sourceFeatureFileExecute.orchestrateParseEventsToRun("");
+    final featureData = _sourceFeatureFileExecute.orchestrateParseEventsToRun("", locusSequence);
     if (featureData != null) {
       featuresData.add(featureData);
     }
