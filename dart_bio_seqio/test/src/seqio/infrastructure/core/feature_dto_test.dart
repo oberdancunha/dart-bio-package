@@ -11,7 +11,7 @@ import '../../../../data/genbank/feature_data_more_than_one_line.dart';
 
 void main() {
   group('From Genbank file |', () {
-    group('Whole dto object |', () {
+    group('Full object feature |', () {
       late FeatureDto featureDto;
 
       setUpAll(() {
@@ -25,7 +25,6 @@ void main() {
           features: locusFeaturesGenbank,
           locusSequence: formatGenbankLocusSequence(getGenbankLocusSequence().join()).split(''),
         );
-        // expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
         expect(locusFeatures.get(2).type, equals('CDS'));
         expect(locusFeatures.get(2).positions.elementAt(0).start, equals(1));
         expect(locusFeatures.get(2).positions.elementAt(0).end, equals(206));
@@ -50,6 +49,7 @@ void main() {
           locusFeatures.get(2).aminoacids,
           equals('SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM'),
         );
+        expect(locusFeatures.toString(), equals(locusFeaturesMocked.toString()));
       }
 
       test(
