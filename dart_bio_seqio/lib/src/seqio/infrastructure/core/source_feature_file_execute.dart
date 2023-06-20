@@ -15,8 +15,8 @@ import 'models/feature_product_model.dart';
 import 'source_feature_file_patterns.dart';
 
 abstract class SourceFeatureFileExecute {
-  var _parseEvents = <Function>[];
   Function? _lastEvent;
+  Feature _feature = Feature.init();
 
   List<ParseEvent> get patternsList => [
         ParseEvent(
@@ -61,14 +61,17 @@ abstract class SourceFeatureFileExecute {
       ];
 
   void callActionByPattern(String value) {
-    final eventsLength = _parseEvents.length;
     patternsList.forEach((pattern) {
       final regexPattern = RegExp(pattern.identifierPattern);
       if (regexPattern.hasMatch(value)) {
         final action = pattern.action ?? _lastEvent;
         if (action != null) {
-          _parseEvents.add(
-            () => action.call(value, pattern.identifierPattern),
+          orchestrateParseEventsToRun(
+            value,
+            () => action.call(
+              value,
+              pattern.identifierPattern,
+            ),
           );
           _lastEvent = pattern.isRecall ? action : null;
         }
@@ -76,117 +79,110 @@ abstract class SourceFeatureFileExecute {
         return;
       }
     });
-    if (_noEventAdded(eventsLength)) {
-      _lastEvent = null;
-    }
+
+    return;
   }
 
-  Feature? orchestrateParseEventsToRun(String value, List<String> locusSequence) {
-    if ((isNextFeature(value) || _isFinishFeature(value)) && _parseEvents.isNotEmpty) {
-      var feature = Feature.init();
-      _parseEvents.forEach((event) {
-        final featureData = event.call();
-        switch (featureData.runtimeType) {
-          case FeatureIdentifierPositionsModel:
-            {
-              feature = feature.copyWith(
-                type: (featureData as FeatureIdentifierPositionsModel).identifier,
-                positions: featureData.featurePositions.positions,
-                strand: featureData.featurePositions.strand,
-              );
-            }
-            break;
-          case FeatureProductModel:
-            {
-              final product = (featureData as FeatureProductModel).product;
-              feature = feature.copyWith(
-                product: feature.product != null ? "${feature.product} $product" : product,
-              );
-            }
-            break;
-          case FeatureNoteModel:
-            {
-              final note = (featureData as FeatureNoteModel).note;
-              feature = feature.copyWith(
-                note: feature.note != null ? "${feature.note} $note" : note,
-              );
-            }
-            break;
-          case FeatureAminoacidSequenceModel:
-            {
-              final aminoacidSequence =
-                  (featureData as FeatureAminoacidSequenceModel).aminoacidSequence;
-              feature = feature.copyWith(
-                aminoacids: feature.aminoacids != null
-                    ? "${feature.aminoacids}$aminoacidSequence"
-                    : aminoacidSequence,
-              );
-            }
-            break;
-          case FeatureGeneModel:
-            {
-              final gene = (featureData as FeatureGeneModel).gene;
-              feature = feature.copyWith(
-                name: gene,
-              );
-            }
-            break;
-          case FeatureCodonStartModel:
-            {
-              final codonStart = (featureData as FeatureCodonStartModel).codonStart;
-              feature = feature.copyWith(
-                codonStart: codonStart,
-              );
-            }
-            break;
-          case FeatureAnotherModel:
-            {
-              final featureAnother = (featureData as FeatureAnotherModel).another;
-              final featuresAlreadyAdded = feature.features != null
-                  ? feature.features!.toMutableList().asList()
-                  : <Map<String, dynamic>>[];
-              final isContinuationPreviousFeature =
-                  featureAnother.keys.first == 'continuation_previous_feature';
-              if (isContinuationPreviousFeature) {
-                final lastFeatureAddedKey = featuresAlreadyAdded.last.keys.elementAt(0);
-                featuresAlreadyAdded.last[lastFeatureAddedKey] += ' ${featureAnother.values.first}';
-              } else {
-                featuresAlreadyAdded.add(featureAnother);
-              }
-              feature = feature.copyWith(
-                features: featuresAlreadyAdded.toImmutableList(),
-              );
-            }
-            break;
+  void orchestrateParseEventsToRun(String value, Function callAction) {
+    final featureData = callAction();
+    switch (featureData.runtimeType) {
+      case FeatureIdentifierPositionsModel:
+        {
+          _feature = _feature.copyWith(
+            type: (featureData as FeatureIdentifierPositionsModel).identifier,
+            positions: featureData.featurePositions.positions,
+            strand: featureData.featurePositions.strand,
+          );
         }
-      });
-      if (locusSequence.isNotEmpty) {
-        final featureNucleotideSequence = getNucleotideSequence(
-          type: feature.type,
-          strand: feature.strand,
-          positions: feature.positions,
-          codonStart: feature.codonStart ?? 1,
-          originalNucleotideSequence: locusSequence,
-        );
-        feature = feature.copyWith(
-          nucleotides: featureNucleotideSequence.nucleotideSequence,
-        );
-      }
-      _restartEvents();
-
-      return feature;
+        break;
+      case FeatureProductModel:
+        {
+          final product = (featureData as FeatureProductModel).product;
+          _feature = _feature.copyWith(
+            product: _feature.product != null ? "${_feature.product} $product" : product,
+          );
+        }
+        break;
+      case FeatureNoteModel:
+        {
+          final note = (featureData as FeatureNoteModel).note;
+          _feature = _feature.copyWith(
+            note: _feature.note != null ? "${_feature.note} $note" : note,
+          );
+        }
+        break;
+      case FeatureAminoacidSequenceModel:
+        {
+          final aminoacidSequence =
+              (featureData as FeatureAminoacidSequenceModel).aminoacidSequence;
+          _feature = _feature.copyWith(
+            aminoacids: _feature.aminoacids != null
+                ? "${_feature.aminoacids}$aminoacidSequence"
+                : aminoacidSequence,
+          );
+        }
+        break;
+      case FeatureGeneModel:
+        {
+          final gene = (featureData as FeatureGeneModel).gene;
+          _feature = _feature.copyWith(
+            name: gene,
+          );
+        }
+        break;
+      case FeatureCodonStartModel:
+        {
+          final codonStart = (featureData as FeatureCodonStartModel).codonStart;
+          _feature = _feature.copyWith(
+            codonStart: codonStart,
+          );
+        }
+        break;
+      case FeatureAnotherModel:
+        {
+          final featureAnother = (featureData as FeatureAnotherModel).another;
+          final featuresAlreadyAdded = _feature.features != null
+              ? _feature.features!.toMutableList().asList()
+              : <Map<String, dynamic>>[];
+          final isContinuationPreviousFeature =
+              featureAnother.keys.first == 'continuation_previous_feature';
+          if (isContinuationPreviousFeature) {
+            final lastFeatureAddedKey = featuresAlreadyAdded.last.keys.elementAt(0);
+            featuresAlreadyAdded.last[lastFeatureAddedKey] += ' ${featureAnother.values.first}';
+          } else {
+            featuresAlreadyAdded.add(featureAnother);
+          }
+          _feature = _feature.copyWith(
+            features: featuresAlreadyAdded.toImmutableList(),
+          );
+        }
+        break;
     }
 
-    return null;
+    return;
   }
+
+  void parseNucleotide(List<String> locusSequence) {
+    if (locusSequence.isNotEmpty) {
+      final featureNucleotideSequence = getNucleotideSequence(
+        type: _feature.type,
+        strand: _feature.strand,
+        positions: _feature.positions,
+        codonStart: _feature.codonStart ?? 1,
+        originalNucleotideSequence: locusSequence,
+      );
+      _feature = _feature.copyWith(
+        nucleotides: featureNucleotideSequence.nucleotideSequence,
+      );
+    }
+  }
+
+  Feature get featureData => _feature;
 
   bool _isFinishFeature(value) => value == "";
 
-  bool _noEventAdded(int eventsLength) => eventsLength == _parseEvents.length;
-
-  void _restartEvents() {
-    _parseEvents = <Function>[];
-    _lastEvent = null;
+  void initFeature() {
+    _feature = Feature.init();
   }
 
   bool isNextFeature(String value);
