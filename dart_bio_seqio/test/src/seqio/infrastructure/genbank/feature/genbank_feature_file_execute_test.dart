@@ -10,7 +10,12 @@ void main() {
 
   test('Should verify genbank pattern line', () {
     const featureLocation = "     source          1..5028";
-    genbankFeatureFileExecute.callActionByPattern(featureLocation);
+    genbankFeatureFileExecute.identifyActionByPattern(
+      currentFeature: featureLocation,
+      isNextFeature: true,
+      isFinishFeature: true,
+      locusSequence: [],
+    );
   });
 
   group('getAnother function |', () {

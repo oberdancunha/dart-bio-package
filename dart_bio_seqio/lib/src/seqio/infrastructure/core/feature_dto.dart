@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/feature.dart';
@@ -14,19 +15,27 @@ class FeatureDto {
   }) {
     final featuresData = <Feature>[];
 
-    features.forEach((feature) {
-      if (_sourceFeatureFileExecute.isNextFeature(feature) &&
-          _sourceFeatureFileExecute.featureData.positions.elementAt(0).start > 0) {
-        _sourceFeatureFileExecute.parseNucleotide(locusSequence);
+    for (var featureLine = 0; featureLine < features.length; featureLine++) {
+      final feature = features.elementAt(featureLine);
+      if (_sourceFeatureFileExecute.isNextFeature(feature)) {
         featuresData.add(_sourceFeatureFileExecute.featureData);
         _sourceFeatureFileExecute.initFeature();
       }
-      _sourceFeatureFileExecute.callActionByPattern(feature);
-    });
-    _sourceFeatureFileExecute
-      ..callActionByPattern("")
-      ..parseNucleotide(locusSequence);
+      final isFinishFeature = featureLine + 1 == features.length;
+      final isNextLineNewFeature = isFinishFeature
+          ? false
+          : _sourceFeatureFileExecute.isNextFeature(
+              features.elementAt(featureLine + 1),
+            );
+      _sourceFeatureFileExecute.identifyActionByPattern(
+        currentFeature: feature,
+        isNextFeature: isNextLineNewFeature,
+        isFinishFeature: isFinishFeature,
+        locusSequence: locusSequence,
+      );
+    }
     featuresData.add(_sourceFeatureFileExecute.featureData);
+    _sourceFeatureFileExecute.initFeature();
 
     return featuresData.toImmutableList();
   }

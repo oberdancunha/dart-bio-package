@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_dynamic_calls
 import 'package:dart_bio_core/parse_event.dart';
-import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/feature.dart';
 import '../../domain/entities/genbank/location_position.dart';
@@ -9,6 +8,7 @@ import 'models/feature_another_model.dart';
 import 'models/feature_codon_start_model.dart';
 import 'models/feature_gene_model.dart';
 import 'models/feature_identifier_positions_model.dart';
+import 'models/feature_model.dart';
 import 'models/feature_note_model.dart';
 import 'models/feature_nucleotide_sequence_model.dart';
 import 'models/feature_product_model.dart';
@@ -60,16 +60,20 @@ abstract class SourceFeatureFileExecute {
         ),
       ];
 
-  void callActionByPattern(String value) {
+  void identifyActionByPattern({
+    required String currentFeature,
+    required bool isNextFeature,
+    required bool isFinishFeature,
+    required List<String> locusSequence,
+  }) {
     patternsList.forEach((pattern) {
       final regexPattern = RegExp(pattern.identifierPattern);
-      if (regexPattern.hasMatch(value)) {
+      if (regexPattern.hasMatch(currentFeature)) {
         final action = pattern.action ?? _lastEvent;
         if (action != null) {
-          orchestrateParseEventsToRun(
-            value,
+          runParseAction(
             () => action.call(
-              value,
+              currentFeature,
               pattern.identifierPattern,
             ),
           );
@@ -79,107 +83,31 @@ abstract class SourceFeatureFileExecute {
         return;
       }
     });
-
-    return;
-  }
-
-  void orchestrateParseEventsToRun(String value, Function callAction) {
-    final featureData = callAction();
-    switch (featureData.runtimeType) {
-      case FeatureIdentifierPositionsModel:
-        {
-          _feature = _feature.copyWith(
-            type: (featureData as FeatureIdentifierPositionsModel).identifier,
-            positions: featureData.featurePositions.positions,
-            strand: featureData.featurePositions.strand,
-          );
-        }
-        break;
-      case FeatureProductModel:
-        {
-          final product = (featureData as FeatureProductModel).product;
-          _feature = _feature.copyWith(
-            product: _feature.product != null ? "${_feature.product} $product" : product,
-          );
-        }
-        break;
-      case FeatureNoteModel:
-        {
-          final note = (featureData as FeatureNoteModel).note;
-          _feature = _feature.copyWith(
-            note: _feature.note != null ? "${_feature.note} $note" : note,
-          );
-        }
-        break;
-      case FeatureAminoacidSequenceModel:
-        {
-          final aminoacidSequence =
-              (featureData as FeatureAminoacidSequenceModel).aminoacidSequence;
-          _feature = _feature.copyWith(
-            aminoacids: _feature.aminoacids != null
-                ? "${_feature.aminoacids}$aminoacidSequence"
-                : aminoacidSequence,
-          );
-        }
-        break;
-      case FeatureGeneModel:
-        {
-          final gene = (featureData as FeatureGeneModel).gene;
-          _feature = _feature.copyWith(
-            name: gene,
-          );
-        }
-        break;
-      case FeatureCodonStartModel:
-        {
-          final codonStart = (featureData as FeatureCodonStartModel).codonStart;
-          _feature = _feature.copyWith(
-            codonStart: codonStart,
-          );
-        }
-        break;
-      case FeatureAnotherModel:
-        {
-          final featureAnother = (featureData as FeatureAnotherModel).another;
-          final featuresAlreadyAdded = _feature.features != null
-              ? _feature.features!.toMutableList().asList()
-              : <Map<String, dynamic>>[];
-          final isContinuationPreviousFeature =
-              featureAnother.keys.first == 'continuation_previous_feature';
-          if (isContinuationPreviousFeature) {
-            final lastFeatureAddedKey = featuresAlreadyAdded.last.keys.elementAt(0);
-            featuresAlreadyAdded.last[lastFeatureAddedKey] += ' ${featureAnother.values.first}';
-          } else {
-            featuresAlreadyAdded.add(featureAnother);
-          }
-          _feature = _feature.copyWith(
-            features: featuresAlreadyAdded.toImmutableList(),
-          );
-        }
-        break;
+    if (isNextFeature || isFinishFeature) {
+      if (locusSequence.isNotEmpty) {
+        runParseAction(
+          () => getNucleotideSequence(
+            type: _feature.type,
+            strand: _feature.strand,
+            positions: _feature.positions,
+            codonStart: _feature.codonStart ?? 1,
+            originalNucleotideSequence: locusSequence,
+          ),
+        );
+      }
     }
 
     return;
   }
 
-  void parseNucleotide(List<String> locusSequence) {
-    if (locusSequence.isNotEmpty) {
-      final featureNucleotideSequence = getNucleotideSequence(
-        type: _feature.type,
-        strand: _feature.strand,
-        positions: _feature.positions,
-        codonStart: _feature.codonStart ?? 1,
-        originalNucleotideSequence: locusSequence,
-      );
-      _feature = _feature.copyWith(
-        nucleotides: featureNucleotideSequence.nucleotideSequence,
-      );
-    }
+  void runParseAction(Function callAction) {
+    final featureData = callAction() as FeatureModel;
+    _feature = featureData.toDomain(_feature);
+
+    return;
   }
 
   Feature get featureData => _feature;
-
-  bool _isFinishFeature(value) => value == "";
 
   void initFeature() {
     _feature = Feature.init();

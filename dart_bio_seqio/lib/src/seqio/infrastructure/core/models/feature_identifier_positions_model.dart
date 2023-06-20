@@ -1,6 +1,8 @@
+import '../../../domain/entities/genbank/feature.dart';
+import 'feature_model.dart';
 import 'feature_positions_model.dart';
 
-class FeatureIdentifierPositionsModel {
+class FeatureIdentifierPositionsModel implements FeatureModel {
   final String identifier;
   final FeaturePositionsModel featurePositions;
 
@@ -8,4 +10,11 @@ class FeatureIdentifierPositionsModel {
     required this.identifier,
     required this.featurePositions,
   });
+
+  @override
+  Feature toDomain(Feature feature) => feature.copyWith(
+        type: identifier,
+        positions: featurePositions.positions,
+        strand: featurePositions.strand,
+      );
 }

@@ -113,6 +113,6 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
     final locationPattern = sourceFeatureFilePatterns.locationPattern;
     final locationMatch = RegExp(locationPattern);
 
-    return locationMatch.hasMatch(value);
+    return locationMatch.hasMatch(value) && featureData.positions.elementAt(0).start > 0;
   }
 }
