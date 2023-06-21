@@ -1,4 +1,4 @@
-import '../../../domain/entities/feature.dart';
+import '../../../../domain/entities/feature.dart';
 import 'feature_model.dart';
 
 class FeatureNucleotideSequenceModel implements FeatureModel {

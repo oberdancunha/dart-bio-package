@@ -2,15 +2,15 @@
 
 import 'package:dart_bio_core/exceptions.dart';
 
-import '../../core/feature_file_execute.dart';
-import '../../core/feature_pattern_data.dart';
-import '../../core/models/feature_aminoacid_sequence_model.dart';
-import '../../core/models/feature_another_model.dart';
-import '../../core/models/feature_codon_start_model.dart';
-import '../../core/models/feature_gene_model.dart';
-import '../../core/models/feature_identifier_positions_model.dart';
-import '../../core/models/feature_note_model.dart';
-import '../../core/models/feature_product_model.dart';
+import '../../core/feature/feature_file_execute.dart';
+import '../../core/feature/feature_pattern_data.dart';
+import '../../core/feature/models/feature_aminoacid_sequence_model.dart';
+import '../../core/feature/models/feature_another_model.dart';
+import '../../core/feature/models/feature_codon_start_model.dart';
+import '../../core/feature/models/feature_gene_model.dart';
+import '../../core/feature/models/feature_identifier_positions_model.dart';
+import '../../core/feature/models/feature_note_model.dart';
+import '../../core/feature/models/feature_product_model.dart';
 import 'genbank_feature_file_patterns.dart';
 import 'genbank_feature_location.dart';
 

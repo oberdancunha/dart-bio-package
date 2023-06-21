@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_bool_literals_in_conditional_expressions
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-import '../../domain/entities/feature.dart';
+import '../../../domain/entities/feature.dart';
 import 'feature_file_execute.dart';
 
 class FeatureDto {

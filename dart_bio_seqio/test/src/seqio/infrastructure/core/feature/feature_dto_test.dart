@@ -1,13 +1,13 @@
 import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/feature.dart';
-import 'package:dart_bio_seqio/src/seqio/infrastructure/core/feature_dto.dart';
+import 'package:dart_bio_seqio/src/seqio/infrastructure/core/feature/feature_dto.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/feature/genbank_feature_file_execute.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../data/genbank/SCU49845/SCU49845_genbank_data.dart';
-import '../../../../data/genbank/SCU49845/SCU49845_genbank_original_format_data.dart';
-import '../../../../data/genbank/feature_data_more_than_one_line.dart';
+import '../../../../../data/genbank/SCU49845/SCU49845_genbank_data.dart';
+import '../../../../../data/genbank/SCU49845/SCU49845_genbank_original_format_data.dart';
+import '../../../../../data/genbank/feature_data_more_than_one_line.dart';
 
 void main() {
   group('From Genbank file |', () {

@@ -1,9 +1,9 @@
 import 'package:dart_bio_core/exceptions.dart';
 
 import '../../../domain/entities/location_position.dart';
-import '../../core/models/feature_identifier_positions_model.dart';
-import '../../core/models/feature_location_model.dart';
-import '../../core/models/feature_positions_model.dart';
+import '../../core/feature/models/feature_identifier_positions_model.dart';
+import '../../core/feature/models/feature_location_model.dart';
+import '../../core/feature/models/feature_positions_model.dart';
 
 class GenbankFeatureLocation {
   FeatureIdentifierPositionsModel pipelineLocation(

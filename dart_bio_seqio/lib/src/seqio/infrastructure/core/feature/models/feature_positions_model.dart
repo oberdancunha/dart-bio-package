@@ -1,4 +1,4 @@
-import '../../../domain/entities/location_position.dart';
+import '../../../../domain/entities/location_position.dart';
 
 class FeaturePositionsModel {
   final List<LocationPosition> positions;

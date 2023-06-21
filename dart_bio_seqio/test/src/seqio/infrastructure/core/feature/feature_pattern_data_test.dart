@@ -1,5 +1,5 @@
 import 'package:dart_bio_core/exceptions.dart';
-import 'package:dart_bio_seqio/src/seqio/infrastructure/core/feature_pattern_data.dart';
+import 'package:dart_bio_seqio/src/seqio/infrastructure/core/feature/feature_pattern_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

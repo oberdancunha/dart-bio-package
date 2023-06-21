@@ -160,7 +160,7 @@ DA:135,4
 LF:53
 LH:53
 end_of_record
-SF:lib/src/seqio/infrastructure/core/feature_dto.dart
+SF:lib/src/seqio/infrastructure/core/feature/feature_dto.dart
 DA:10,3
 DA:12,3
 DA:16,3
@@ -179,7 +179,7 @@ DA:40,3
 LF:15
 LH:15
 end_of_record
-SF:lib/src/seqio/infrastructure/core/feature_file_execute.dart
+SF:lib/src/seqio/infrastructure/core/feature/feature_file_execute.dart
 DA:15,8
 DA:16,4
 DA:17,8
@@ -236,7 +236,7 @@ DA:131,3
 LF:53
 LH:53
 end_of_record
-SF:lib/src/seqio/infrastructure/core/feature_sequence.dart
+SF:lib/src/seqio/infrastructure/core/feature/feature_sequence.dart
 DA:8,4
 DA:15,12
 DA:16,8
@@ -258,7 +258,7 @@ DA:38,12
 LF:18
 LH:18
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_nucleotide_sequence_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_nucleotide_sequence_model.dart
 DA:7,3
 DA:11,3
 DA:12,3
@@ -266,7 +266,7 @@ DA:13,3
 LF:4
 LH:4
 end_of_record
-SF:lib/src/seqio/infrastructure/core/feature_pattern_data.dart
+SF:lib/src/seqio/infrastructure/core/feature/feature_pattern_data.dart
 DA:4,5
 DA:5,5
 DA:6,5
@@ -283,7 +283,7 @@ DA:26,3
 LF:13
 LH:13
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_aminoacid_sequence_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_aminoacid_sequence_model.dart
 DA:7,3
 DA:11,3
 DA:12,3
@@ -293,7 +293,7 @@ DA:15,6
 LF:6
 LH:6
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_another_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_another_model.dart
 DA:11,4
 DA:15,3
 DA:17,3
@@ -308,7 +308,7 @@ DA:29,3
 LF:11
 LH:11
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_codon_start_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_codon_start_model.dart
 DA:7,3
 DA:11,3
 DA:12,3
@@ -316,7 +316,7 @@ DA:13,3
 LF:4
 LH:4
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_gene_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_gene_model.dart
 DA:7,3
 DA:11,3
 DA:12,3
@@ -324,7 +324,7 @@ DA:13,3
 LF:4
 LH:4
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_identifier_positions_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_identifier_positions_model.dart
 DA:9,5
 DA:14,4
 DA:15,4
@@ -334,17 +334,17 @@ DA:18,8
 LF:6
 LH:6
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_positions_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_positions_model.dart
 DA:7,5
 LF:1
 LH:1
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_location_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_location_model.dart
 DA:5,5
 LF:1
 LH:1
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_note_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_note_model.dart
 DA:7,3
 DA:11,3
 DA:12,3
@@ -352,7 +352,7 @@ DA:13,12
 LF:4
 LH:4
 end_of_record
-SF:lib/src/seqio/infrastructure/core/models/feature_product_model.dart
+SF:lib/src/seqio/infrastructure/core/feature/models/feature_product_model.dart
 DA:7,3
 DA:11,3
 DA:12,3

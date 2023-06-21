@@ -1,4 +1,4 @@
-import '../../core/feature_file_patterns.dart';
+import '../../core/feature/feature_file_patterns.dart';
 
 class GenbankFeatureFilePatterns extends FeatureFilePatterns {
   @override
