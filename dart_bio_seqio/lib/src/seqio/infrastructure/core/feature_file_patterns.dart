@@ -7,4 +7,5 @@ abstract class FeatureFilePatterns {
   String get codonStartPattern;
   String get anotherFeaturesPattern;
   String get recallLastEventPattern;
+  String noPatternFound = "";
 }

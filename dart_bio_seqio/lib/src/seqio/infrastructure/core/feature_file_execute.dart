@@ -1,21 +1,14 @@
-// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: avoid_dynamic_calls, cast_nullable_to_non_nullable, unnecessary_null_comparison
 import 'package:dart_bio_core/parse_event.dart';
 
 import '../../domain/entities/genbank/feature.dart';
 import '../../domain/entities/genbank/location_position.dart';
-import 'feature_file_patterns.dart';
 import 'feature_sequence.dart';
-import 'models/feature_aminoacid_sequence_model.dart';
-import 'models/feature_another_model.dart';
-import 'models/feature_codon_start_model.dart';
-import 'models/feature_gene_model.dart';
-import 'models/feature_identifier_positions_model.dart';
 import 'models/feature_model.dart';
-import 'models/feature_note_model.dart';
 import 'models/feature_nucleotide_sequence_model.dart';
-import 'models/feature_product_model.dart';
+import 'source_feature_file_execute.dart';
 
-abstract class FeatureFileExecute {
+abstract class FeatureFileExecute extends SourceFeatureFileExecute {
   Function? _lastEvent;
   Feature _feature = Feature.init();
 
@@ -67,23 +60,29 @@ abstract class FeatureFileExecute {
     required bool isFinishFeature,
     required List<String> locusSequence,
   }) {
-    patternsList.forEach((pattern) {
-      final regexPattern = RegExp(pattern.identifierPattern);
-      if (regexPattern.hasMatch(currentFeature)) {
-        final action = pattern.action ?? _lastEvent;
-        if (action != null) {
-          runParseAction(
-            () => action.call(
-              currentFeature,
-              pattern.identifierPattern,
-            ),
-          );
-          _lastEvent = pattern.isRecall ? action : null;
-        }
+    final ParseEvent pattern = patternsList.firstWhere(
+      (pattern) {
+        final regexPattern = RegExp(pattern.identifierPattern);
 
-        return;
+        return regexPattern.hasMatch(currentFeature);
+      },
+      orElse: () => ParseEvent(
+        identifierPattern: featureFilePatterns.noPatternFound,
+        isRecall: false,
+      ),
+    );
+    if (pattern.identifierPattern != featureFilePatterns.noPatternFound) {
+      final action = pattern.action ?? _lastEvent;
+      if (action != null) {
+        runParseAction(
+          () => action.call(
+            currentFeature,
+            pattern.identifierPattern,
+          ),
+        );
+        _lastEvent = pattern.isRecall ? action : null;
       }
-    });
+    }
     if (isNextFeature || isFinishFeature) {
       if (locusSequence.isNotEmpty) {
         runParseAction(
@@ -131,20 +130,4 @@ abstract class FeatureFileExecute {
 
     return FeatureNucleotideSequenceModel(nucleotideSequence: nucleotideSubSequence);
   }
-
-  bool isNextFeature(String value);
-  FeatureFilePatterns get featureFilePatterns;
-  FeatureIdentifierPositionsModel getLocations(
-    String featureLocation,
-    String featureLocationPattern,
-  );
-  FeatureProductModel getProduct(String featureProduct, String featureProductPattern);
-  FeatureNoteModel getNote(String featureNote, String featureNotePattern);
-  FeatureAminoacidSequenceModel getAminoacidSequence(
-    String featureAminoacidSequence,
-    String featureAminoacidSequencePattern,
-  );
-  FeatureGeneModel getGene(String featureGene, String featureGenePattern);
-  FeatureCodonStartModel getCodonStart(String featureCodonStart, String featureCodonStartPattern);
-  FeatureAnotherModel getAnother(String featureAnother, String featuresAnotherPattern);
 }
