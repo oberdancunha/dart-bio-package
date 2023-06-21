@@ -2,24 +2,21 @@
 
 import 'package:dart_bio_core/exceptions.dart';
 
-import '../../../domain/entities/genbank/location_position.dart';
-import '../../core/feature_sequence.dart';
+import '../../core/feature_file_execute.dart';
+import '../../core/feature_pattern_data.dart';
 import '../../core/models/feature_aminoacid_sequence_model.dart';
 import '../../core/models/feature_another_model.dart';
 import '../../core/models/feature_codon_start_model.dart';
 import '../../core/models/feature_gene_model.dart';
 import '../../core/models/feature_identifier_positions_model.dart';
 import '../../core/models/feature_note_model.dart';
-import '../../core/models/feature_nucleotide_sequence_model.dart';
 import '../../core/models/feature_product_model.dart';
-import '../../core/source_feature_file_execute.dart';
 import 'genbank_feature_file_patterns.dart';
 import 'genbank_feature_location.dart';
-import 'genbank_generic_feature.dart';
 
-class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
+class GenbankFeatureFileExecute extends FeatureFileExecute {
   @override
-  GenbankFeatureFilePatterns get sourceFeatureFilePatterns => GenbankFeatureFilePatterns();
+  GenbankFeatureFilePatterns get featureFilePatterns => GenbankFeatureFilePatterns();
 
   @override
   FeatureIdentifierPositionsModel getLocations(
@@ -30,14 +27,14 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
 
   @override
   FeatureProductModel getProduct(String featureProduct, String featureProductPattern) {
-    final product = GenbankGenericFeature().getData(featureProduct, featureProductPattern);
+    final product = FeaturePatternData().getData(featureProduct, featureProductPattern);
 
     return FeatureProductModel(product: product);
   }
 
   @override
   FeatureNoteModel getNote(String featureNote, String featureNotePattern) {
-    final note = GenbankGenericFeature().getData(featureNote, featureNotePattern);
+    final note = FeaturePatternData().getData(featureNote, featureNotePattern);
 
     return FeatureNoteModel(note: note);
   }
@@ -47,7 +44,7 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
     String featureAminoacidSequence,
     String featureAminoacidSequencePattern,
   ) {
-    final aminoacidSequence = GenbankGenericFeature().getData(
+    final aminoacidSequence = FeaturePatternData().getData(
       featureAminoacidSequence,
       featureAminoacidSequencePattern,
     );
@@ -57,21 +54,21 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
 
   @override
   FeatureGeneModel getGene(String featureGene, String featureGenePattern) {
-    final gene = GenbankGenericFeature().getData(featureGene, featureGenePattern);
+    final gene = FeaturePatternData().getData(featureGene, featureGenePattern);
 
     return FeatureGeneModel(gene: gene);
   }
 
   @override
   FeatureCodonStartModel getCodonStart(String featureCodonStart, String featureCodonStartPattern) {
-    final codonStart = GenbankGenericFeature().getData(featureCodonStart, featureCodonStartPattern);
+    final codonStart = FeaturePatternData().getData(featureCodonStart, featureCodonStartPattern);
 
     return FeatureCodonStartModel(codonStart: int.parse(codonStart));
   }
 
   @override
   FeatureAnotherModel getAnother(String featureAnother, String featuresAnotherPattern) {
-    final genbankGenericFeature = GenbankGenericFeature();
+    final genbankGenericFeature = FeaturePatternData();
     try {
       final another = genbankGenericFeature.getMapAnotherData(
         featureAnother,
@@ -90,27 +87,8 @@ class GenbankFeatureFileExecute extends SourceFeatureFileExecute {
   }
 
   @override
-  FeatureNucleotideSequenceModel getNucleotideSequence({
-    required String type,
-    required int strand,
-    required List<LocationPosition> positions,
-    required int codonStart,
-    required List<String> originalNucleotideSequence,
-  }) {
-    final nucleotideSubSequence = FeatureSequence().getNucleotideSubSequence(
-      type: type,
-      strand: strand,
-      positions: positions,
-      codonStart: codonStart,
-      originalNucleotideSequence: originalNucleotideSequence,
-    );
-
-    return FeatureNucleotideSequenceModel(nucleotideSequence: nucleotideSubSequence);
-  }
-
-  @override
   bool isNextFeature(String value) {
-    final locationPattern = sourceFeatureFilePatterns.locationPattern;
+    final locationPattern = featureFilePatterns.locationPattern;
     final locationMatch = RegExp(locationPattern);
 
     return locationMatch.hasMatch(value) && featureData.positions.elementAt(0).start > 0;

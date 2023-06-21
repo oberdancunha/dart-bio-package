@@ -1,6 +1,6 @@
 import 'package:dart_bio_core/exceptions.dart';
 
-class GenbankGenericFeature {
+class FeaturePatternData {
   String getData(String featureData, String featurePattern) {
     final featureRegex = RegExp(featurePattern);
     final featureMatch = featureRegex.firstMatch(featureData);

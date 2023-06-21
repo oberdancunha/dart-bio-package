@@ -1,4 +1,4 @@
-abstract class SourceFeatureFilePatterns {
+abstract class FeatureFilePatterns {
   String get locationPattern;
   String get productPattern;
   String get notePattern;

@@ -3,6 +3,8 @@ import 'package:dart_bio_core/parse_event.dart';
 
 import '../../domain/entities/genbank/feature.dart';
 import '../../domain/entities/genbank/location_position.dart';
+import 'feature_file_patterns.dart';
+import 'feature_sequence.dart';
 import 'models/feature_aminoacid_sequence_model.dart';
 import 'models/feature_another_model.dart';
 import 'models/feature_codon_start_model.dart';
@@ -12,50 +14,49 @@ import 'models/feature_model.dart';
 import 'models/feature_note_model.dart';
 import 'models/feature_nucleotide_sequence_model.dart';
 import 'models/feature_product_model.dart';
-import 'source_feature_file_patterns.dart';
 
-abstract class SourceFeatureFileExecute {
+abstract class FeatureFileExecute {
   Function? _lastEvent;
   Feature _feature = Feature.init();
 
   List<ParseEvent> get patternsList => [
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.locationPattern,
+          identifierPattern: featureFilePatterns.locationPattern,
           action: getLocations,
           isRecall: false,
         ),
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.productPattern,
+          identifierPattern: featureFilePatterns.productPattern,
           action: getProduct,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.notePattern,
+          identifierPattern: featureFilePatterns.notePattern,
           action: getNote,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.aminoacidSequencePattern,
+          identifierPattern: featureFilePatterns.aminoacidSequencePattern,
           action: getAminoacidSequence,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.genePattern,
+          identifierPattern: featureFilePatterns.genePattern,
           action: getGene,
           isRecall: false,
         ),
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.codonStartPattern,
+          identifierPattern: featureFilePatterns.codonStartPattern,
           action: getCodonStart,
           isRecall: false,
         ),
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.anotherFeaturesPattern,
+          identifierPattern: featureFilePatterns.anotherFeaturesPattern,
           action: getAnother,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: sourceFeatureFilePatterns.recallLastEventPattern,
+          identifierPattern: featureFilePatterns.recallLastEventPattern,
           isRecall: true,
         ),
       ];
@@ -113,8 +114,26 @@ abstract class SourceFeatureFileExecute {
     _feature = Feature.init();
   }
 
+  FeatureNucleotideSequenceModel getNucleotideSequence({
+    required String type,
+    required int strand,
+    required List<LocationPosition> positions,
+    required int codonStart,
+    required List<String> originalNucleotideSequence,
+  }) {
+    final nucleotideSubSequence = FeatureSequence().getNucleotideSubSequence(
+      type: type,
+      strand: strand,
+      positions: positions,
+      codonStart: codonStart,
+      originalNucleotideSequence: originalNucleotideSequence,
+    );
+
+    return FeatureNucleotideSequenceModel(nucleotideSequence: nucleotideSubSequence);
+  }
+
   bool isNextFeature(String value);
-  SourceFeatureFilePatterns get sourceFeatureFilePatterns;
+  FeatureFilePatterns get featureFilePatterns;
   FeatureIdentifierPositionsModel getLocations(
     String featureLocation,
     String featureLocationPattern,
@@ -128,11 +147,4 @@ abstract class SourceFeatureFileExecute {
   FeatureGeneModel getGene(String featureGene, String featureGenePattern);
   FeatureCodonStartModel getCodonStart(String featureCodonStart, String featureCodonStartPattern);
   FeatureAnotherModel getAnother(String featureAnother, String featuresAnotherPattern);
-  FeatureNucleotideSequenceModel getNucleotideSequence({
-    required String type,
-    required int strand,
-    required List<LocationPosition> positions,
-    required int codonStart,
-    required List<String> originalNucleotideSequence,
-  });
 }
