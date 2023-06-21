@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_dynamic_calls, cast_nullable_to_non_nullable, unnecessary_null_comparison
+// ignore_for_file: avoid_dynamic_calls
 import 'package:dart_bio_core/parse_event.dart';
 
 import '../../domain/entities/genbank/feature.dart';
