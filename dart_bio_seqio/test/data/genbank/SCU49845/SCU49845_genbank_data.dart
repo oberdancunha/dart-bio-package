@@ -1,16 +1,17 @@
 // ignore_for_file: file_names
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/feature.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/feature.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/genbank.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/location_position.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus_details.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/reference.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/location_position.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/locus.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/locus_details.dart';
 
 KtList<Genbank> getGenbankDataEntity() => KtList.of(
       Genbank(
         locus: getLocus(),
         locusDetails: getLocusDetails(),
+        references: getGenbankReferences(),
         features: getLocusFeatures(),
       ),
     );
@@ -25,7 +26,7 @@ Locus getLocus() => Locus(
       sequence: getLocusSequenceFormatted(),
     );
 
-LocusDetails getLocusDetails() => LocusDetails(
+LocusDetails getLocusDetails() => const LocusDetails(
       definition:
           'Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p (AXL2) and Rev7p (REV7) genes, complete cds.',
       accession: 'U49845',
@@ -34,21 +35,22 @@ LocusDetails getLocusDetails() => LocusDetails(
       organism:
           'Saccharomyces cerevisiae; Eukaryota; Fungi; Dikarya; Ascomycota; Saccharomycotina; Saccharomycetes; Saccharomycetales; Saccharomycetaceae; Saccharomyces.',
       keywords: '.',
-      references: KtList.of(
-        const Reference(
-          description: '1  (bases 1 to 5028)',
-          authors: 'Roemer,T., Madden,K., Chang,J. and Snyder,M.',
-          title:
-              'Selection of axial growth sites in yeast requires Axl2p, a novel plasma membrane glycoprotein',
-          journal: 'Genes Dev. 10 (7), 777-793 (1996)',
-          pubmed: 8846915,
-        ),
-        const Reference(
-          description: '2  (bases 1 to 5028)',
-          authors: 'Roemer,T.',
-          title: 'Direct Submission',
-          journal: 'Submitted (22-FEB-1996) Biology, Yale University, New Haven, CT 06520, USA',
-        ),
+    );
+
+KtList<GenbankReference> getGenbankReferences() => KtList.of(
+      const GenbankReference(
+        description: '1  (bases 1 to 5028)',
+        authors: 'Roemer,T., Madden,K., Chang,J. and Snyder,M.',
+        title:
+            'Selection of axial growth sites in yeast requires Axl2p, a novel plasma membrane glycoprotein',
+        journal: 'Genes Dev. 10 (7), 777-793 (1996)',
+        pubmed: 8846915,
+      ),
+      const GenbankReference(
+        description: '2  (bases 1 to 5028)',
+        authors: 'Roemer,T.',
+        title: 'Direct Submission',
+        journal: 'Submitted (22-FEB-1996) Biology, Yale University, New Haven, CT 06520, USA',
       ),
     );
 

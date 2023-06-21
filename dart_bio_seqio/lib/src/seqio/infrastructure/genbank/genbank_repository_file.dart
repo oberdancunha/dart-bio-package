@@ -9,22 +9,25 @@ import '../core/feature_dto.dart';
 import 'feature/genbank_feature_file_execute.dart';
 import 'locus/locus_details_dto.dart';
 import 'locus/locus_dto.dart';
+import 'reference/genbank_reference_dto.dart';
 
 class GenbankRepositoryFile extends RepositoryFile<Genbank> {
   final locusDto = LocusDto();
   final locusDetailsDto = LocusDetailsDto();
+  final genbankReferenceDto = GenbankReferenceDto();
   final featureDto = FeatureDto(GenbankFeatureFileExecute());
 
   @override
   Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {
     final genbankData = <Genbank>[];
     final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
-    final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
+    final mainLabels = ['LOCUS', 'DEFINITION', 'REFERENCE', 'FEATURES', 'ORIGIN'];
     String? currentLabel;
     String? lastLabel;
     String? value;
     String? locusData;
     final locusDetailsData = <String>[];
+    final genbankReferenceData = <String>[];
     final featuresValues = <String>[];
     final locusSequence = <String>[];
     String? locusSequenceFormatted;
@@ -62,6 +65,8 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
                       locusSequence: locusSequenceFormatted!,
                     ),
                     locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
+                    references:
+                        genbankReferenceDto.fromGenbankFile(genbankReferenceData).toImmutableList(),
                     features: featureDto.fromFile(
                       features: featuresValues,
                       locusSequence: locusSequenceFormatted!.split(''),
@@ -70,6 +75,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
                 );
                 locusDetailsData.clear();
                 featuresValues.clear();
+                genbankReferenceData.clear();
                 locusSequence.clear();
               }
               locusData = line;
@@ -78,6 +84,11 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
           case 'DEFINITION':
             {
               locusDetailsData.add(line);
+            }
+            break;
+          case 'REFERENCE':
+            {
+              genbankReferenceData.add(line);
             }
             break;
           case 'FEATURES':
@@ -104,6 +115,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
               locusSequence: locusSequenceFormatted!,
             ),
             locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
+            references: genbankReferenceDto.fromGenbankFile(genbankReferenceData).toImmutableList(),
             features: featureDto.fromFile(
               features: featuresValues,
               locusSequence: locusSequenceFormatted!.split(''),

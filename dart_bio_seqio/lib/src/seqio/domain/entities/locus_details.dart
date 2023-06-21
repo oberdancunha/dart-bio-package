@@ -1,7 +1,5 @@
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-import 'reference.dart';
-
 class LocusDetails extends Equatable {
   final String? definition;
   final String? accession;
@@ -9,7 +7,6 @@ class LocusDetails extends Equatable {
   final String? keywords;
   final String? source;
   final String? organism;
-  final KtList<Reference>? references;
 
   const LocusDetails({
     this.definition,
@@ -18,7 +15,6 @@ class LocusDetails extends Equatable {
     this.keywords,
     this.source,
     this.organism,
-    this.references,
   });
 
   @override
@@ -29,6 +25,5 @@ class LocusDetails extends Equatable {
         keywords,
         source,
         organism,
-        references,
       ];
 }

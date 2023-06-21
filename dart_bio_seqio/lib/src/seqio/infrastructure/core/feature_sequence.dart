@@ -2,7 +2,7 @@ import 'package:dart_bio_core/exceptions.dart';
 import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-import '../../domain/entities/genbank/location_position.dart';
+import '../../domain/entities/location_position.dart';
 
 class FeatureSequence {
   String? getNucleotideSubSequence({

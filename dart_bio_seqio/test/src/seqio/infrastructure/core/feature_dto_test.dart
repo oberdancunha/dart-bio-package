@@ -1,6 +1,6 @@
 import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/feature.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/feature.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/core/feature_dto.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/feature/genbank_feature_file_execute.dart';
 import 'package:flutter_test/flutter_test.dart';

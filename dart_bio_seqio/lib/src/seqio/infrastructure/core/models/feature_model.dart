@@ -1,4 +1,4 @@
-import '../../../domain/entities/genbank/feature.dart';
+import '../../../domain/entities/feature.dart';
 
 abstract class FeatureModel {
   Feature toDomain(Feature feature);

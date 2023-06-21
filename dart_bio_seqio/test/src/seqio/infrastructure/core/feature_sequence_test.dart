@@ -1,5 +1,5 @@
 import 'package:dart_bio_core/exceptions.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/location_position.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/location_position.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/core/feature_sequence.dart';
 import 'package:flutter_test/flutter_test.dart';
 

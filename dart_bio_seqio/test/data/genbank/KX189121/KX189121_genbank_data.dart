@@ -1,16 +1,17 @@
 // ignore_for_file: file_names
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/feature.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/feature.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/genbank.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/location_position.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus.dart';
-import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/locus_details.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/genbank/reference.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/location_position.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/locus.dart';
+import 'package:dart_bio_seqio/src/seqio/domain/entities/locus_details.dart';
 
 KtList<Genbank> getGenbankDataEntity() => KtList.of(
       Genbank(
         locus: getLocus(),
         locusDetails: getLocusDetails(),
+        references: getGenbankReferences(),
         features: getLocusFeatures(),
       ),
     );
@@ -25,7 +26,7 @@ Locus getLocus() => Locus(
       sequence: getLocusSequenceFormatted(),
     );
 
-LocusDetails getLocusDetails() => LocusDetails(
+LocusDetails getLocusDetails() => const LocusDetails(
       definition: 'Saccharomyces cerevisiae strain C1 Flo11p (FLO11) gene, partial cds.',
       accession: 'KX189121',
       version: 1,
@@ -33,21 +34,22 @@ LocusDetails getLocusDetails() => LocusDetails(
       organism:
           'Saccharomyces cerevisiae; Eukaryota; Fungi; Dikarya; Ascomycota; Saccharomycotina; Saccharomycetes; Saccharomycetales; Saccharomycetaceae; Saccharomyces.',
       keywords: '.',
-      references: KtList.of(
-        const Reference(
-          description: '1  (bases 1 to 684)',
-          authors: 'Brueckner,S. and Moesch,H.-U.',
-          title:
-              'Evidence for adhesion-mediated self-nonself recognition within the same and between different fungal species',
-          journal: 'Unpublished',
-        ),
-        const Reference(
-          description: '2  (bases 1 to 684)',
-          authors: 'Brueckner,S. and Moesch,H.-U.',
-          title: 'Direct Submission',
-          journal:
-              'Submitted (29-APR-2016) Molecular Genetics, Philipps-Universitaet Marburg, Karl-von-Frisch-Str. 8, Marburg 35043, Germany',
-        ),
+    );
+
+KtList<GenbankReference> getGenbankReferences() => KtList.of(
+      const GenbankReference(
+        description: '1  (bases 1 to 684)',
+        authors: 'Brueckner,S. and Moesch,H.-U.',
+        title:
+            'Evidence for adhesion-mediated self-nonself recognition within the same and between different fungal species',
+        journal: 'Unpublished',
+      ),
+      const GenbankReference(
+        description: '2  (bases 1 to 684)',
+        authors: 'Brueckner,S. and Moesch,H.-U.',
+        title: 'Direct Submission',
+        journal:
+            'Submitted (29-APR-2016) Molecular Genetics, Philipps-Universitaet Marburg, Karl-von-Frisch-Str. 8, Marburg 35043, Germany',
       ),
     );
 

@@ -9,11 +9,13 @@ KtList<Genbank> getGenbankMultiDataEntity() => KtList.of(
       Genbank(
         locus: scu49845.getLocus(),
         locusDetails: scu49845.getLocusDetails(),
+        references: scu49845.getGenbankReferences(),
         features: scu49845.getLocusFeatures(),
       ),
       Genbank(
         locus: kx189121.getLocus(),
         locusDetails: kx189121.getLocusDetails(),
+        references: kx189121.getGenbankReferences(),
         features: kx189121.getLocusFeatures(),
       ),
     );

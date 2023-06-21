@@ -1,12 +1,7 @@
-import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
-
-import '../../../domain/entities/genbank/locus_details.dart';
-import '../../../domain/entities/genbank/reference.dart';
+import '../../../domain/entities/locus_details.dart';
 
 class LocusDetailsDto {
-  // ignore: long-method
   LocusDetails fromGenbankFile(List<String> locusDetailsGenbank) {
-    final referencesData = <Reference>[];
     final regexLabelAndValue = RegExp(r'^\s*([A-Z]+)\s+(.+)$');
     String? currentLabel;
     String? lastLabel;
@@ -17,11 +12,6 @@ class LocusDetailsDto {
     final keywordsValue = <String>[];
     final sourceValue = <String>[];
     final organismValue = <String>[];
-    final referenceValue = <String>[];
-    final authorValue = <String>[];
-    final titleValue = <String>[];
-    final journalValue = <String>[];
-    int pubmedId = 0;
 
     locusDetailsGenbank.forEach((locusDetail) {
       final matchLabelAndValue = regexLabelAndValue.allMatches(locusDetail);
@@ -65,58 +55,9 @@ class LocusDetailsDto {
             organismValue.add(value);
           }
           break;
-        case 'REFERENCE':
-          {
-            if (referenceValue.isNotEmpty) {
-              final referenceData = _getReferenceData(
-                referenceValue: referenceValue,
-                authorValue: authorValue,
-                titleValue: titleValue,
-                journalValue: journalValue,
-                pubmedId: pubmedId,
-              );
-              referencesData.add(referenceData);
-              referenceValue.clear();
-              authorValue.clear();
-              titleValue.clear();
-              journalValue.clear();
-              pubmedId = 0;
-            }
-            referenceValue.add(value);
-          }
-          break;
-        case 'AUTHORS':
-          {
-            authorValue.add(value);
-          }
-          break;
-        case 'TITLE':
-          {
-            titleValue.add(value);
-          }
-          break;
-        case 'JOURNAL':
-          {
-            journalValue.add(value);
-          }
-          break;
-        case 'PUBMED':
-          {
-            pubmedId = int.tryParse(value)!;
-          }
-          break;
       }
     });
-    if (referenceValue.isNotEmpty) {
-      final referenceData = _getReferenceData(
-        referenceValue: referenceValue,
-        authorValue: authorValue,
-        titleValue: titleValue,
-        journalValue: journalValue,
-        pubmedId: pubmedId,
-      );
-      referencesData.add(referenceData);
-    }
+
     final LocusDetails locusDetails = LocusDetails(
       definition: definitionValue.join(' '),
       accession: accessionValue,
@@ -124,25 +65,8 @@ class LocusDetailsDto {
       keywords: keywordsValue.join(' '),
       source: sourceValue.join(' '),
       organism: organismValue.join('; ').replaceAll(';;', ';'),
-      references: referencesData.toImmutableList(),
     );
 
     return locusDetails;
   }
-
-  // ignore: long-parameter-list
-  Reference _getReferenceData({
-    required List<String> referenceValue,
-    required List<String> authorValue,
-    required List<String> titleValue,
-    required List<String> journalValue,
-    required int pubmedId,
-  }) =>
-      Reference(
-        description: referenceValue.join(' '),
-        authors: authorValue.join(' '),
-        title: titleValue.join(' '),
-        journal: journalValue.join(' '),
-        pubmed: pubmedId > 0 ? pubmedId : null,
-      );
 }

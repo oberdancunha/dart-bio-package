@@ -1,6 +1,6 @@
 import 'package:dart_bio_core/value_validation.dart';
 
-import '../../../domain/entities/genbank/locus.dart';
+import '../../../domain/entities/locus.dart';
 
 class LocusDto {
   Locus fromGenbankFile({

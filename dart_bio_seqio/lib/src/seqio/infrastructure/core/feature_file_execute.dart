@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_dynamic_calls
 import 'package:dart_bio_core/parse_event.dart';
 
-import '../../domain/entities/genbank/feature.dart';
-import '../../domain/entities/genbank/location_position.dart';
+import '../../domain/entities/feature.dart';
+import '../../domain/entities/location_position.dart';
 import 'feature_sequence.dart';
 import 'models/feature_model.dart';
 import 'models/feature_nucleotide_sequence_model.dart';

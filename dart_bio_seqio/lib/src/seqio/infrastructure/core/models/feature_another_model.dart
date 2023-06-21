@@ -2,7 +2,7 @@
 
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-import '../../../domain/entities/genbank/feature.dart';
+import '../../../domain/entities/feature.dart';
 import 'feature_model.dart';
 
 class FeatureAnotherModel implements FeatureModel {
