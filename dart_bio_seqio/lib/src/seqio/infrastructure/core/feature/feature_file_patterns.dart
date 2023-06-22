@@ -1,4 +1,6 @@
-abstract class FeatureFilePatterns {
+import '../source_file_patterns.dart';
+
+abstract class FeatureFilePatterns extends SourceFilePatterns {
   String get locationPattern;
   String get productPattern;
   String get notePattern;
@@ -6,6 +8,4 @@ abstract class FeatureFilePatterns {
   String get genePattern;
   String get codonStartPattern;
   String get anotherFeaturesPattern;
-  String get recallLastEventPattern;
-  String noPatternFound = "";
 }

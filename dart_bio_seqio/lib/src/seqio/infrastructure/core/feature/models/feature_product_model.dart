@@ -1,7 +1,7 @@
 import '../../../../domain/entities/feature.dart';
-import 'feature_model.dart';
+import '../../data_model.dart';
 
-class FeatureProductModel implements FeatureModel {
+class FeatureProductModel implements DataModel<Feature> {
   final String product;
 
   FeatureProductModel({

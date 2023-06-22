@@ -1,8 +1,7 @@
 // ignore_for_file: avoid_catching_errors
-
 import 'package:dart_bio_core/exceptions.dart';
 
-import '../../core/feature/feature_file_execute.dart';
+import '../../core/feature/feature_file_event.dart';
 import '../../core/feature/feature_pattern_data.dart';
 import '../../core/feature/models/feature_aminoacid_sequence_model.dart';
 import '../../core/feature/models/feature_another_model.dart';
@@ -14,7 +13,7 @@ import '../../core/feature/models/feature_product_model.dart';
 import 'genbank_feature_file_patterns.dart';
 import 'genbank_feature_location.dart';
 
-class GenbankFeatureFileExecute extends FeatureFileExecute {
+class GenbankFeatureFileEvent extends FeatureFileEvent {
   @override
   GenbankFeatureFilePatterns get featureFilePatterns => GenbankFeatureFilePatterns();
 
@@ -91,6 +90,6 @@ class GenbankFeatureFileExecute extends FeatureFileExecute {
     final locationPattern = featureFilePatterns.locationPattern;
     final locationMatch = RegExp(locationPattern);
 
-    return locationMatch.hasMatch(value) && featureData.positions.elementAt(0).start > 0;
+    return locationMatch.hasMatch(value) && data.positions.elementAt(0).start > 0;
   }
 }

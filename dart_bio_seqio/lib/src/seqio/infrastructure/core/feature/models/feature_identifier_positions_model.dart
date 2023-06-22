@@ -1,8 +1,8 @@
 import '../../../../domain/entities/feature.dart';
-import 'feature_model.dart';
+import '../../data_model.dart';
 import 'feature_positions_model.dart';
 
-class FeatureIdentifierPositionsModel implements FeatureModel {
+class FeatureIdentifierPositionsModel implements DataModel<Feature> {
   final String identifier;
   final FeaturePositionsModel featurePositions;
 

@@ -1,7 +1,7 @@
 import '../../../../domain/entities/feature.dart';
-import 'feature_model.dart';
+import '../../data_model.dart';
 
-class FeatureAminoacidSequenceModel implements FeatureModel {
+class FeatureAminoacidSequenceModel implements DataModel<Feature> {
   final String aminoacidSequence;
 
   FeatureAminoacidSequenceModel({

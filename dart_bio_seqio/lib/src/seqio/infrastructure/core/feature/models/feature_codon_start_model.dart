@@ -1,7 +1,7 @@
 import '../../../../domain/entities/feature.dart';
-import 'feature_model.dart';
+import '../../data_model.dart';
 
-class FeatureCodonStartModel implements FeatureModel {
+class FeatureCodonStartModel implements DataModel<Feature> {
   final int codonStart;
 
   FeatureCodonStartModel({

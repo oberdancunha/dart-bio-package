@@ -1,11 +1,10 @@
 // ignore_for_file: avoid_dynamic_calls
-
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../../../domain/entities/feature.dart';
-import 'feature_model.dart';
+import '../../data_model.dart';
 
-class FeatureAnotherModel implements FeatureModel {
+class FeatureAnotherModel implements DataModel<Feature> {
   Map<String, String> another;
 
   FeatureAnotherModel({
