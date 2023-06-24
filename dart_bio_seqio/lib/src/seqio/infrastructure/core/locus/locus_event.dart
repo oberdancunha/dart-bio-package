@@ -1,7 +1,7 @@
 import 'package:dart_bio_core/parse_event.dart';
 
 import '../../../domain/entities/locus.dart';
-import '../source_file_event_execute.dart';
+import '../source_event_execute.dart';
 import 'locus_patterns.dart';
 import 'models/locus_length_model.dart';
 import 'models/locus_name_model.dart';
@@ -10,7 +10,7 @@ import 'models/locus_shape_model.dart';
 import 'models/locus_taxonomic_division_model.dart';
 import 'models/locus_type_model.dart';
 
-abstract class LocusEvent extends SourceFileEventExecute<Locus> {
+abstract class LocusEvent extends SourceEventExecute<Locus> {
   @override
   List<ParseEvent> get patternsList => [
         ParseEvent(

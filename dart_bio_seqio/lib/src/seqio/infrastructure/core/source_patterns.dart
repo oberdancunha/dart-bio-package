@@ -1,3 +1,3 @@
-abstract class SourceFilePatterns {
+abstract class SourcePatterns {
   String get recallLastEventPattern;
 }

@@ -1,6 +1,6 @@
-import '../../core/feature/feature_file_patterns.dart';
+import '../../core/feature/feature_patterns.dart';
 
-class GenbankFeatureFilePatterns extends FeatureFilePatterns {
+class GenbankFeaturePatterns extends FeaturePatterns {
   @override
   String get locationPattern => r'^\s{5}([\w+]+)\s+(.+)$';
 

@@ -2,12 +2,12 @@ import 'package:dart_bio_core/exceptions.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../../domain/entities/feature.dart';
-import 'feature_file_event.dart';
+import 'feature_event.dart';
 
 class FeatureDto {
-  final FeatureFileEvent _featureFileEvent;
+  final FeatureEvent _featureEvent;
 
-  FeatureDto(this._featureFileEvent);
+  FeatureDto(this._featureEvent);
 
   KtList<Feature> fromFile({
     required List<String> features,
@@ -16,22 +16,22 @@ class FeatureDto {
     final featuresData = <Feature>[];
 
     features.forEach((feature) {
-      if (_featureFileEvent.isNextFeature(feature)) {
-        if (_featureFileEvent.data == Feature.init()) {
+      if (_featureEvent.isNextFeature(feature)) {
+        if (_featureEvent.data == Feature.init()) {
           throw FileDataFormatException();
         }
-        _featureFileEvent.getNucleotideSequence(locusSequence);
-        featuresData.add(_featureFileEvent.data);
-        _featureFileEvent.initData();
+        _featureEvent.getNucleotideSequence(locusSequence);
+        featuresData.add(_featureEvent.data);
+        _featureEvent.initData();
       }
-      _featureFileEvent.identifyActionByPattern(feature);
+      _featureEvent.identifyActionByPattern(feature);
     });
-    if (_featureFileEvent.data == Feature.init()) {
+    if (_featureEvent.data == Feature.init()) {
       throw FileDataFormatException();
     }
-    _featureFileEvent.getNucleotideSequence(locusSequence);
-    featuresData.add(_featureFileEvent.data);
-    _featureFileEvent.initData();
+    _featureEvent.getNucleotideSequence(locusSequence);
+    featuresData.add(_featureEvent.data);
+    _featureEvent.initData();
 
     return featuresData.toImmutableList();
   }

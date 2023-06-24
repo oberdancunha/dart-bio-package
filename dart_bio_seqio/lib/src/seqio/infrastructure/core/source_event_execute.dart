@@ -3,7 +3,7 @@ import 'package:dart_bio_core/parse_event.dart';
 
 import 'data_model.dart';
 
-abstract class SourceFileEventExecute<Data> {
+abstract class SourceEventExecute<Data> {
   Function? _lastEvent;
   List<ParseEvent> get patternsList;
   late Data _data;

@@ -1,8 +1,8 @@
 import 'package:dart_bio_core/parse_event.dart';
 
 import '../../../domain/entities/feature.dart';
-import '../source_file_event_execute.dart';
-import 'feature_file_patterns.dart';
+import '../source_event_execute.dart';
+import 'feature_patterns.dart';
 import 'feature_sequence.dart';
 import 'models/feature_aminoacid_sequence_model.dart';
 import 'models/feature_another_model.dart';
@@ -12,46 +12,46 @@ import 'models/feature_identifier_positions_model.dart';
 import 'models/feature_note_model.dart';
 import 'models/feature_product_model.dart';
 
-abstract class FeatureFileEvent extends SourceFileEventExecute<Feature> {
+abstract class FeatureEvent extends SourceEventExecute<Feature> {
   @override
   List<ParseEvent> get patternsList => [
         ParseEvent(
-          identifierPattern: featureFilePatterns.locationPattern,
+          identifierPattern: featurePatterns.locationPattern,
           action: getLocations,
           isRecall: false,
         ),
         ParseEvent(
-          identifierPattern: featureFilePatterns.productPattern,
+          identifierPattern: featurePatterns.productPattern,
           action: getProduct,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: featureFilePatterns.notePattern,
+          identifierPattern: featurePatterns.notePattern,
           action: getNote,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: featureFilePatterns.aminoacidSequencePattern,
+          identifierPattern: featurePatterns.aminoacidSequencePattern,
           action: getAminoacidSequence,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: featureFilePatterns.genePattern,
+          identifierPattern: featurePatterns.genePattern,
           action: getGene,
           isRecall: false,
         ),
         ParseEvent(
-          identifierPattern: featureFilePatterns.codonStartPattern,
+          identifierPattern: featurePatterns.codonStartPattern,
           action: getCodonStart,
           isRecall: false,
         ),
         ParseEvent(
-          identifierPattern: featureFilePatterns.anotherFeaturesPattern,
+          identifierPattern: featurePatterns.anotherFeaturesPattern,
           action: getAnother,
           isRecall: true,
         ),
         ParseEvent(
-          identifierPattern: featureFilePatterns.recallLastEventPattern,
+          identifierPattern: featurePatterns.recallLastEventPattern,
           isRecall: true,
         ),
       ];
@@ -75,7 +75,7 @@ abstract class FeatureFileEvent extends SourceFileEventExecute<Feature> {
   }
 
   bool isNextFeature(String value);
-  FeatureFilePatterns get featureFilePatterns;
+  FeaturePatterns get featurePatterns;
   FeatureIdentifierPositionsModel getLocations(
     String featureLocation,
     String featureLocationPattern,

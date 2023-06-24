@@ -2,7 +2,7 @@ import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import 'package:dart_bio_seqio/src/seqio/domain/entities/feature.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/core/feature/feature_dto.dart';
-import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/feature/genbank_feature_file_event.dart';
+import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/feature/genbank_feature_event.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../data/genbank/SCU49845/SCU49845_genbank_data.dart';
@@ -15,7 +15,7 @@ void main() {
       late FeatureDto featureDto;
 
       setUpAll(() {
-        featureDto = FeatureDto(GenbankFeatureFileEvent());
+        featureDto = FeatureDto(GenbankFeatureEvent());
       });
 
       void runFromFileFunction(FeatureDto featureDto) {
@@ -65,7 +65,7 @@ void main() {
       late KtList<Feature> locusFeatures;
 
       setUpAll(() {
-        featureDto = FeatureDto(GenbankFeatureFileEvent());
+        featureDto = FeatureDto(GenbankFeatureEvent());
         locusFeatures = featureDto.fromFile(
           features: featureDataMoreThanOneLine,
           locusSequence: [],

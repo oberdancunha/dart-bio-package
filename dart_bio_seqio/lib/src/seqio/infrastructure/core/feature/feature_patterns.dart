@@ -1,6 +1,6 @@
-import '../source_file_patterns.dart';
+import '../source_patterns.dart';
 
-abstract class FeatureFilePatterns extends SourceFilePatterns {
+abstract class FeaturePatterns extends SourcePatterns {
   String get locationPattern;
   String get productPattern;
   String get notePattern;

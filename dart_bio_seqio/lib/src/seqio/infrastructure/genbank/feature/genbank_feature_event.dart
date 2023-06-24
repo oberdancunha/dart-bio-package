@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_catching_errors
 import 'package:dart_bio_core/exceptions.dart';
 
-import '../../core/feature/feature_file_event.dart';
+import '../../core/feature/feature_event.dart';
 import '../../core/feature/models/feature_aminoacid_sequence_model.dart';
 import '../../core/feature/models/feature_another_model.dart';
 import '../../core/feature/models/feature_codon_start_model.dart';
@@ -10,12 +10,12 @@ import '../../core/feature/models/feature_identifier_positions_model.dart';
 import '../../core/feature/models/feature_note_model.dart';
 import '../../core/feature/models/feature_product_model.dart';
 import '../../core/pattern_data.dart';
-import 'genbank_feature_file_patterns.dart';
 import 'genbank_feature_location.dart';
+import 'genbank_feature_patterns.dart';
 
-class GenbankFeatureFileEvent extends FeatureFileEvent {
+class GenbankFeatureEvent extends FeatureEvent {
   @override
-  GenbankFeatureFilePatterns get featureFilePatterns => GenbankFeatureFilePatterns();
+  GenbankFeaturePatterns get featurePatterns => GenbankFeaturePatterns();
 
   @override
   FeatureIdentifierPositionsModel getLocations(
@@ -87,7 +87,7 @@ class GenbankFeatureFileEvent extends FeatureFileEvent {
 
   @override
   bool isNextFeature(String value) {
-    final locationPattern = featureFilePatterns.locationPattern;
+    final locationPattern = featurePatterns.locationPattern;
     final locationMatch = RegExp(locationPattern);
 
     return locationMatch.hasMatch(value) && data.positions.elementAt(0).start > 0;

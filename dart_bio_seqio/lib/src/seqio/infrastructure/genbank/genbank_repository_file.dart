@@ -7,7 +7,7 @@ import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import '../../domain/entities/genbank/genbank.dart';
 import '../core/feature/feature_dto.dart';
 import '../core/locus/locus_dto.dart';
-import 'feature/genbank_feature_file_event.dart';
+import 'feature/genbank_feature_event.dart';
 import 'locus/genbank_locus_event.dart';
 import 'locus/locus_details_dto.dart';
 import 'reference/genbank_reference_dto.dart';
@@ -16,7 +16,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
   final locusDto = LocusDto(GenbankLocusEvent());
   final locusDetailsDto = LocusDetailsDto();
   final genbankReferenceDto = GenbankReferenceDto();
-  final featureDto = FeatureDto(GenbankFeatureFileEvent());
+  final featureDto = FeatureDto(GenbankFeatureEvent());
 
   @override
   Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {

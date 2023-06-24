@@ -1,16 +1,16 @@
 import 'package:dart_bio_core/exceptions.dart';
 import 'package:dart_bio_seqio/src/seqio/infrastructure/core/pattern_data.dart';
-import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/feature/genbank_feature_file_patterns.dart';
+import 'package:dart_bio_seqio/src/seqio/infrastructure/genbank/feature/genbank_feature_patterns.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Genbank feature data |', () {
     late PatternData patternData;
-    late GenbankFeatureFilePatterns genbankFeaturePatterns;
+    late GenbankFeaturePatterns genbankFeaturePatterns;
 
     setUpAll(() {
       patternData = PatternData();
-      genbankFeaturePatterns = GenbankFeatureFilePatterns();
+      genbankFeaturePatterns = GenbankFeaturePatterns();
     });
 
     group('Get product |', () {

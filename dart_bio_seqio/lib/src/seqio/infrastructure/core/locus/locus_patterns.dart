@@ -1,6 +1,6 @@
-import '../source_file_patterns.dart';
+import '../source_patterns.dart';
 
-abstract class LocusPatterns extends SourceFilePatterns {
+abstract class LocusPatterns extends SourcePatterns {
   String get namePattern;
   String get lengthPattern;
   String get typePattern;
