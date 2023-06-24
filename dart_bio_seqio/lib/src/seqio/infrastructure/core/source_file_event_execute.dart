@@ -2,7 +2,6 @@
 import 'package:dart_bio_core/parse_event.dart';
 
 import 'data_model.dart';
-import 'source_file_patterns.dart';
 
 abstract class SourceFileEventExecute<Data> {
   Function? _lastEvent;
@@ -10,18 +9,14 @@ abstract class SourceFileEventExecute<Data> {
   late Data _data;
 
   void identifyActionByPattern(String currentData) {
-    final ParseEvent pattern = patternsList.firstWhere(
+    final patterns = patternsList.where(
       (pattern) {
         final regexPattern = RegExp(pattern.identifierPattern);
 
         return regexPattern.hasMatch(currentData);
       },
-      orElse: () => ParseEvent(
-        identifierPattern: SourceFilePatterns.noPatternFound,
-        isRecall: false,
-      ),
-    );
-    if (pattern.identifierPattern != SourceFilePatterns.noPatternFound) {
+    ).toList();
+    for (final pattern in patterns) {
       final action = pattern.action ?? _lastEvent;
       if (action != null) {
         final dataModel = runParseAction(

@@ -1,3 +1,4 @@
+import 'package:dart_bio_core/exceptions.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../../domain/entities/feature.dart';
@@ -16,12 +17,18 @@ class FeatureDto {
 
     features.forEach((feature) {
       if (_featureFileEvent.isNextFeature(feature)) {
+        if (_featureFileEvent.data == Feature.init()) {
+          throw FileDataFormatException();
+        }
         _featureFileEvent.getNucleotideSequence(locusSequence);
         featuresData.add(_featureFileEvent.data);
         _featureFileEvent.initData();
       }
       _featureFileEvent.identifyActionByPattern(feature);
     });
+    if (_featureFileEvent.data == Feature.init()) {
+      throw FileDataFormatException();
+    }
     _featureFileEvent.getNucleotideSequence(locusSequence);
     featuresData.add(_featureFileEvent.data);
     _featureFileEvent.initData();

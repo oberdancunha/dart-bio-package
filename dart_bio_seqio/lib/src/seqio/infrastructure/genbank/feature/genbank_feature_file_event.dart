@@ -2,7 +2,6 @@
 import 'package:dart_bio_core/exceptions.dart';
 
 import '../../core/feature/feature_file_event.dart';
-import '../../core/feature/feature_pattern_data.dart';
 import '../../core/feature/models/feature_aminoacid_sequence_model.dart';
 import '../../core/feature/models/feature_another_model.dart';
 import '../../core/feature/models/feature_codon_start_model.dart';
@@ -10,6 +9,7 @@ import '../../core/feature/models/feature_gene_model.dart';
 import '../../core/feature/models/feature_identifier_positions_model.dart';
 import '../../core/feature/models/feature_note_model.dart';
 import '../../core/feature/models/feature_product_model.dart';
+import '../../core/pattern_data.dart';
 import 'genbank_feature_file_patterns.dart';
 import 'genbank_feature_location.dart';
 
@@ -26,14 +26,14 @@ class GenbankFeatureFileEvent extends FeatureFileEvent {
 
   @override
   FeatureProductModel getProduct(String featureProduct, String featureProductPattern) {
-    final product = FeaturePatternData().getData(featureProduct, featureProductPattern);
+    final product = PatternData().getData(featureProduct, featureProductPattern);
 
     return FeatureProductModel(product: product);
   }
 
   @override
   FeatureNoteModel getNote(String featureNote, String featureNotePattern) {
-    final note = FeaturePatternData().getData(featureNote, featureNotePattern);
+    final note = PatternData().getData(featureNote, featureNotePattern);
 
     return FeatureNoteModel(note: note);
   }
@@ -43,7 +43,7 @@ class GenbankFeatureFileEvent extends FeatureFileEvent {
     String featureAminoacidSequence,
     String featureAminoacidSequencePattern,
   ) {
-    final aminoacidSequence = FeaturePatternData().getData(
+    final aminoacidSequence = PatternData().getData(
       featureAminoacidSequence,
       featureAminoacidSequencePattern,
     );
@@ -53,21 +53,21 @@ class GenbankFeatureFileEvent extends FeatureFileEvent {
 
   @override
   FeatureGeneModel getGene(String featureGene, String featureGenePattern) {
-    final gene = FeaturePatternData().getData(featureGene, featureGenePattern);
+    final gene = PatternData().getData(featureGene, featureGenePattern);
 
     return FeatureGeneModel(gene: gene);
   }
 
   @override
   FeatureCodonStartModel getCodonStart(String featureCodonStart, String featureCodonStartPattern) {
-    final codonStart = FeaturePatternData().getData(featureCodonStart, featureCodonStartPattern);
+    final codonStart = PatternData().getData(featureCodonStart, featureCodonStartPattern);
 
     return FeatureCodonStartModel(codonStart: int.parse(codonStart));
   }
 
   @override
   FeatureAnotherModel getAnother(String featureAnother, String featuresAnotherPattern) {
-    final genbankGenericFeature = FeaturePatternData();
+    final genbankGenericFeature = PatternData();
     try {
       final another = genbankGenericFeature.getMapAnotherData(
         featureAnother,
