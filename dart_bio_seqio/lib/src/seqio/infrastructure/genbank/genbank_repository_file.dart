@@ -7,14 +7,15 @@ import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 import '../../domain/entities/genbank/genbank.dart';
 import '../core/feature/feature_dto.dart';
 import '../core/locus/locus_dto.dart';
+import '../core/locus_details/locus_details_dto.dart';
 import 'feature/genbank_feature_event.dart';
 import 'locus/genbank_locus_event.dart';
-import 'locus/locus_details_dto.dart';
+import 'locus_details/genbank_locus_details_event.dart';
 import 'reference/genbank_reference_dto.dart';
 
 class GenbankRepositoryFile extends RepositoryFile<Genbank> {
   final locusDto = LocusDto(GenbankLocusEvent());
-  final locusDetailsDto = LocusDetailsDto();
+  final locusDetailsDto = LocusDetailsDto(GenbankLocusDetailsEvent());
   final genbankReferenceDto = GenbankReferenceDto();
   final featureDto = FeatureDto(GenbankFeatureEvent());
 
@@ -65,7 +66,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
                       locusList: [locusData!],
                       locusSequence: locusSequenceFormatted!,
                     ),
-                    locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
+                    locusDetails: locusDetailsDto.fromFile(locusDetailsData),
                     references:
                         genbankReferenceDto.fromGenbankFile(genbankReferenceData).toImmutableList(),
                     features: featureDto.fromFile(
@@ -115,7 +116,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
               locusList: [locusData!],
               locusSequence: locusSequenceFormatted!,
             ),
-            locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
+            locusDetails: locusDetailsDto.fromFile(locusDetailsData),
             references: genbankReferenceDto.fromGenbankFile(genbankReferenceData).toImmutableList(),
             features: featureDto.fromFile(
               features: featuresValues,

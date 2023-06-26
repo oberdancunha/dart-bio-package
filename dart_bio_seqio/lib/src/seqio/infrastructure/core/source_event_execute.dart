@@ -16,6 +16,9 @@ abstract class SourceEventExecute<Data> {
         return regexPattern.hasMatch(currentData);
       },
     ).toList();
+    if (patterns.isEmpty) {
+      _lastEvent = null;
+    }
     for (final pattern in patterns) {
       final action = pattern.action ?? _lastEvent;
       if (action != null) {
