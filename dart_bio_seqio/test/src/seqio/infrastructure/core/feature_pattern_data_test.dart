@@ -34,7 +34,7 @@ void main() {
     group('Get note |', () {
       test('Should throw FileDataFormatException when note is not in pattern', () {
         const featureNote =
-            '                     /note=Derived by automated computational analysis';
+            '                     /note="Derived by automated computational analysis" ';
         final noteCall = patternData.getData;
         expect(
           () => noteCall(featureNote, genbankFeaturePatterns.notePattern),
@@ -114,7 +114,7 @@ void main() {
       test(
         'Should throw FileDataFormatException when not in pattern',
         () {
-          const featureAnother = '                     /protein_id=';
+          const featureAnother = '                     /protein_id= ';
           final featureAnotherCall = patternData.getMapAnotherData;
           expect(
             () => featureAnotherCall(featureAnother, genbankFeaturePatterns.anotherFeaturesPattern),
