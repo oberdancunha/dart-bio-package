@@ -9,7 +9,9 @@ class Failure extends Union5Impl<_FileNotFound, _FileParseError, _FileEmpty, _Fi
 
   factory Failure.fileNotFound() => Failure._(_factory.first(_FileNotFound()));
 
-  factory Failure.fileParseError(error) => Failure._(_factory.second(_FileParseError(error)));
+  factory Failure.fileParseError(error) => Failure._(
+        _factory.second(_FileParseError(error.toString())),
+      );
 
   factory Failure.fileEmpty() => Failure._(_factory.third(_FileEmpty()));
 
@@ -25,7 +27,7 @@ class _FileNotFound extends Equatable {
 }
 
 class _FileParseError extends Equatable {
-  final dynamic error;
+  final String error;
 
   const _FileParseError(this.error);
 
