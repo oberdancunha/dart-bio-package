@@ -20,7 +20,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
   final featureDto = FeatureDto(GenbankFeatureEvent());
 
   @override
-  Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {
+  Future<Either<Failure, KtList<Genbank>>> parse(List<String> fileOpened) async {
     final genbankData = <Genbank>[];
     final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
     final mainLabels = ['LOCUS', 'DEFINITION', 'REFERENCE', 'FEATURES', 'ORIGIN'];
@@ -35,11 +35,10 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
     String? locusSequenceFormatted;
 
     try {
-      final lines = await fileOpened.toList();
-      if (lines.isEmpty) {
+      if (fileOpened.isEmpty) {
         return left(Failure.fileEmpty());
       }
-      lines.forEach((line) {
+      fileOpened.forEach((line) {
         final matchLabelAndValue = regexLabelAndValue.allMatches(line);
         if (matchLabelAndValue.isNotEmpty) {
           currentLabel = matchLabelAndValue.elementAt(0).group(1);
@@ -134,7 +133,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
       return left(Failure.fileDataFormatIncorrect());
       // ignore: avoid_catches_without_on_clauses
     } catch (error) {
-      return left(Failure.fileParseError(error));
+      return left(Failure.fileParseError(error.toString()));
     }
   }
 }
