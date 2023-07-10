@@ -1,7 +1,7 @@
 name: dart_bio_package
 description: A dart package to aid in the development of solutions to problems related to biology.
-version: 2.0.0
-homepage: https://github.com/oberdancunha/dart-bio-package/tree/2.0.0
+version: 2.1.0
+homepage: https://github.com/oberdancunha/dart-bio-package/tree/2.1.0
 publish_to: none
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
   dart_bio_seqio:
     git: 
       url: https://github.com/oberdancunha/dart-bio-package.git
-      ref: 2.0.0
+      ref: 2.1.0
       path: dart_bio_seqio
 
 dev_dependencies:

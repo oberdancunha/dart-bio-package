@@ -1,7 +1,7 @@
 name: dart_bio_core
 description: A dart project to implement core project.
-version: 2.0.0
-homepage: https://github.com/oberdancunha/dart-bio-package/tree/2.0.0
+version: 2.1.0
+homepage: https://github.com/oberdancunha/dart-bio-package/tree/2.1.0
 publish_to: none
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
   dart_bio_dependency_module:
     git: 
       url: https://github.com/oberdancunha/dart-bio-package.git
-      ref: 2.0.0
+      ref: 2.1.0
       path: dart_bio_dependency_module
 
 dev_dependencies:

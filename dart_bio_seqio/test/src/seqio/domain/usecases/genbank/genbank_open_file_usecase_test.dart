@@ -14,17 +14,17 @@ class MockRepositoryFile extends Mock implements RepositoryFile<Genbank> {}
 void main() {
   late MockRepositoryFile mockRepositoryFile;
   late GenbankOpenFileUseCase genbankOpenFileUseCase;
-  late Stream<String> fileOpenedString;
+  late List<String> fileOpenedString;
 
   setUpAll(() {
     mockRepositoryFile = MockRepositoryFile();
     genbankOpenFileUseCase = GenbankOpenFileUseCase(repositoryFile: mockRepositoryFile);
-    fileOpenedString = Stream.value('');
+    fileOpenedString = [];
     registerFallbackValue(fileOpenedString);
   });
 
   void setUpMockRepositoryOpenSuccess() {
-    when(() => mockRepositoryFile.open(any())).thenReturn(right(fileOpenedString));
+    when(() => mockRepositoryFile.open(any())).thenAnswer((_) async => right(fileOpenedString));
   }
 
   group(
@@ -54,7 +54,9 @@ void main() {
         'Should return a BioResult.failure(Failure.fileNotFound())',
         () async {
           final fileNotFoundFailure = Failure.fileNotFound();
-          when(() => mockRepositoryFile.open(any())).thenReturn(left(fileNotFoundFailure));
+          when(() => mockRepositoryFile.open(any())).thenAnswer(
+            (_) async => left(fileNotFoundFailure),
+          );
           final result = await genbankOpenFileUseCase('');
           expect(result, BioResult<Failure, KtList<Genbank>>.failure(fileNotFoundFailure));
         },

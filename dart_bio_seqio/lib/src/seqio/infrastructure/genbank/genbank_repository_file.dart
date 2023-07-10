@@ -5,35 +5,40 @@ import 'package:dart_bio_core/value_transformer.dart';
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
 import '../../domain/entities/genbank/genbank.dart';
-import 'feature/feature_dto.dart';
-import 'locus/locus_details_dto.dart';
-import 'locus/locus_dto.dart';
+import '../core/feature/feature_dto.dart';
+import '../core/locus/locus_dto.dart';
+import '../core/locus_details/locus_details_dto.dart';
+import 'feature/genbank_feature_event.dart';
+import 'locus/genbank_locus_event.dart';
+import 'locus_details/genbank_locus_details_event.dart';
+import 'reference/genbank_reference_dto.dart';
 
 class GenbankRepositoryFile extends RepositoryFile<Genbank> {
-  final locusDto = LocusDto();
-  final locusDetailsDto = LocusDetailsDto();
-  final featureDto = FeatureDto();
+  final locusDto = LocusDto(GenbankLocusEvent());
+  final locusDetailsDto = LocusDetailsDto(GenbankLocusDetailsEvent());
+  final genbankReferenceDto = GenbankReferenceDto();
+  final featureDto = FeatureDto(GenbankFeatureEvent());
 
   @override
-  Future<Either<Failure, KtList<Genbank>>> parse(Stream<String> fileOpened) async {
+  Future<Either<Failure, KtList<Genbank>>> parse(List<String> fileOpened) async {
     final genbankData = <Genbank>[];
     final regexLabelAndValue = RegExp(r'^\s*([A-Z//]+)\s*(.*)$');
-    final mainLabels = ['LOCUS', 'DEFINITION', 'FEATURES', 'ORIGIN'];
+    final mainLabels = ['LOCUS', 'DEFINITION', 'REFERENCE', 'FEATURES', 'ORIGIN'];
     String? currentLabel;
     String? lastLabel;
     String? value;
     String? locusData;
     final locusDetailsData = <String>[];
+    final genbankReferenceData = <String>[];
     final featuresValues = <String>[];
     final locusSequence = <String>[];
     String? locusSequenceFormatted;
 
     try {
-      final lines = await fileOpened.toList();
-      if (lines.isEmpty) {
+      if (fileOpened.isEmpty) {
         return left(Failure.fileEmpty());
       }
-      lines.forEach((line) {
+      fileOpened.forEach((line) {
         final matchLabelAndValue = regexLabelAndValue.allMatches(line);
         if (matchLabelAndValue.isNotEmpty) {
           currentLabel = matchLabelAndValue.elementAt(0).group(1);
@@ -56,12 +61,14 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
                     : null;
                 genbankData.add(
                   Genbank(
-                    locus: locusDto.fromGenbankFile(
-                      locusData: locusData!,
+                    locus: locusDto.fromFile(
+                      locusList: [locusData!],
                       locusSequence: locusSequenceFormatted!,
                     ),
-                    locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-                    features: featureDto.fromGenbankFile(
+                    locusDetails: locusDetailsDto.fromFile(locusDetailsData),
+                    references:
+                        genbankReferenceDto.fromGenbankFile(genbankReferenceData).toImmutableList(),
+                    features: featureDto.fromFile(
                       features: featuresValues,
                       locusSequence: locusSequenceFormatted!.split(''),
                     ),
@@ -69,6 +76,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
                 );
                 locusDetailsData.clear();
                 featuresValues.clear();
+                genbankReferenceData.clear();
                 locusSequence.clear();
               }
               locusData = line;
@@ -77,6 +85,11 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
           case 'DEFINITION':
             {
               locusDetailsData.add(line);
+            }
+            break;
+          case 'REFERENCE':
+            {
+              genbankReferenceData.add(line);
             }
             break;
           case 'FEATURES':
@@ -98,12 +111,13 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
             locusSequence.isNotEmpty ? formatGenbankLocusSequence(locusSequence.join()) : null;
         genbankData.add(
           Genbank(
-            locus: locusDto.fromGenbankFile(
-              locusData: locusData!,
+            locus: locusDto.fromFile(
+              locusList: [locusData!],
               locusSequence: locusSequenceFormatted!,
             ),
-            locusDetails: locusDetailsDto.fromGenbankFile(locusDetailsData),
-            features: featureDto.fromGenbankFile(
+            locusDetails: locusDetailsDto.fromFile(locusDetailsData),
+            references: genbankReferenceDto.fromGenbankFile(genbankReferenceData).toImmutableList(),
+            features: featureDto.fromFile(
               features: featuresValues,
               locusSequence: locusSequenceFormatted!.split(''),
             ),
@@ -119,7 +133,7 @@ class GenbankRepositoryFile extends RepositoryFile<Genbank> {
       return left(Failure.fileDataFormatIncorrect());
       // ignore: avoid_catches_without_on_clauses
     } catch (error) {
-      return left(Failure.fileParseError(error));
+      return left(Failure.fileParseError(error.toString()));
     }
   }
 }

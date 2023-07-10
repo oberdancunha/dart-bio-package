@@ -13,8 +13,7 @@ class GenbankOpenFileUseCase implements UseCase<KtList<src.Genbank>, String> {
 
   @override
   Future<BioResult<Failure, KtList<src.Genbank>>> call(String fileName) async {
-    final fileOpened = repositoryFile.open(fileName);
-
+    final fileOpened = await repositoryFile.open(fileName);
     final result = await fileOpened.fold(
       (failure) => Future.value(BioResult<Failure, KtList<src.Genbank>>.failure(failure)),
       (fileOpenedData) async {

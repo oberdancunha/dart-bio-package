@@ -1,13 +1,13 @@
 import 'package:dart_bio_dependency_module/dart_bio_dependency_module.dart';
 
-class Reference extends Equatable {
+class GenbankReference extends Equatable {
   final String description;
   final String authors;
   final String title;
   final String journal;
   final int? pubmed;
 
-  const Reference({
+  const GenbankReference({
     required this.description,
     required this.authors,
     required this.title,
