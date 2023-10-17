@@ -22,15 +22,15 @@ final genbank = Genbank();
 
 Future<void> main() async {
   final locus = await genbank.open('test/data/SCU49845/SCU49845.gb');
-  locus.when(
-    failure: (failure) => failure.when(
-      fileNotFound: () => print('Arquivo não encontrado'),
-      fileParseError: (error) =>
-          print('Houve um erro desconhecido na leitura do arquivo: ${error.toString()}'),
-      fileEmpty: () => print('O arquivo está vazio'),
-      fileFormatIncorrect: () => print('O arquivo não está no formato do genbank'),
+  result.join(
+    (genbankError) => genbankError.failure.join(
+      (fileNotFound) => print('Arquivo não encontrado'),
+      (fileParseError) => print('Houve um erro desconhecido na leitura do arquivo: ${fileParseError.error.toString()}'), 
+      (fileEmpty) => print('O arquivo está vazio'),
+      (fileFormatIncorrect) => print('O arquivo não está no formato do genbank'),
+      (fileDataFormatIncorrect) => print('Há um erro em algum dado do arquivo genbank'),
     ),
-    data: (genbankData) => print(genbankData.toString()),
+    (genbank) => print(genbank.data.toString()),
   );
 }
 ```
